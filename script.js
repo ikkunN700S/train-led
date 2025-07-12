@@ -1,13 +1,19 @@
 function updateDisplay() {
     const carNumber = document.getElementById("car-input").value;
+    const carNumberArea = document.getElementById("car-number");
+    const carDigit = document.getElementById("car-digit");
     const type = document.getElementById("type-select").value;
     const destination = document.getElementById("destination-input").value;
 
-    const carNumberArea = document.getElementById("car-number");
     const typeArea = document.getElementById("type-area");
     const destinationArea = document.getElementById("destination-area");
 
-    document.getElementById("car-digit").textContent = carNumber;
+    if (carNumber.trim() === "") {
+        carNumberArea.style.display = "none"; // 空なら非表示
+    } else {
+        carNumberArea.style.display = "flex"; // 表示（元に戻す）
+        carDigit.textContent = carNumber;
+    }
 
 
     // 上位種別リスト（斜体にしたい種別）
@@ -57,6 +63,8 @@ function updateDisplay() {
         // 種別ごとの色設定
         switch (type) {
             case "普通":
+            case "各停":
+            case "各駅停車":
                 typeArea.style.backgroundColor = "#787878ff";
                 typeArea.style.color = "white";
                 break;
@@ -75,6 +83,26 @@ function updateDisplay() {
             case "特別快速":
                 typeArea.style.backgroundColor = "#ffff00ff";
                 typeArea.style.color = "black";
+                break;
+            case "準急":
+                typeArea.style.backgroundColor = "#32cd32";
+                typeArea.style.color = "white";
+                break;
+            case "急行":
+                typeArea.style.backgroundColor = "#00bfff";
+                typeArea.style.color = "white";
+                break;
+            case "快速急行":
+                typeArea.style.backgroundColor = "white";
+                typeArea.style.color = "#00bfff";
+                break;
+            case "特急":
+                typeArea.style.backgroundColor = "#ff0000";
+                typeArea.style.color = "white";
+                break;
+            case "快速特急":
+                typeArea.style.backgroundColor = "white";
+                typeArea.style.color = "#ff0000";
                 break;
             default:
                 typeArea.style.backgroundColor = "#444";
