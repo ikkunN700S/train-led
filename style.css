@@ -66,7 +66,7 @@ body {
     align-items: center;
     justify-content: center;
     white-space: nowrap;
-    width: 2.5em;       /* 固定 */
+    width: 2em;       /* 固定 */
     flex-shrink: 0;     /* 縮まない */
     text-align: center;
     font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
@@ -82,7 +82,7 @@ body {
     align-items: center;
     justify-content: center;
     flex-grow: 1;
-    width: 4em;              /* 幅を固定 */
+    width: 4.5em;              /* 幅を固定 */
     letter-spacing: 0.2em; /* ← ここが文字間隔 */
     white-space: nowrap;
     font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
