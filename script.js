@@ -7,7 +7,8 @@ function updateDisplay() {
     const typeArea = document.getElementById("type-area");
     const destinationArea = document.getElementById("destination-area");
 
-    carNumberArea.textContent = `${carNumber}号車`;
+    document.getElementById("car-digit").textContent = carNumber;
+
 
     // 上位種別リスト（斜体にしたい種別）
     const italicTypes = ["区間快速", "快速", "新快速", "特別快速"];

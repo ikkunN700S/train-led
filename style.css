@@ -38,12 +38,22 @@ body {
     background-color: black;
     color: orange;
     font-size: 1em;
-    writing-mode: vertical-rl;
     text-orientation: upright;
     line-height: 1;
     white-space: nowrap;
     font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
     }
+
+.car-digit {
+  font-size: 1.5em;   /* 数字を大きく */
+  line-height: 1;
+}
+
+.car-label {
+  font-size: 0.8em;   /* 「号車」を小さく */
+  margin-top: 0.2em;
+}
+
 
 .type-area {
     background-color: #787878ff; /* 青地 */
