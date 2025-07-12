@@ -38,6 +38,7 @@ body {
     background-color: black;
     color: orange;
     font-size: 1em;
+    width: 1em;
     text-orientation: upright;
     line-height: 1;
     white-space: nowrap;
