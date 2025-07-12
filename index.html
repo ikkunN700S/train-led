@@ -3,135 +3,153 @@
 <head>
   <meta charset="UTF-8">
   <title>行き先表示シミュレータ</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- ドットフォント -->
   <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
-
   <style>
     body {
       background-color: #222;
-      color: #fff;
-      font-family: sans-serif;
+      font-family: 'DotGothic16', monospace;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 2em;
     }
 
-    .destination-display {
+    .display-frame {
+      background-color: #333;
+      padding: 1em;
+      border-radius: 1em;
+      width: fit-content;
+      box-shadow: 0 0 15px #000;
+    }
+
+    .led-display {
       display: flex;
-      border: 2px solid #000;
-      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.6);
-      overflow: hidden;
-      font-family: 'DotGothic16', monospace;
-      margin-bottom: 2em;
-    }
-
-    .train-type {
-      padding: 0.5em 1.2em;
-      font-size: 1.8em;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
-    }
-
-    /* 種別ごとの色 */
-    .normal {
-      background-color: #006633;
-    }
-    .express {
-      background-color: #cc0000;
-    }
-    .limited {
-      background-color: #ff9900;
-    }
-    .local {
-      background-color: #000066;
-    }
-
-    .destination {
+      align-items: stretch;
       background-color: black;
+      border: 4px solid #111;
+      border-radius: 0.5em;
+      overflow: hidden;
+      font-size: 2.2em;
       color: white;
-      padding: 0.5em 1.5em;
-      font-size: 2.5em;
+      min-width: 600px;
+      min-height: 100px;
+      position: relative;
+    }
+
+    .car-number {
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
-      letter-spacing: 0.1em;
+      align-items: center;
+      padding: 0.2em 0.5em;
+      background-color: black;
+      color: orange;
+      font-size: 1em;
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      line-height: 1;
       white-space: nowrap;
     }
 
-    /* コントロール部分 */
+    .type-area {
+      background-color: #0052cc; /* 青地 */
+      padding: 0.3em 1em;
+      font-size: 1.5em;
+      color: white;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .destination-area {
+      background-color: black;
+      padding: 0.3em 1em;
+      font-size: 1.5em;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+      white-space: nowrap;
+    }
+
+    /* 制御部 */
     .controls {
+      margin-top: 2em;
       display: flex;
       gap: 1em;
       flex-wrap: wrap;
+      justify-content: center;
     }
 
-    select, input {
+    select, input, button {
       font-size: 1em;
-      padding: 0.3em 0.5em;
-    }
-
-    button {
-      padding: 0.4em 1em;
-      font-size: 1em;
-      cursor: pointer;
+      padding: 0.4em 0.7em;
     }
   </style>
 </head>
 <body>
 
-  <h1>行き先表示シミュレータ</h1>
+  <h1 style="color: white;">行き先表示器シミュレータ</h1>
 
-  <div class="destination-display">
-    <div id="train-type" class="train-type normal">普通</div>
-    <div id="destination" class="destination">池袋</div>
+  <div class="display-frame">
+    <div class="led-display">
+      <div class="car-number" id="car-number">1号車</div>
+      <div class="type-area" id="type-area">快速</div>
+      <div class="destination-area" id="destination-area">名古屋</div>
+    </div>
   </div>
 
   <div class="controls">
-    <label>
-      種別:
+    <label>号車:
+      <input type="number" id="car-input" value="1" min="1" style="width: 4em;">
+    </label>
+
+    <label>種別:
       <select id="type-select">
-        <option value="normal">普通</option>
-        <option value="local">各停</option>
-        <option value="express">急行</option>
-        <option value="limited">特急</option>
+        <option value="快速">快速</option>
+        <option value="特急">特急</option>
+        <option value="普通">普通</option>
+        <option value="通勤快速">通勤快速</option>
       </select>
     </label>
 
-    <label>
-      行き先:
-      <input type="text" id="destination-input" placeholder="例: 新宿" />
+    <label>行き先:
+      <input type="text" id="destination-input" value="名古屋" />
     </label>
 
-    <button onclick="updateDisplay()">表示を更新</button>
+    <button onclick="updateDisplay()">更新</button>
   </div>
 
   <script>
     function updateDisplay() {
+      const carNumber = document.getElementById("car-input").value;
       const type = document.getElementById("type-select").value;
-      const dest = document.getElementById("destination-input").value || "池袋";
+      const destination = document.getElementById("destination-input").value;
 
-      const trainType = document.getElementById("train-type");
-      const destination = document.getElementById("destination");
+      document.getElementById("car-number").textContent = `${carNumber}号車`;
+      document.getElementById("type-area").textContent = type;
+      document.getElementById("destination-area").textContent = destination;
 
-      // クラスを一旦リセットして種別を再設定
-      trainType.className = "train-type " + type;
-
-      // 種別表示テキスト
-      const typeText = {
-        normal: "普通",
-        express: "急行",
-        limited: "特急",
-        local: "各停"
-      }[type] || type;
-
-      trainType.textContent = typeText;
-      destination.textContent = dest;
+      const typeArea = document.getElementById("type-area");
+      switch (type) {
+        case "快速":
+          typeArea.style.backgroundColor = "#0052cc";
+          break;
+        case "特急":
+          typeArea.style.backgroundColor = "#ff6600";
+          break;
+        case "普通":
+          typeArea.style.backgroundColor = "#006633";
+          break;
+        case "通勤快速":
+          typeArea.style.backgroundColor = "#9900cc";
+          break;
+        default:
+          typeArea.style.backgroundColor = "#444";
+      }
     }
   </script>
 
