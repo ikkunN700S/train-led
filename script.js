@@ -17,12 +17,13 @@ function updateDisplay() {
     if (type === "試運転") {
         // 試運転モード
         typeArea.style.display = "none"; // 非表示にする
-        destinationArea.style.flex = "1"; // フレックス拡張
+        //destinationArea.style.flex = "1"; // フレックス拡張
         destinationArea.textContent = "試　運　転"; // 幅広表示
         destinationArea.style.letterSpacing = "0.3em";
         destinationArea.style.backgroundColor = "black";
         destinationArea.style.color = "white";
         typeArea.classList.remove("italic-text");
+        destinationArea.style.width = "8.5em";    // 幅を広げる
     } else {
         // 通常の種別表示に戻す
         typeArea.style.display = ""; // 表示に戻す
@@ -32,6 +33,7 @@ function updateDisplay() {
         destinationArea.style.letterSpacing = "";
         destinationArea.style.backgroundColor = "";
         destinationArea.style.color = "";
+        destinationArea.style.width = "";
 
         // ← ここで斜体クラスを切り替え
         if (italicTypes.includes(type)) {
