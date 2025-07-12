@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>行き先表示機シミュレータ</title>
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shinaknsen.css">
+  <link rel="icon" href="images/favicon/favicon.ico">
+        <link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" sizes="256x256" href="images/favicon/android-chrome-256x256.png">
+</head>
+<body>
+
+  <h1 style="color: white;">行き先表示器シミュレータ</h1>
+
+  <div class="display-frame">
+    <div class="led-display">
+      <div class="type-area" id="type-area">こだま</div>
+      <div class="destination-area" id="destination-area">東　京</div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <label>号車:
+      <input type="number" id="car-input" value="1" min="1" style="width: 4em;">
+    </label>
+
+    <label>種別:
+      <select id="type-select">
+        <option value="こだま">こだま</option>
+        <option value="ひかり">ひかり</option>
+        <option value="のぞみ">のぞみ</option>
+
+        <option value="みずほ">みずほ</option>
+        <option value="さくら">さくら</option>
+        <option value="つばめ">つばめ</option>
+        <option value="かもめB">かもめ(青)</option>
+        <option value="かもめR">かもめ(赤)</option>
+
+        <option value="はやぶさ">はやぶさ</option>
+        <option value="はやて">はやて</option>
+        <option value="やまびこ">やまびこ</option>
+        <option value="なすの">なすの</option>
+
+        <option value="はやぶさH">はやぶさ(北)</option>
+        <option value="はやてH">はやて(北)</option>
+
+        <option value="こまち">こまち</option>
+        <option value="つばさ">つばさ</option>
+
+        <option value="つるぎ">つるぎ</option>
+        <option value="あさま">あさま</option>
+        <option value="はくたか">はくたか</option>
+        <option value="かがやき">かがやき</option>
+
+        <option value="とき">とき</option>
+        <option value="たにがわ">たにがわ</option>
+
+        <option value="試運転">試運転</option>
+        <option value="回送">回送</option>
+        <option value="臨時">臨時</option>
+        <option value="団体">団体</option>
+        <option value="修学旅行">修学旅行</option>
+      </select>
+    </label>
+
+    <label>行き先:
+      <input type="text" id="destination-input" value="東　京" />
+    </label>
+
+    <button onclick="updateDisplay()">更新</button>
+  </div>
+
+  <script src="shinkansen.js"></script>
+
+  <a href="index.html" class="a">在来線の行き先表示シミュレータへ</a>
+</body>
+</html>
