@@ -81,7 +81,8 @@ body {
     align-items: center;
     justify-content: center;
     flex-grow: 1;
-    width: 5em;              /* 幅を固定 */
+    width: 4em;              /* 幅を固定 */
+    letter-spacing: 0.2em; /* ← ここが文字間隔 */
     white-space: nowrap;
     font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
     }
