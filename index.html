@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>行き先表示シミュレータ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ドットフォント -->
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #222;
+      color: #fff;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2em;
+    }
+
+    .destination-display {
+      display: flex;
+      border: 2px solid #000;
+      box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      font-family: 'DotGothic16', monospace;
+      margin-bottom: 2em;
+    }
+
+    .train-type {
+      padding: 0.5em 1.2em;
+      font-size: 1.8em;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    /* 種別ごとの色 */
+    .normal {
+      background-color: #006633;
+    }
+    .express {
+      background-color: #cc0000;
+    }
+    .limited {
+      background-color: #ff9900;
+    }
+    .local {
+      background-color: #000066;
+    }
+
+    .destination {
+      background-color: black;
+      color: white;
+      padding: 0.5em 1.5em;
+      font-size: 2.5em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    /* コントロール部分 */
+    .controls {
+      display: flex;
+      gap: 1em;
+      flex-wrap: wrap;
+    }
+
+    select, input {
+      font-size: 1em;
+      padding: 0.3em 0.5em;
+    }
+
+    button {
+      padding: 0.4em 1em;
+      font-size: 1em;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>行き先表示シミュレータ</h1>
+
+  <div class="destination-display">
+    <div id="train-type" class="train-type normal">普通</div>
+    <div id="destination" class="destination">池袋</div>
+  </div>
+
+  <div class="controls">
+    <label>
+      種別:
+      <select id="type-select">
+        <option value="normal">普通</option>
+        <option value="local">各停</option>
+        <option value="express">急行</option>
+        <option value="limited">特急</option>
+      </select>
+    </label>
+
+    <label>
+      行き先:
+      <input type="text" id="destination-input" placeholder="例: 新宿" />
+    </label>
+
+    <button onclick="updateDisplay()">表示を更新</button>
+  </div>
+
+  <script>
+    function updateDisplay() {
+      const type = document.getElementById("type-select").value;
+      const dest = document.getElementById("destination-input").value || "池袋";
+
+      const trainType = document.getElementById("train-type");
+      const destination = document.getElementById("destination");
+
+      // クラスを一旦リセットして種別を再設定
+      trainType.className = "train-type " + type;
+
+      // 種別表示テキスト
+      const typeText = {
+        normal: "普通",
+        express: "急行",
+        limited: "特急",
+        local: "各停"
+      }[type] || type;
+
+      trainType.textContent = typeText;
+      destination.textContent = dest;
+    }
+  </script>
+
+</body>
+</html>
