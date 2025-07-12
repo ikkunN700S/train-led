@@ -4,91 +4,8 @@
   <meta charset="UTF-8">
   <title>行き先表示シミュレータ</title>
   <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: #222;
-      font-family: 'DotGothic16', monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2em;
-    }
-
-    .display-frame {
-      background-color: #333;
-      padding: 1em;
-      border-radius: 1em;
-      width: fit-content;
-      box-shadow: 0 0 15px #000;
-    }
-
-    .led-display {
-      display: flex;
-      align-items: stretch;
-      background-color: black;
-      border: 4px solid #111;
-      border-radius: 0.5em;
-      overflow: hidden;
-      font-size: 2.2em;
-      color: white;
-      min-width: 600px;
-      min-height: 100px;
-      position: relative;
-    }
-
-    .car-number {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 0.2em 0.5em;
-      background-color: black;
-      color: orange;
-      font-size: 1em;
-      writing-mode: vertical-rl;
-      text-orientation: upright;
-      line-height: 1;
-      white-space: nowrap;
-    }
-
-    .type-area {
-      background-color: #0052cc; /* 青地 */
-      padding: 0.3em 1em;
-      font-size: 1.5em;
-      color: white;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      white-space: nowrap;
-    }
-
-    .destination-area {
-      background-color: black;
-      padding: 0.3em 1em;
-      font-size: 1.5em;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-grow: 1;
-      white-space: nowrap;
-    }
-
-    /* 制御部 */
-    .controls {
-      margin-top: 2em;
-      display: flex;
-      gap: 1em;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    select, input, button {
-      font-size: 1em;
-      padding: 0.4em 0.7em;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -97,7 +14,7 @@
   <div class="display-frame">
     <div class="led-display">
       <div class="car-number" id="car-number">1号車</div>
-      <div class="type-area" id="type-area">快速</div>
+      <div class="type-area" id="type-area">普通</div>
       <div class="destination-area" id="destination-area">名古屋</div>
     </div>
   </div>
@@ -109,10 +26,12 @@
 
     <label>種別:
       <select id="type-select">
-        <option value="快速">快速</option>
-        <option value="特急">特急</option>
         <option value="普通">普通</option>
-        <option value="通勤快速">通勤快速</option>
+        <option value="区間快速">区間快速</option>
+        <option value="快速">快速</option>
+        <option value="新快速">新快速</option>
+        <option value="特別快速">特別快速</option>
+        <option value="試運転">試運転</option>
       </select>
     </label>
 
@@ -123,35 +42,7 @@
     <button onclick="updateDisplay()">更新</button>
   </div>
 
-  <script>
-    function updateDisplay() {
-      const carNumber = document.getElementById("car-input").value;
-      const type = document.getElementById("type-select").value;
-      const destination = document.getElementById("destination-input").value;
-
-      document.getElementById("car-number").textContent = `${carNumber}号車`;
-      document.getElementById("type-area").textContent = type;
-      document.getElementById("destination-area").textContent = destination;
-
-      const typeArea = document.getElementById("type-area");
-      switch (type) {
-        case "快速":
-          typeArea.style.backgroundColor = "#0052cc";
-          break;
-        case "特急":
-          typeArea.style.backgroundColor = "#ff6600";
-          break;
-        case "普通":
-          typeArea.style.backgroundColor = "#006633";
-          break;
-        case "通勤快速":
-          typeArea.style.backgroundColor = "#9900cc";
-          break;
-        default:
-          typeArea.style.backgroundColor = "#444";
-      }
-    }
-  </script>
+  <script src="script.js"></script>
 
 </body>
 </html>
