@@ -24,6 +24,7 @@ function updateDisplay() {
         destinationArea.style.color = "white";
         typeArea.classList.remove("italic-text");
         destinationArea.style.width = "8.5em";    // 幅を広げる
+        destinationArea.style.height = "1.5em"; // フレックスを無効化
     } else {
         // 通常の種別表示に戻す
         typeArea.style.display = ""; // 表示に戻す
@@ -34,6 +35,7 @@ function updateDisplay() {
         destinationArea.style.backgroundColor = "";
         destinationArea.style.color = "";
         destinationArea.style.width = "";
+        destinationArea.style.height = "";
 
         // ← ここで斜体クラスを切り替え
         if (italicTypes.includes(type)) {
