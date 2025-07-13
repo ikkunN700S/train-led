@@ -157,3 +157,69 @@ footer #site-version {
   color: #aaa;
   margin-top: 4px;
 }
+
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  margin: 1.5em auto;
+  max-width: 900px;
+  justify-content: center;
+  color: #ffffff;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.controls label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9em;
+  color: #ddd;
+}
+
+.controls input,
+.controls select {
+  margin-top: 0.3em;
+  padding: 0.4em 0.6em;
+  border: 1px solid #555;
+  border-radius: 8px;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  font-size: 1em;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.controls input:focus,
+.controls select:focus {
+  border-color: #00aaff;
+  box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.4);
+}
+
+.controls select {
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23aaa" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 0.6em center;
+  background-size: 1em;
+  padding-right: 2em;
+}
+
+.controls button {
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  background-color: #00aaff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.controls button:hover {
+  background-color: #0088cc;
+}
+
+.controls button:active {
+  transform: scale(0.97);
+}

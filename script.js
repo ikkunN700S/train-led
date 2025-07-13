@@ -224,3 +224,24 @@ setInterval(switchLanguage, 3500);
 // ▼ 初期表示更新
 window.addEventListener("DOMContentLoaded", updateDisplay);
 
+// 画像ダウンロード
+document.addEventListener("DOMContentLoaded", () => {
+    const saveButton = document.getElementById("save-image-button");
+
+    if (saveButton) {
+        saveButton.addEventListener("click", () => {
+            const display = document.querySelector(".display-frame");
+            if (!display) return;
+
+            html2canvas(display, {
+                backgroundColor: null, // 背景透過を維持
+                scale: 2              // 高解像度で保存
+            }).then(canvas => {
+                const link = document.createElement("a");
+                link.download = "display.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        });
+    }
+});
