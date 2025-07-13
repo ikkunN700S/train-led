@@ -57,21 +57,28 @@ body {
 
 
 .type-area {
-    background-color: #787878ff; /* 青地 */
+    background-color: #3050ff;
     padding: 0.3em 1em;
-    font-size: 1.5em;
+    font-size: 1.5em; /* 枠のベースサイズ */
     color: white;
     height: 1.5em;
     display: flex;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
-    width: 2.5em;       /* 固定 */
-    flex-shrink: 0;     /* 縮まない */
+    width: 2.5em;
+    flex-shrink: 0;
     text-align: center;
     font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
     font-weight: bold;
 }
+
+#type-text {
+    font-size: 1em; /* ← このサイズだけを JavaScript で変更する */
+    display: inline-block;
+    line-height: 1;
+}
+
 
 .destination-area {
     background-color: black;
@@ -83,10 +90,22 @@ body {
     justify-content: center;
     flex-grow: 1;
     width: 4em;              /* 幅を固定 */
+    height: 1.5em;
     letter-spacing: 0.2em; /* ← ここが文字間隔 */
     white-space: nowrap;
     font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
-    }
+}
+
+#destination-text {
+    font-size: 1em;         /* ← JSで変更されるサイズ */
+    display: inline-block;
+    line-height: 1;
+    height: 100%;           /* 親の高さに合わせる */
+    width: 100%;          /* 親の幅に合わせる */
+    display: flex;          /* 中央寄せ */
+    align-items: center;
+    justify-content: center;
+}
 
 .italic-text {
     font-style: italic;
@@ -124,4 +143,17 @@ body {
 }
 .a:hover {
   background-color: #666;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  color: #777;
+}
+
+footer #site-version {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 4px;
 }

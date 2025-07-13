@@ -16,8 +16,8 @@
 
   <div class="display-frame">
     <div class="led-display">
-      <div class="type-area" id="type-area">こだま</div>
-      <div class="destination-area" id="destination-area">東　京</div>
+      <div class="type-area" id="type-area"><span id="type-text">こだま</span></div>
+      <div class="destination-area" id="destination-area"><span id="destination-text">東　京</span></div>
     </div>
   </div>
 
@@ -65,11 +65,21 @@
       <input type="text" id="destination-input" value="東　京" />
     </label>
 
+    <label>ローマ字:
+      <input type="text" id="romaji-input" value="Tokyo" />
+    </label>
+
     <button onclick="updateDisplay()">更新</button>
   </div>
 
   <script src="shinkansen.js"></script>
 
   <a href="index.html" class="a">在来線の行き先表示シミュレータへ</a>
+
+  <footer>
+    <p>&copy; 2025 水上イリス / ICCHAMA</p>
+    <p id="site-version"></p>
+    <script src="version.js"></script>
+  </footer>
 </body>
 </html>

@@ -20,8 +20,8 @@
         <div class="car-digit" id="car-digit">1</div>
         <div class="car-label">号車</div>
       </div>
-      <div class="type-area" id="type-area">普通</div>
-      <div class="destination-area" id="destination-area">名古屋</div>
+      <div class="type-area" id="type-area"><span id="type-text">普通</span></div>
+      <div class="destination-area" id="destination-area"><span id="destination-text">名古屋</span></div>
     </div>
   </div>
 
@@ -55,11 +55,21 @@
       <input type="text" id="destination-input" value="名古屋" />
     </label>
 
+    <label>ローマ字:
+      <input type="text" id="romaji-input" value="Nagoya" />
+    </label>
+
     <button onclick="updateDisplay()">更新</button>
   </div>
 
   <script src="script.js"></script>
 
   <a href="shinkansen.html" class="a">新幹線の行き先表示シミュレータへ</a>
+
+  <footer>
+    <p>&copy; 2025 水上イリス / ICCHAMA</p>
+    <p id="site-version"></p>
+    <script src="version.js"></script>
+  </footer>
 </body>
 </html>
