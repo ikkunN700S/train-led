@@ -1,137 +1,226 @@
+    // ▼ ローマ字表示用マッピング
+    const typeRomajiMap = {
+        "こだま": "KODAMA",
+        "ひかり": "HIKARI",
+        "のぞみ": "NOZOMI",
+        "みずほ": "MIZUHO",
+        "さくら": "SAKURA",
+        "つばめ": "TSUBAME",
+        "かもめ": "KAMOME",
+        "はやぶさ": "HAYABUSA",
+        "はやて": "HAYATE",
+        "やまびこ": "YAMABIKO",
+        "なすの": "NASUNO",
+        "こまち": "KOMACHI",
+        "つばさ": "TSUBASA",
+        "つるぎ": "TSURUGI",
+        "あさま": "ASAMA",
+        "はくたか": "HAKUTAKA",
+        "かがやき": "KAGAYAKI",
+        "とき": "TOKI",
+        "たにがわ": "TANIGAWA",
+        "試運転": "TEST RUN",
+        "臨時": "TEMPORARY",
+        "回送": "OUT OF SERVICE",
+        "団体": "GROUP",
+        "修学旅行": "SCHOOL TRIP"
+    };
+
+    let isJapanese = true;  // ▼ 切り替え制御フラグ
+
 function updateDisplay() {
     const type = document.getElementById("type-select").value;
     const destination = document.getElementById("destination-input").value;
 
     const typeArea = document.getElementById("type-area");
+    const typeText = document.getElementById("type-text");
     const destinationArea = document.getElementById("destination-area");
+    const destinationText = document.getElementById("destination-text");
+
+    const romaji = document.getElementById("romaji-input")?.value || "Romaji";
+
+    // ▼ 表示内容の切り替えに備えて保持（属性として保持しておく）
+    typeText.setAttribute("data-ja", type.replace(/[BRH]$/, "")); // 「かもめB」などをそのまま保持
+    typeText.setAttribute("data-en", typeRomajiMap[type.replace(/[BRH]$/, "")] || type);
 
 
-    // 上位種別リスト（斜体にしたい種別）
-    const italicTypes = ["区間快速", "快速", "新快速", "特別快速"];
+    destinationText.setAttribute("data-ja", destination);
+    destinationText.setAttribute("data-en", romaji);
 
 
     if (type === "試運転") {
-        // 試運転モード
-        typeArea.style.display = "none"; // 非表示にする
-        destinationArea.textContent = "試　運　転"; // 幅広表示
-        destinationArea.style.backgroundColor = "black";
-        destinationArea.style.color = "white";
-        destinationArea.style.width = "8.5em";    // 幅を広げる
-        destinationArea.style.height = "1.5em"; // フレックスを無効化
-    }else if(type === "臨時" || type === "回送" || type === "団体") {
-        // 臨時・回送モード
-        typeArea.style.display = "none"; // 非表示にする
-        destinationArea.textContent = type.split("").join("　 　"); // 例：「臨　時」
-        destinationArea.style.letterSpacing = "";
-        destinationArea.style.backgroundColor = "black";
-        destinationArea.style.color = "white";
-        destinationArea.style.width = "8.5em";    // 幅を広げる
-        destinationArea.style.height = "1.5em"; // フレックスを無効化
-    }else if(type === "修学旅行") {
-        // 修学旅行モード
-        typeArea.style.display = "none"; // 非表示にする
-        destinationArea.textContent = type.split("").join("　"); // 例：「臨　時」
-        destinationArea.style.letterSpacing = "";
-        destinationArea.style.backgroundColor = "black";
-        destinationArea.style.color = "white";
-        destinationArea.style.width = "8.5em";    // 幅を広げる
-        destinationArea.style.height = "1.5em"; // フレックスを無効化
+        const formatted = "試　運　転";
+        typeArea.style.display = "none";
+        destinationText.textContent = formatted;
+        destinationText.setAttribute("data-ja", formatted);
+        destinationText.setAttribute("data-en", typeRomajiMap[type]);
+        destinationText.style.letterSpacing = "0.3em";
+        destinationText.style.backgroundColor = "black";
+        destinationText.style.color = "white";
+        destinationText.style.width = "8.5em";
+        destinationText.style.height = "1.5em";
+    } else if (["臨時", "回送", "団体"].includes(type)) {
+        const formatted = type.split("").join("　 　"); // ← 全角スペース2個
+        typeArea.style.display = "none";
+        destinationText.textContent = formatted;
+        destinationText.setAttribute("data-ja", formatted);
+        destinationText.setAttribute("data-en", typeRomajiMap[type]);
+        destinationText.style.letterSpacing = "";
+        destinationText.style.backgroundColor = "black";
+        destinationText.style.color = "white";
+        destinationText.style.width = "8.5em";
+        destinationText.style.height = "1.5em";
+    } else if (type === "修学旅行") {
+        const formatted = type.split("").join("　"); // ← 全角スペース1個
+        typeArea.style.display = "none";
+        destinationText.textContent = formatted;
+        destinationText.setAttribute("data-ja", formatted);
+        destinationText.setAttribute("data-en", typeRomajiMap[type]);
+        destinationText.style.letterSpacing = "";
+        destinationText.style.backgroundColor = "black";
+        destinationText.style.color = "white";
+        destinationText.style.width = "8.5em";
+        destinationText.style.height = "1.5em";
     } else {
         // 通常の種別表示に戻す
         typeArea.style.display = ""; // 表示に戻す
-        typeArea.textContent = type;
-        destinationArea.textContent = destination;
-        destinationArea.style.flex = ""; 
-        destinationArea.style.letterSpacing = "";
-        destinationArea.style.backgroundColor = "";
-        destinationArea.style.color = "";
-        destinationArea.style.width = "";
-        destinationArea.style.height = "";
+        typeText.textContent = type;
+        destinationText.textContent = destination;
+        destinationText.style.flex = ""; 
+        destinationText.style.letterSpacing = "";
+        destinationText.style.backgroundColor = "";
+        destinationText.style.color = "";
+        destinationText.style.width = "";
+        destinationText.style.height = "";
 
-
-        // ← ここで斜体クラスを切り替え
-        if (italicTypes.includes(type)) {
-            typeArea.classList.add("italic-text");
-        } else {
-            typeArea.classList.remove("italic-text");
-        }
         
         // 種別ごとの色設定
         switch (type) {
             case "こだま":
                 typeArea.style.backgroundColor = "#3050ff";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "かもめB":
-                typeArea.textContent = "かもめ";
+                typeText.textContent = "かもめ";
                 typeArea.style.backgroundColor = "#3050ff";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "ひかり":
                 typeArea.style.backgroundColor = "#ff0000";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "かもめR":
-                typeArea.textContent = "かもめ";
+                typeText.textContent = "かもめ";
                 typeArea.style.backgroundColor = "#ff0000";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "のぞみ":
                 typeArea.style.backgroundColor = "#ffff00";
-                typeArea.style.color = "Black";
+                typeText.style.color = "Black";
                 break;
             case "みずほ":
                 typeArea.style.backgroundColor = "#ffa500";
-                typeArea.style.color = "black";
+                typeText.style.color = "black";
                 break;
             case "さくら":
                 typeArea.style.backgroundColor = "#ff69b4";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "つばめ":
                 typeArea.style.backgroundColor = "#40e0d0";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "はやぶさ":
             case "はやて":
             case "やまびこ":
             case "なすの":
                 typeArea.style.backgroundColor = "#41934C";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "こまち":
                 typeArea.style.backgroundColor = "#ED4399";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "つばさ":
                 typeArea.style.backgroundColor = "#F36221";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "はやぶさH":
-                typeArea.textContent = "はやぶさ";
+                typeText.textContent = "はやぶさ";
                 typeArea.style.backgroundColor = "#9ACD32";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "はやてH":
-                typeArea.textContent = "はやて";
+                typeText.textContent = "はやて";
                 typeArea.style.backgroundColor = "#9ACD32";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "とき":
             case "たにがわ":
                 typeArea.style.backgroundColor = "#F58D79";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "あさま":
             case "はくたか":
             case "かがやき":
             case "つるぎ":
                 typeArea.style.backgroundColor = "#6A3D98";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             default:
                 typeArea.style.backgroundColor = "#444";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
         }
     }
+    typeText.style.fontSize = ""; // 通常サイズに戻す
+    destinationText.style.fontSize = ""; // 通常サイズに戻す
 }
+
+function switchLanguage() {
+    const typeArea = document.getElementById("type-area");
+    const typeText = document.getElementById("type-text");
+    const destinationArea = document.getElementById("destination-area");
+    const destinationText = document.getElementById("destination-text");
+
+    if (!typeArea || !typeText || !destinationArea || !destinationText) return;
+
+    // 現在の表示モード取得（例: "試運転", "臨時", "回送" など）
+    const typeTextData = typeText.getAttribute("data-ja");
+
+    // 特殊種別かどうか
+    const isSpecialType = ["試運転", "臨時", "回送", "団体", "修学旅行"].includes(typeTextData);
+
+    if (isJapanese) {
+        if (isSpecialType) {
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal";
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
+        } else {
+            typeText.textContent = typeText.getAttribute("data-en");
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal";
+            typeText.style.fontSize = "0.8em"; // 英語縮小
+        }
+    } else {
+        if (isSpecialType) {
+            destinationText.textContent = destinationText.getAttribute("data-ja");
+            destinationText.style.letterSpacing = (typeTextData === "試運転") ? "0.3em" : "";
+            destinationText.style.fontSize = ""; // 通常サイズに戻す
+        } else {
+            typeText.textContent = typeText.getAttribute("data-ja");
+            destinationText.textContent = destinationText.getAttribute("data-ja");
+            destinationText.style.letterSpacing = "0.2em";
+            typeText.style.fontSize = ""; // 通常サイズに戻す
+        }
+    }
+
+
+    isJapanese = !isJapanese;
+}
+
+// ▼ 3秒ごとに日本語とローマ字を切り替える
+setInterval(switchLanguage, 3500);
+
+// ▼ 初期表示更新
+window.addEventListener("DOMContentLoaded", updateDisplay);
+

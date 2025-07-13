@@ -19,7 +19,6 @@
 
     let isJapanese = true;  // ▼ 切り替え制御フラグ
 
-
 function updateDisplay() {
     const carNumber = document.getElementById("car-input").value;
     const carNumberArea = document.getElementById("car-number");
