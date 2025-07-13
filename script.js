@@ -181,13 +181,21 @@ function switchLanguage() {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
             typeText.style.fontSize = "1em"; // 通常サイズ
-        }else {
+        }else if(typeTextData === "新快速"){
+            // 新快速ローマ字表示に切り替え
+            typeText.textContent = typeText.getAttribute("data-en");
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal";
+            typeText.style.fontSize = "0.8em"; // 通常サイズ
+        }else{
             // ▼ ローマ字表示に切り替え
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
             typeText.style.fontSize = "0.6em"; // 英語縮小
         }
+        // 行先英語小さく
+        destinationText.style.fontSize = "0.8em"; // 英語縮小
         // 車両番号の表示を切り替え
         carLabel.textContent = "No.";  // ← 上段を No.
         carDigit.textContent = document.getElementById("car-input").value || "1";
@@ -204,9 +212,11 @@ function switchLanguage() {
             // ▼ 日本語表示に戻す
             typeText.textContent = typeText.getAttribute("data-ja");
             destinationText.textContent = destinationText.getAttribute("data-ja");
-            destinationText.style.letterSpacing = "0.2em";
+            destinationText.style.letterSpacing = "0.1em";
             typeText.style.fontSize = ""; // 通常サイズに戻す
         }
+        // 行先日本語通常サイズ
+        destinationText.style.fontSize = ""; // 通常サイズに戻す
         // 車両番号の表示を切り替え
         carDigit.textContent = document.getElementById("car-input").value || "1"; 
         carLabel.textContent = "号車"; 
@@ -224,3 +234,24 @@ setInterval(switchLanguage, 3500);
 // ▼ 初期表示更新
 window.addEventListener("DOMContentLoaded", updateDisplay);
 
+// 画像ダウンロード
+document.addEventListener("DOMContentLoaded", () => {
+    const saveButton = document.getElementById("save-image-button");
+
+    if (saveButton) {
+        saveButton.addEventListener("click", () => {
+            const display = document.querySelector(".display-frame");
+            if (!display) return;
+
+            html2canvas(display, {
+                backgroundColor: null, // 背景透過を維持
+                scale: 2              // 高解像度で保存
+            }).then(canvas => {
+                const link = document.createElement("a");
+                link.download = "display.png";
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        });
+    }
+});
