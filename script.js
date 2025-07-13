@@ -27,18 +27,20 @@ function updateDisplay() {
     const destination = document.getElementById("destination-input").value;
 
     const typeArea = document.getElementById("type-area");
+    const typeText = document.getElementById("type-text");
     const destinationArea = document.getElementById("destination-area");
+    const destinationText = document.getElementById("destination-text");
 
     const romaji = document.getElementById("romaji-input")?.value || "Romaji";
 
     
 
     // ▼ 表示内容の切り替えに備えて保持（属性として保持しておく）
-    typeArea.setAttribute("data-ja", type);
-    typeArea.setAttribute("data-en", typeRomajiMap[type] || type);
+    typeText.setAttribute("data-ja", type);
+    typeText.setAttribute("data-en", typeRomajiMap[type] || type);
 
-    destinationArea.setAttribute("data-ja", destination);
-    destinationArea.setAttribute("data-en", romaji);
+    destinationText.setAttribute("data-ja", destination);
+    destinationText.setAttribute("data-en", romaji);
 
     if (carNumber.trim() === "") {
         carNumberArea.style.display = "none"; // 空なら非表示
@@ -54,41 +56,47 @@ function updateDisplay() {
 
     if (type === "試運転") {
         // 試運転モード
-        typeArea.style.display = "none"; // 非表示にする
-        destinationArea.textContent = "試　運　転"; // 幅広表示
-        destinationArea.style.letterSpacing = "0.3em";
-        destinationArea.style.backgroundColor = "black";
-        destinationArea.style.color = "white";
-        destinationArea.style.width = "8.5em";    // 幅を広げる
-        destinationArea.style.height = "1.5em"; // フレックスを無効化
+        const formatted = "試　運　転";
+        typeArea.style.display = "none";
+        destinationText.textContent = formatted;
+        destinationText.setAttribute("data-ja", formatted);
+        destinationText.setAttribute("data-en", typeRomajiMap[type]);
+        destinationText.style.letterSpacing = "0.3em";
+        destinationText.style.backgroundColor = "black";
+        destinationText.style.color = "white";
+        destinationText.style.width = "8.5em";    // 幅を広げる
+        destinationText.style.height = "1.5em"; // フレックスを無効化
     }else if(type === "臨時" || type === "回送") {
         // 臨時・回送モード
+        const formatted = type.split("").join("　 　"); // ← 全角スペース2個
         typeArea.style.display = "none"; // 非表示にする
-        destinationArea.textContent = type.split("").join("　 　"); // 例：「臨　時」
-        destinationArea.style.letterSpacing = "";
-        destinationArea.style.backgroundColor = "black";
-        destinationArea.style.color = "white";
-        destinationArea.style.width = "8.5em";    // 幅を広げる
-        destinationArea.style.height = "1.5em"; // フレックスを無効化
+        destinationText.textContent = formatted;
+        destinationText.setAttribute("data-ja", formatted);
+        destinationText.setAttribute("data-en", typeRomajiMap[type]);
+        destinationText.style.letterSpacing = "";
+        destinationText.style.backgroundColor = "black";
+        destinationText.style.color = "white";
+        destinationText.style.width = "8.5em";    // 幅を広げる
+        destinationText.style.height = "1.5em"; // フレックスを無効化
 
     } else {
         // 通常の種別表示に戻す
         typeArea.style.display = ""; // 表示に戻す
-        typeArea.textContent = type;
-        destinationArea.textContent = destination;
-        destinationArea.style.flex = ""; 
-        destinationArea.style.letterSpacing = "";
-        destinationArea.style.backgroundColor = "";
-        destinationArea.style.color = "";
-        destinationArea.style.width = "";
-        destinationArea.style.height = "";
+        typeText.textContent = type;
+        destinationText.textContent = destination;
+        destinationText.style.flex = ""; 
+        destinationText.style.letterSpacing = "";
+        destinationText.style.backgroundColor = "";
+        destinationText.style.color = "";
+        destinationText.style.width = "";
+        destinationText.style.height = "";
 
 
         // ← ここで斜体クラスを切り替え
         if (italicTypes.includes(type)) {
-            typeArea.classList.add("italic-text");
+            typeText.classList.add("italic-text");
         } else {
-            typeArea.classList.remove("italic-text");
+            typeText.classList.remove("italic-text");
         }
         
         // 種別ごとの色設定
@@ -97,76 +105,88 @@ function updateDisplay() {
             case "各停":
             case "各駅停車":
                 typeArea.style.backgroundColor = "#787878ff";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "区間快速":
                 typeArea.style.backgroundColor = "#00cc44";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "快速":
                 typeArea.style.backgroundColor = "#0052cc";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "新快速":
                 typeArea.style.backgroundColor = "#ff6600";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "特別快速":
                 typeArea.style.backgroundColor = "#ffff00ff";
-                typeArea.style.color = "black";
+                typeText.style.color = "black";
                 break;
             case "準急":
                 typeArea.style.backgroundColor = "#32cd32";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "急行":
                 typeArea.style.backgroundColor = "#00bfff";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "快速急行":
                 typeArea.style.backgroundColor = "white";
-                typeArea.style.color = "#00bfff";
+                typeText.style.color = "#00bfff";
                 break;
             case "特急":
                 typeArea.style.backgroundColor = "#ff0000";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
                 break;
             case "快速特急":
                 typeArea.style.backgroundColor = "white";
-                typeArea.style.color = "#ff0000";
+                typeText.style.color = "#ff0000";
                 break;
             default:
                 typeArea.style.backgroundColor = "#444";
-                typeArea.style.color = "white";
+                typeText.style.color = "white";
         }
     }
+    typeText.style.fontSize = ""; // 通常サイズに戻す
+    destinationText.style.fontSize = ""; // 通常サイズに戻す
 }
 
 function switchLanguage() {
     const typeArea = document.getElementById("type-area");
+    const typeText = document.getElementById("type-text");
     const destinationArea = document.getElementById("destination-area");
+    const destinationText = document.getElementById("destination-text");
     const carNumberArea = document.getElementById("car-number");
     const carDigit = document.getElementById("car-digit");
     const carLabel = carNumberArea?.querySelector(".car-label");
 
-    if (!typeArea || !destinationArea || !carLabel || !carDigit) return;
+    if (!typeArea || !typeText || !destinationArea || !destinationText || !carLabel || !carDigit) return;
 
     // 現在の表示モード取得（例: "試運転", "臨時", "回送" など）
-    const typeText = typeArea.getAttribute("data-ja");
+    const typeTextData = typeText.getAttribute("data-ja");
 
     // 特殊種別かどうか
-    const isSpecialType = ["試運転", "臨時", "回送"].includes(typeText);
+    const isSpecialType = ["試運転", "臨時", "回送"].includes(typeTextData);
 
     if (isJapanese) {
         if(isSpecialType){
             // 行き先欄に種別を表示
-            destinationArea.textContent = typeArea.getAttribute("data-en");
-            destinationArea.style.letterSpacing = "normal";
-        }else{
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal";
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
+        }else if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普通" || typeTextData === "快速"){
+            // 各停・各駅停車・普通・快速はローマ字表示に切り替え
+            typeText.textContent = typeText.getAttribute("data-en");
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal";
+            typeText.style.fontSize = "1em"; // 通常サイズ
+        }else {
             // ▼ ローマ字表示に切り替え
-            typeArea.textContent = typeArea.getAttribute("data-en");
-            destinationArea.textContent = destinationArea.getAttribute("data-en");
-            destinationArea.style.letterSpacing = "normal";
+            typeText.textContent = typeText.getAttribute("data-en");
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal";
+            typeText.style.fontSize = "0.8em"; // 英語縮小
         }
         // 車両番号の表示を切り替え
         carLabel.textContent = "No.";  // ← 上段を No.
@@ -177,12 +197,15 @@ function switchLanguage() {
     } else {
         if(isSpecialType){
             // 行き先欄に種別を表示
-            destinationArea.textContent = typeArea.getAttribute("data-ja");
+            destinationText.textContent = destinationText.getAttribute("data-ja");
+            destinationText.style.letterSpacing = (typeTextData === "試運転") ? "0.3em" : "";
+            destinationText.style.fontSize = ""; // 通常サイズに戻す
         }else{
             // ▼ 日本語表示に戻す
-            typeArea.textContent = typeArea.getAttribute("data-ja");
-            destinationArea.textContent = destinationArea.getAttribute("data-ja");
-            destinationArea.style.letterSpacing = "0.2em";
+            typeText.textContent = typeText.getAttribute("data-ja");
+            destinationText.textContent = destinationText.getAttribute("data-ja");
+            destinationText.style.letterSpacing = "0.2em";
+            typeText.style.fontSize = ""; // 通常サイズに戻す
         }
         // 車両番号の表示を切り替え
         carDigit.textContent = document.getElementById("car-input").value || "1"; 
