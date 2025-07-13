@@ -22,6 +22,7 @@ body {
     border: 4px solid #111;
     border-radius: 0.5em;
     overflow: hidden;
+    flex-wrap: nowrap;
     font-size: 2.2em;
     color: white;
     min-width: 600px;
@@ -71,6 +72,8 @@ body {
     text-align: center;
     font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
     font-weight: bold;
+    position: relative;
+    z-index: 2; /* 他の要素より前面に表示 */
 }
 
 #type-text {
@@ -91,9 +94,11 @@ body {
     flex-grow: 1;
     width: 4em;              /* 幅を固定 */
     height: 1.5em;
-    letter-spacing: 0.2em; /* ← ここが文字間隔 */
+    letter-spacing: 0.1em; /* ← ここが文字間隔 */
     white-space: nowrap;
     font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+    position: relative;
+    z-index: 1; /* type-area より後ろに表示 */
 }
 
 #destination-text {

@@ -70,6 +70,8 @@ body {
     text-align: center;
     font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
     font-weight: bold;
+    position: relative;
+    z-index: 2; /* 他の要素より前に表示 */
 }
 
 #type-text {
@@ -93,6 +95,8 @@ body {
     letter-spacing: 0.2em; /* ← ここが文字間隔 */
     white-space: nowrap;
     font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+    position: relative;
+    z-index: 1; /* type-area より後ろに表示 */
 }
 
 #destination-text {
