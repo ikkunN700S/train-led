@@ -175,7 +175,7 @@ function switchLanguage() {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
             destinationText.style.fontSize = "0.8em"; // 英語縮小
-        }else if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普通" || typeTextData === "快速"){
+        }else if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普通" || typeTextData === "快速" || typeTextData === "急行"){
             // 各停・各駅停車・普通・快速はローマ字表示に切り替え
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
@@ -186,7 +186,7 @@ function switchLanguage() {
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
-            typeText.style.fontSize = "0.8em"; // 英語縮小
+            typeText.style.fontSize = "0.6em"; // 英語縮小
         }
         // 車両番号の表示を切り替え
         carLabel.textContent = "No.";  // ← 上段を No.
