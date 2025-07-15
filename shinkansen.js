@@ -19,11 +19,11 @@
         "かがやき": "KAGAYAKI",
         "とき": "TOKI",
         "たにがわ": "TANIGAWA",
-        "試運転": "TEST RUN",
-        "臨時": "TEMPORARY",
-        "回送": "OUT OF SERVICE",
-        "団体": "GROUP",
-        "修学旅行": "SCHOOL TRIP"
+        "試運転": "Test Run",
+        "臨時": "Temporary",
+        "回送": "Out of Service",
+        "団体": "Reserved Train",
+        "修学旅行": "Reserved Train"
     };
 
     let isJapanese = true;  // ▼ 切り替え制御フラグ
@@ -40,7 +40,7 @@ function updateDisplay() {
     const romaji = document.getElementById("romaji-input")?.value || "Romaji";
 
     // ▼ 表示内容の切り替えに備えて保持（属性として保持しておく）
-    typeText.setAttribute("data-ja", type.replace(/[BRH]$/, "")); // 「かもめB」などをそのまま保持
+    typeText.setAttribute("data-ja", type.replace(/[BRH]$/, "")); // 「かもめB」などを整形して保持
     typeText.setAttribute("data-en", typeRomajiMap[type.replace(/[BRH]$/, "")] || type);
 
 
@@ -51,10 +51,20 @@ function updateDisplay() {
     if (type === "試運転") {
         const formatted = "試　運　転";
         typeArea.style.display = "none";
-        destinationText.textContent = formatted;
+        //destinationText.textContent = formatted;
         destinationText.setAttribute("data-ja", formatted);
         destinationText.setAttribute("data-en", typeRomajiMap[type]);
-        destinationText.style.letterSpacing = "0.3em";
+
+        // 日本語なら日本語を表示
+        if(isJapanese){
+            destinationText.textContent = destinationText.getAttribute("data-ja");
+            destinationText.style.letterSpacing = "0.3em"; // 全角スペース2個分の文字間隔
+            destinationText.style.fontSize = ""; // 元の大きさ
+        }else{
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
+        }
         destinationText.style.backgroundColor = "black";
         destinationText.style.color = "white";
         destinationText.style.width = "8.5em";
@@ -62,10 +72,20 @@ function updateDisplay() {
     } else if (["臨時", "回送", "団体"].includes(type)) {
         const formatted = type.split("").join("　 　"); // ← 全角スペース2個
         typeArea.style.display = "none";
-        destinationText.textContent = formatted;
+        //destinationText.textContent = formatted;
         destinationText.setAttribute("data-ja", formatted);
         destinationText.setAttribute("data-en", typeRomajiMap[type]);
-        destinationText.style.letterSpacing = "";
+
+        // 日本語なら日本語を表示
+        if(isJapanese){
+            destinationText.textContent = destinationText.getAttribute("data-ja");
+            destinationText.style.letterSpacing = ""; // 全角スペース1個分の文字間隔
+            destinationText.style.fontSize = ""; // 元の大きさ
+        }else{
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
+        }
         destinationText.style.backgroundColor = "black";
         destinationText.style.color = "white";
         destinationText.style.width = "8.5em";
@@ -73,10 +93,20 @@ function updateDisplay() {
     } else if (type === "修学旅行") {
         const formatted = type.split("").join("　"); // ← 全角スペース1個
         typeArea.style.display = "none";
-        destinationText.textContent = formatted;
+        //destinationText.textContent = formatted;
         destinationText.setAttribute("data-ja", formatted);
         destinationText.setAttribute("data-en", typeRomajiMap[type]);
-        destinationText.style.letterSpacing = "";
+
+        // 日本語なら日本語を表示
+        if(isJapanese){
+            destinationText.textContent = destinationText.getAttribute("data-ja");
+            destinationText.style.letterSpacing = ""; // 全角スペース1個分の文字間隔
+            destinationText.style.fontSize = ""; // 元の大きさ
+        } else {
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
+        }
         destinationText.style.backgroundColor = "black";
         destinationText.style.color = "white";
         destinationText.style.width = "8.5em";
@@ -84,10 +114,24 @@ function updateDisplay() {
     } else {
         // 通常の種別表示に戻す
         typeArea.style.display = ""; // 表示に戻す
-        typeText.textContent = type;
-        destinationText.textContent = destination;
+        //typeText.textContent = type;
+        //destinationText.textContent = destination;
+
+        // 日本語なら日本語を表示
+        if(isJapanese){
+            typeText.textContent = typeText.getAttribute("data-ja");
+            destinationText.textContent = destinationText.getAttribute("data-ja");
+            destinationText.style.letterSpacing = ""; // 全角スペース1個分の文字間隔
+            typeText.style.fontSize = ""; // 通常サイズに戻す
+            destinationText.style.fontSize = ""; // 通常サイズに戻す
+        }else{
+            typeText.textContent = typeText.getAttribute("data-en");
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
+            typeText.style.fontSize = "0.8em"; // 英語縮小
+            destinationText.style.fontSize = ""; // 元の大きさ
+        }
         destinationText.style.flex = ""; 
-        destinationText.style.letterSpacing = "";
         destinationText.style.backgroundColor = "";
         destinationText.style.color = "";
         destinationText.style.width = "";
@@ -101,7 +145,7 @@ function updateDisplay() {
                 typeText.style.color = "white";
                 break;
             case "かもめB":
-                typeText.textContent = "かもめ";
+                //typeText.textContent = "かもめ";
                 typeArea.style.backgroundColor = "#3050ff";
                 typeText.style.color = "white";
                 break;
@@ -110,7 +154,7 @@ function updateDisplay() {
                 typeText.style.color = "white";
                 break;
             case "かもめR":
-                typeText.textContent = "かもめ";
+                //typeText.textContent = "かもめ";
                 typeArea.style.backgroundColor = "#ff0000";
                 typeText.style.color = "white";
                 break;
@@ -146,12 +190,12 @@ function updateDisplay() {
                 typeText.style.color = "white";
                 break;
             case "はやぶさH":
-                typeText.textContent = "はやぶさ";
+                //typeText.textContent = "はやぶさ";
                 typeArea.style.backgroundColor = "#9ACD32";
                 typeText.style.color = "white";
                 break;
             case "はやてH":
-                typeText.textContent = "はやて";
+                //typeText.textContent = "はやて";
                 typeArea.style.backgroundColor = "#9ACD32";
                 typeText.style.color = "white";
                 break;
@@ -172,8 +216,6 @@ function updateDisplay() {
                 typeText.style.color = "white";
         }
     }
-    typeText.style.fontSize = ""; // 通常サイズに戻す
-    destinationText.style.fontSize = ""; // 通常サイズに戻す
 }
 
 function switchLanguage() {
