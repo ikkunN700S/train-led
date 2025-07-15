@@ -37,8 +37,17 @@ function updateDisplay() {
     const destinationArea = document.getElementById("destination-area");
     const destinationText = document.getElementById("destination-text");
 
-    const number = document.getElementById("number-input")?.value || "123"; // 号数の取得
+    const number = document.getElementById("number-input")?.value; // 号数の取得
     const numberText = document.getElementById("number-text");
+    // 号数の表示
+    if (!number || number.trim() === "") {
+        numberText.style.display = "none";
+        typeText.style.marginBottom = "0em"; // 号数がない場合は種別の下の余白を調整
+    } else {
+        numberText.textContent = number;
+        numberText.style.display = "inline-block";
+        typeText.style.marginBottom = "0.9em"; // 号数がある場合は種別の下の余白を調整
+    }
 
     const romaji = document.getElementById("romaji-input")?.value || "Romaji";
 
