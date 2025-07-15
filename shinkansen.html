@@ -16,7 +16,10 @@
 
   <div class="display-frame">
     <div class="led-display">
-      <div class="type-area" id="type-area"><span id="type-text">こだま</span></div>
+      <div class="type-area" id="type-area">
+        <span id="type-text">こだま</span>
+        <span id="number-text">123</span>
+      </div>
       <div class="destination-area" id="destination-area"><span id="destination-text">東　京</span></div>
     </div>
   </div>
@@ -59,6 +62,10 @@
         <option value="団体">団体</option>
         <option value="修学旅行">修学旅行</option>
       </select>
+    </label>
+
+    <label>号数:
+      <input type="text" id="number-input" value="123" />
     </label>
 
     <label>行き先:

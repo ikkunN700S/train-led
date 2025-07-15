@@ -37,6 +37,9 @@ function updateDisplay() {
     const destinationArea = document.getElementById("destination-area");
     const destinationText = document.getElementById("destination-text");
 
+    const number = document.getElementById("number-input")?.value || "123"; // 号数の取得
+    const numberText = document.getElementById("number-text");
+
     const romaji = document.getElementById("romaji-input")?.value || "Romaji";
 
     // ▼ 表示内容の切り替えに備えて保持（属性として保持しておく）
@@ -47,6 +50,8 @@ function updateDisplay() {
     destinationText.setAttribute("data-ja", destination);
     destinationText.setAttribute("data-en", romaji);
 
+    numberText.setAttribute("data-ja", number);
+    numberText.setAttribute("data-en", number);
 
     if (type === "試運転") {
         const formatted = "試　運　転";
@@ -123,14 +128,19 @@ function updateDisplay() {
             destinationText.textContent = destinationText.getAttribute("data-ja");
             destinationText.style.letterSpacing = ""; // 全角スペース1個分の文字間隔
             typeText.style.fontSize = ""; // 通常サイズに戻す
+            numberText.style.fontSize = ""; // 通常サイズに戻す
             destinationText.style.fontSize = ""; // 通常サイズに戻す
         }else{
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
             typeText.style.fontSize = "0.8em"; // 英語縮小
+            numberText.style.fontSize = "0.8em"; // 英語縮小
             destinationText.style.fontSize = ""; // 元の大きさ
         }
+        // 号数をセット
+        numberText.textContent = numberText.getAttribute("data-ja");
+
         destinationText.style.flex = ""; 
         destinationText.style.backgroundColor = "";
         destinationText.style.color = "";
@@ -223,6 +233,8 @@ function switchLanguage() {
     const typeText = document.getElementById("type-text");
     const destinationArea = document.getElementById("destination-area");
     const destinationText = document.getElementById("destination-text");
+
+    const numberText = document.getElementById("number-text");
 
     if (!typeArea || !typeText || !destinationArea || !destinationText) return;
 
