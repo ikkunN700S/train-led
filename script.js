@@ -87,7 +87,7 @@ function updateDisplay() {
         // 日本語なら日本語をセット
         if(isJapanese) {
             destinationText.textContent = destinationText.getAttribute("data-ja");
-            destinationText.style.letterSpacing = "0.3em";
+            destinationText.style.letterSpacing = "";
         } else {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
