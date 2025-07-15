@@ -162,36 +162,44 @@ function updateDisplay() {
             case "こだま":
                 typeArea.style.backgroundColor = "#3050ff";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "かもめB":
                 //typeText.textContent = "かもめ";
                 typeArea.style.backgroundColor = "#3050ff";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "ひかり":
                 typeArea.style.backgroundColor = "#ff0000";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "かもめR":
                 //typeText.textContent = "かもめ";
                 typeArea.style.backgroundColor = "#ff0000";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "のぞみ":
                 typeArea.style.backgroundColor = "#ffff00";
-                typeText.style.color = "Black";
+                typeText.style.color = "black";
+                numberText.style.color = "black";
                 break;
             case "みずほ":
                 typeArea.style.backgroundColor = "#ffa500";
                 typeText.style.color = "black";
+                numberText.style.color = "black";
                 break;
             case "さくら":
                 typeArea.style.backgroundColor = "#ff69b4";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "つばめ":
                 typeArea.style.backgroundColor = "#40e0d0";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "はやぶさ":
             case "はやて":
@@ -199,40 +207,48 @@ function updateDisplay() {
             case "なすの":
                 typeArea.style.backgroundColor = "#41934C";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "こまち":
                 typeArea.style.backgroundColor = "#ED4399";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "つばさ":
                 typeArea.style.backgroundColor = "#F36221";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "はやぶさH":
                 //typeText.textContent = "はやぶさ";
                 typeArea.style.backgroundColor = "#9ACD32";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "はやてH":
                 //typeText.textContent = "はやて";
                 typeArea.style.backgroundColor = "#9ACD32";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "とき":
             case "たにがわ":
                 typeArea.style.backgroundColor = "#F58D79";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             case "あさま":
             case "はくたか":
             case "かがやき":
             case "つるぎ":
-                typeArea.style.backgroundColor = "#6A3D98";
+                typeArea.style.backgroundColor = "#856f9bff";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
                 break;
             default:
                 typeArea.style.backgroundColor = "#444";
                 typeText.style.color = "white";
+                numberText.style.color = "white";
         }
     }
 }
