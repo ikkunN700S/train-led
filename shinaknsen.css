@@ -236,3 +236,22 @@ footer #site-version {
 .controls button:active {
   transform: scale(0.97);
 }
+
+#save-image-button{
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+#save-image-button:hover {
+  background-color: #218838;
+}
+
+#save-image-button:active {
+  transform: scale(0.97);
+}

@@ -19,6 +19,9 @@
 
     let isJapanese = true;  // ▼ 切り替え制御フラグ
 
+    // 上位種別リスト（斜体にしたい種別）
+    const italicTypes = ["区間快速", "快速", "新快速", "特別快速"];
+
 function updateDisplay() {
     const carNumber = document.getElementById("car-input").value;
     const carNumberArea = document.getElementById("car-number");
@@ -48,10 +51,6 @@ function updateDisplay() {
         carNumberArea.style.display = "flex"; // 表示（元に戻す）
         carDigit.textContent = carNumber;
     }
-
-    // 上位種別リスト（斜体にしたい種別）
-    const italicTypes = ["区間快速", "快速", "新快速", "特別快速"];
-
 
 
     if (type === "試運転") {
@@ -122,7 +121,7 @@ function updateDisplay() {
             if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普通" || typeTextData === "快速" || typeTextData === "急行"){
                 // 各停・各駅停車・普通・快速ローマ字表示
                 destinationText.style.letterSpacing = "normal";
-                destinationText.style.fontSize = "1em"; // 種別とサイズ一緒
+                destinationText.style.fontSize = "0.8em"; // 英語小さく
                 typeText.style.fontSize = "1em"; // 通常サイズ
             }else if(typeTextData === "新快速"){
                 // 新快速ローマ字表示
@@ -144,7 +143,7 @@ function updateDisplay() {
 
 
         // ← ここで斜体クラスを切り替え
-        if (italicTypes.includes(type)) {
+        if (italicTypes.includes(type) && isJapanese) {
             typeText.classList.add("italic-text");
         } else {
             typeText.classList.remove("italic-text");
@@ -218,6 +217,14 @@ function switchLanguage() {
     // 特殊種別かどうか
     const isSpecialType = ["試運転", "臨時", "回送"].includes(typeTextData);
 
+
+    // ← ここで斜体クラスを切り替え
+    if (italicTypes.includes(typeText.getAttribute("data-ja")) && isJapanese == false) {
+        typeText.classList.add("italic-text");
+    } else {
+        typeText.classList.remove("italic-text");
+    }
+
     if (isJapanese) {
         if(isSpecialType){
             // 行き先欄に種別を表示
@@ -229,7 +236,7 @@ function switchLanguage() {
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
-            destinationText.style.fontSize = "1em"; // 種別とサイズ一緒
+            destinationText.style.fontSize = "0.8em"; // 英語小さく
             typeText.style.fontSize = "1em"; // 通常サイズ
         }else if(typeTextData === "新快速"){
             // 新快速ローマ字表示に切り替え
