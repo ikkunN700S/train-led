@@ -145,7 +145,7 @@ function updateDisplay() {
             destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
             typeText.style.fontSize = "0.8em"; // 英語縮小
             numberText.style.fontSize = "0.8em"; // 英語縮小
-            destinationText.style.fontSize = ""; // 元の大きさ
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
         }
         // 号数をセット
         numberText.textContent = numberText.getAttribute("data-ja");
@@ -278,6 +278,7 @@ function switchLanguage() {
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
             typeText.style.fontSize = "0.8em"; // 英語縮小
         }
     } else {
@@ -289,6 +290,7 @@ function switchLanguage() {
             typeText.textContent = typeText.getAttribute("data-ja");
             destinationText.textContent = destinationText.getAttribute("data-ja");
             destinationText.style.letterSpacing = "0.2em";
+            destinationText.style.fontSize = ""; // 通常サイズに戻す
             typeText.style.fontSize = ""; // 通常サイズに戻す
         }
     }

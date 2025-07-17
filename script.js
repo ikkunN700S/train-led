@@ -121,7 +121,7 @@ function updateDisplay() {
             if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普通" || typeTextData === "快速" || typeTextData === "急行"){
                 // 各停・各駅停車・普通・快速ローマ字表示
                 destinationText.style.letterSpacing = "normal";
-                destinationText.style.fontSize = "1em"; // 種別とサイズ一緒
+                destinationText.style.fontSize = "0.8em"; // 英語小さく
                 typeText.style.fontSize = "1em"; // 通常サイズ
             }else if(typeTextData === "新快速"){
                 // 新快速ローマ字表示
@@ -236,7 +236,7 @@ function switchLanguage() {
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
-            destinationText.style.fontSize = "1em"; // 種別とサイズ一緒
+            destinationText.style.fontSize = "0.8em"; // 英語小さく
             typeText.style.fontSize = "1em"; // 通常サイズ
         }else if(typeTextData === "新快速"){
             // 新快速ローマ字表示に切り替え
