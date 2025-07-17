@@ -19,6 +19,9 @@
 
     let isJapanese = true;  // ▼ 切り替え制御フラグ
 
+    // 上位種別リスト（斜体にしたい種別）
+    const italicTypes = ["区間快速", "快速", "新快速", "特別快速"];
+
 function updateDisplay() {
     const carNumber = document.getElementById("car-input").value;
     const carNumberArea = document.getElementById("car-number");
@@ -48,10 +51,6 @@ function updateDisplay() {
         carNumberArea.style.display = "flex"; // 表示（元に戻す）
         carDigit.textContent = carNumber;
     }
-
-    // 上位種別リスト（斜体にしたい種別）
-    const italicTypes = ["区間快速", "快速", "新快速", "特別快速"];
-
 
 
     if (type === "試運転") {
@@ -144,7 +143,7 @@ function updateDisplay() {
 
 
         // ← ここで斜体クラスを切り替え
-        if (italicTypes.includes(type)) {
+        if (italicTypes.includes(type) && isJapanese) {
             typeText.classList.add("italic-text");
         } else {
             typeText.classList.remove("italic-text");
@@ -217,6 +216,14 @@ function switchLanguage() {
 
     // 特殊種別かどうか
     const isSpecialType = ["試運転", "臨時", "回送"].includes(typeTextData);
+
+
+    // ← ここで斜体クラスを切り替え
+    if (italicTypes.includes(typeText.getAttribute("data-ja")) && isJapanese == false) {
+        typeText.classList.add("italic-text");
+    } else {
+        typeText.classList.remove("italic-text");
+    }
 
     if (isJapanese) {
         if(isSpecialType){
