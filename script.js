@@ -52,6 +52,13 @@ function updateDisplay() {
         carDigit.textContent = carNumber;
     }
 
+    const roundedbox = document.getElementById("rounded-box");
+    if(type === "普通"){
+        roundedbox.style.borderColor = "#fff";
+    }else{
+        roundedbox.style.borderColor = "transparent";
+    }
+
 
     if (type === "試運転") {
         // 試運転モード
@@ -122,17 +129,17 @@ function updateDisplay() {
                 // 各停・各駅停車・普通・快速ローマ字表示
                 destinationText.style.letterSpacing = "normal";
                 destinationText.style.fontSize = "0.8em"; // 英語小さく
-                typeText.style.fontSize = "1em"; // 通常サイズ
+                typeText.style.fontSize = "0.8em"; // 通常サイズ
             }else if(typeTextData === "新快速"){
                 // 新快速ローマ字表示
                 destinationText.style.letterSpacing = "normal";
                 destinationText.style.fontSize = "0.8em"; // 英語縮小
-                typeText.style.fontSize = "0.8em"; // 通常サイズ
+                typeText.style.fontSize = "0.7em"; // 通常サイズ
             }else{
                 // ▼ ローマ字表示
                 destinationText.style.letterSpacing = "normal";
                 destinationText.style.fontSize = "0.8em"; // 英語縮小
-                typeText.style.fontSize = "0.6em"; // 英語縮小
+                typeText.style.fontSize = "0.5em"; // 英語縮小
             }
         }
         destinationText.style.flex = ""; 
@@ -152,6 +159,9 @@ function updateDisplay() {
         // 種別ごとの色設定
         switch (type) {
             case "普通":
+                typeArea.style.backgroundColor = "#000000";
+                typeText.style.color = "white";
+                break;
             case "各停":
             case "各駅停車":
                 typeArea.style.backgroundColor = "#787878ff";
@@ -237,21 +247,21 @@ function switchLanguage() {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
             destinationText.style.fontSize = "0.8em"; // 英語小さく
-            typeText.style.fontSize = "1em"; // 通常サイズ
+            typeText.style.fontSize = "0.8em"; // 通常サイズ
         }else if(typeTextData === "新快速"){
             // 新快速ローマ字表示に切り替え
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
             destinationText.style.fontSize = "0.8em"; // 英語縮小
-            typeText.style.fontSize = "0.8em"; // 通常サイズ
+            typeText.style.fontSize = "0.7em"; // 通常サイズ
         }else{
             // ▼ ローマ字表示に切り替え
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
             destinationText.style.fontSize = "0.8em"; // 英語縮小
-            typeText.style.fontSize = "0.6em"; // 英語縮小
+            typeText.style.fontSize = "0.5em"; // 英語縮小
         }
         // 車両番号の表示を切り替え
         carLabel.textContent = "No.";  // ← 上段を No.
