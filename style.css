@@ -59,7 +59,7 @@ body {
 
 .type-area {
     background-color: #3050ff;
-    padding: 0.3em 1em;
+    padding: 0.3em 0.3em;
     font-size: 1.5em; /* 枠のベースサイズ */
     color: white;
     height: 1.5em;
@@ -67,7 +67,7 @@ body {
     align-items: center;
     justify-content: center;
     white-space: nowrap;
-    width: 2.5em;
+    width: 3.4em;
     flex-shrink: 0;
     text-align: center;
     font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
@@ -76,8 +76,18 @@ body {
     z-index: 2; /* 他の要素より前面に表示 */
 }
 
+#rounded-box {
+  width: 3.4em;
+  height: 1.5em;
+  border-radius: 10px;
+  border: 2px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #type-text {
-    font-size: 1em; /* ← このサイズだけを JavaScript で変更する */
+    font-size: 0.9em; /* ← このサイズだけを JavaScript で変更する */
     display: inline-block;
     line-height: 1;
 }
