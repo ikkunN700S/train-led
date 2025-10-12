@@ -18,6 +18,7 @@
     };
 
     let isJapanese = true;  // ▼ 切り替え制御フラグ
+    let rapidType = false; // 快速系統のフラグ
 
     // 上位種別リスト（斜体にしたい種別）
     const italicTypes = ["区間快速", "快　速", "新快速", "特別快速"];
@@ -120,7 +121,12 @@ function updateDisplay() {
             destinationText.textContent = destinationText.getAttribute("data-ja");
             destinationText.style.letterSpacing = ""; // 日本語は少し文字間隔を広げる
             destinationText.style.fontSize = ""; // 通常サイズに戻す
-            typeText.style.fontSize = ""; // 通常サイズに戻す
+            // 特別フォントの場合は上記よりフォントサイズを大きく
+            if(rapidType){
+                typeText.style.fontSize = "1em";
+            }else{
+                typeText.style.fontSize = ""; // その他は通常サイズに戻す
+            }
         } else {
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
@@ -149,10 +155,10 @@ function updateDisplay() {
         destinationText.style.width = "";
         destinationText.style.height = "";
 
-
         // ← ここで斜体クラスを切り替え
         if (italicTypes.includes(type) && isJapanese) {
             typeText.classList.add("italic-text");
+            rapidType = true;
         } else {
             typeText.classList.remove("italic-text");
         }
@@ -242,6 +248,7 @@ function switchLanguage() {
     // ← ここで斜体クラスを切り替え
     if (italicTypes.includes(typeText.getAttribute("data-ja")) && isJapanese == false) {
         typeText.classList.add("italic-text");
+        rapidType = true;
     } else {
         typeText.classList.remove("italic-text");
     }
@@ -284,6 +291,7 @@ function switchLanguage() {
             destinationText.style.fontSize = "0.8em"; // 英語縮小
             typeText.style.fontSize = "0.5em"; // 英語縮小
         }
+
         // 車両番号の表示を切り替え
         carLabel.textContent = "No.";  // ← 上段を No.
         carDigit.textContent = document.getElementById("car-input").value || "1";
@@ -301,7 +309,12 @@ function switchLanguage() {
             typeText.textContent = typeText.getAttribute("data-ja");
             destinationText.textContent = destinationText.getAttribute("data-ja");
             destinationText.style.letterSpacing = "0.1em";
-            typeText.style.fontSize = ""; // 通常サイズに戻す
+            // 特別フォントの場合は上記よりフォントサイズを大きく
+            if(rapidType){
+                typeText.style.fontSize = "1em";
+            }else{
+                typeText.style.fontSize = ""; // その他は通常サイズに戻す
+            }
         }
         // 行先日本語通常サイズ
         destinationText.style.fontSize = ""; // 通常サイズに戻す
