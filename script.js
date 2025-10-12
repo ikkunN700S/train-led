@@ -52,6 +52,7 @@ function updateDisplay() {
         carDigit.textContent = carNumber;
     }
 
+    // 普通の場合は四角で囲む
     const roundedbox = document.getElementById("rounded-box");
     if(type === "普　通"){
         roundedbox.style.borderColor = "#fff";
@@ -155,6 +156,16 @@ function updateDisplay() {
         } else {
             typeText.classList.remove("italic-text");
         }
+
+        // 快速系統の文字列ならフォントを適用
+        /*
+        const FontTypes = ["区間快速", "快　速", "新快速", "特別快速"];
+        if (FontTypes.includes(type) && isJapanese) {
+            typeText.classList.add("special-train");
+        } else{
+            typeText.classList.remove("special-train");
+        }
+        */
         
         // 種別ごとの色設定
         switch (type) {
@@ -234,6 +245,16 @@ function switchLanguage() {
     } else {
         typeText.classList.remove("italic-text");
     }
+
+    // 快速系統の文字列ならフォントを適用
+    /*
+    const FontTypes = ["区間快速", "快　速", "新快速", "特別快速"];
+    if (FontTypes.includes(typeText.getAttribute("data-ja")) && isJapanese == false) {
+        typeText.classList.add("special-train");
+    } else{
+        typeText.classList.remove("special-train");
+    }
+    */
 
     if (isJapanese) {
         if(isSpecialType){
