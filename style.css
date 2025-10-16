@@ -1,9 +1,9 @@
 @font-face {
     font-family: 'jr-cen_rollsignregular';
-    src: url('fonts/JR-Central_Rollsign.woff2') format('woff2'),
-         url('fonts/JR-Central_Rollsign.woff') format('woff');
+    src: url('fonts/JR-Central_Rollsign.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
+    font-display: swap;
 }
 
 body {
