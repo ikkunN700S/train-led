@@ -1,3 +1,11 @@
+@font-face {
+    font-family: 'jr-cen_rollsignregular';
+    src: url('fonts/JR-Central_Rollsign.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
 body {
       background-color: #222;
       font-family: 'DotGothic16', monospace;
@@ -92,7 +100,6 @@ body {
     line-height: 1;
 }
 
-
 .destination-area {
     background-color: black;
     padding: 0.3em 1em;
@@ -123,7 +130,8 @@ body {
 }
 
 .italic-text {
-    font-style: italic;
+    /*font-style: italic;*/
+    font-family: 'jr-cen_rollsignregular', 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
 }
 
     /* 制御部 */

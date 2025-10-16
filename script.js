@@ -18,6 +18,7 @@
     };
 
     let isJapanese = true;  // ▼ 切り替え制御フラグ
+    let rapidType = false; // 快速系統のフラグ
 
     // 上位種別リスト（斜体にしたい種別）
     const italicTypes = ["区間快速", "快　速", "新快速", "特別快速"];
@@ -52,6 +53,7 @@ function updateDisplay() {
         carDigit.textContent = carNumber;
     }
 
+    // 普通の場合は四角で囲む
     const roundedbox = document.getElementById("rounded-box");
     if(type === "普　通"){
         roundedbox.style.borderColor = "#fff";
@@ -59,6 +61,14 @@ function updateDisplay() {
         roundedbox.style.borderColor = "transparent";
     }
 
+    // ← ここで斜体クラスを切り替え
+    if (italicTypes.includes(type) && isJapanese) {
+        typeText.classList.add("italic-text");
+        rapidType = true;
+    } else {
+        typeText.classList.remove("italic-text");
+        rapidType = false;
+    }
 
     if (type === "試運転") {
         // 試運転モード
@@ -119,7 +129,18 @@ function updateDisplay() {
             destinationText.textContent = destinationText.getAttribute("data-ja");
             destinationText.style.letterSpacing = ""; // 日本語は少し文字間隔を広げる
             destinationText.style.fontSize = ""; // 通常サイズに戻す
-            typeText.style.fontSize = ""; // 通常サイズに戻す
+            // 特別フォントの場合は上記よりフォントサイズを大きく
+            if(rapidType){
+                typeText.style.fontSize = "1.1em";
+                typeText.style.fontWeight = "normal";
+                typeText.style.letterSpacing = "-0.2em";
+                typeText.style.marginTop = "0.4em";
+            }else{
+                typeText.style.fontSize = "";
+                typeText.style.fontWeight = ""; // その他は通常サイズに戻す
+                typeText.style.letterSpacing = "";
+                typeText.style.marginTop = "";
+            }
         } else {
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
@@ -147,14 +168,6 @@ function updateDisplay() {
         destinationText.style.color = "";
         destinationText.style.width = "";
         destinationText.style.height = "";
-
-
-        // ← ここで斜体クラスを切り替え
-        if (italicTypes.includes(type) && isJapanese) {
-            typeText.classList.add("italic-text");
-        } else {
-            typeText.classList.remove("italic-text");
-        }
         
         // 種別ごとの色設定
         switch (type) {
@@ -231,9 +244,21 @@ function switchLanguage() {
     // ← ここで斜体クラスを切り替え
     if (italicTypes.includes(typeText.getAttribute("data-ja")) && isJapanese == false) {
         typeText.classList.add("italic-text");
+        rapidType = true;
     } else {
         typeText.classList.remove("italic-text");
+        rapidType = false;
     }
+
+    // 快速系統の文字列ならフォントを適用
+    /*
+    const FontTypes = ["区間快速", "快　速", "新快速", "特別快速"];
+    if (FontTypes.includes(typeText.getAttribute("data-ja")) && isJapanese == false) {
+        typeText.classList.add("special-train");
+    } else{
+        typeText.classList.remove("special-train");
+    }
+    */
 
     if (isJapanese) {
         if(isSpecialType){
@@ -263,6 +288,12 @@ function switchLanguage() {
             destinationText.style.fontSize = "0.8em"; // 英語縮小
             typeText.style.fontSize = "0.5em"; // 英語縮小
         }
+
+        // 英語の時はリセット
+        typeText.style.fontWeight = ""; // その他は通常サイズに戻す
+        typeText.style.letterSpacing = "normal";
+        typeText.style.marginTop = "";
+
         // 車両番号の表示を切り替え
         carLabel.textContent = "No.";  // ← 上段を No.
         carDigit.textContent = document.getElementById("car-input").value || "1";
@@ -280,7 +311,19 @@ function switchLanguage() {
             typeText.textContent = typeText.getAttribute("data-ja");
             destinationText.textContent = destinationText.getAttribute("data-ja");
             destinationText.style.letterSpacing = "0.1em";
-            typeText.style.fontSize = ""; // 通常サイズに戻す
+            
+            // 特別フォントの場合は上記よりフォントサイズを大きく
+            if(rapidType){
+                typeText.style.fontSize = "1.1em";
+                typeText.style.fontWeight = "normal";
+                typeText.style.letterSpacing = "-0.2em";
+                typeText.style.marginTop = "0.4em";
+            }else{
+                typeText.style.fontSize = "";
+                typeText.style.fontWeight = ""; // その他は通常サイズに戻す
+                typeText.style.letterSpacing = "";
+                typeText.style.marginTop = "";
+            }
         }
         // 行先日本語通常サイズ
         destinationText.style.fontSize = ""; // 通常サイズに戻す
