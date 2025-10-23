@@ -2,7 +2,7 @@
     const typeRomajiMap = {
         "普　通": "Local",
         "区間快速": "Semi Rapid",
-        "快　速": "Rapid",
+        "快速": "Rapid",
         "新快速": "New Rapid",
         "特別快速": "Special Rapid",
         "試運転": "Test Run",
@@ -21,7 +21,7 @@
     let rapidType = false; // 快速系統のフラグ
 
     // 上位種別リスト（斜体にしたい種別）
-    const italicTypes = ["区間快速", "快　速", "新快速", "特別快速"];
+    const italicTypes = ["区間快速", "快速", "新快速", "特別快速"];
 
 function updateDisplay() {
     const carNumber = document.getElementById("car-input").value;
@@ -131,22 +131,39 @@ function updateDisplay() {
             destinationText.style.fontSize = ""; // 通常サイズに戻す
             // 特別フォントの場合は上記よりフォントサイズを大きく
             if(rapidType){
-                typeText.style.fontSize = "1.1em";
+                // 快速・新快速はより大きく
+                if(typeTextData === "快速" || typeTextData === "新快速"){
+                    typeText.style.fontSize = "1.5em";
+                }else{
+                    typeText.style.fontSize = "1.2em";
+                }
                 typeText.style.fontWeight = "normal";
-                typeText.style.letterSpacing = "-0.2em";
+                // 快速は文字間隔を広く
+                if(typeTextData === "快速"){
+                    typeText.style.letterSpacing = "0.5em";
+                    typeText.style.marginLeft = "0.5em";
+                }else if(typeTextData === "新快速"){
+                    typeText.style.letterSpacing = "-0.2em";
+                    typeText.style.marginLeft = "-0.2em";
+                }else{
+                    typeText.style.letterSpacing = "-0.2em";
+                    typeText.style.marginLeft = "-0.25em";
+                }
+                
                 typeText.style.marginTop = "0.4em";
             }else{
                 typeText.style.fontSize = "";
                 typeText.style.fontWeight = ""; // その他は通常サイズに戻す
                 typeText.style.letterSpacing = "";
                 typeText.style.marginTop = "";
+                typeText.style.marginLeft = "";
             }
         } else {
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
 
-            if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "快　速" || typeTextData === "急行"){
+            if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "快速" || typeTextData === "急行"){
                 // 各停・各駅停車・普通・快速ローマ字表示
                 destinationText.style.letterSpacing = "normal";
                 destinationText.style.fontSize = "0.8em"; // 英語小さく
@@ -184,7 +201,7 @@ function updateDisplay() {
                 typeArea.style.backgroundColor = "#00cc44";
                 typeText.style.color = "white";
                 break;
-            case "快　速":
+            case "快速":
                 typeArea.style.backgroundColor = "#0052cc";
                 typeText.style.color = "white";
                 break;
@@ -266,7 +283,7 @@ function switchLanguage() {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
             destinationText.style.fontSize = "0.8em"; // 英語縮小
-        }else if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "快　速" || typeTextData === "急行"){
+        }else if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "快速" || typeTextData === "急行"){
             // 各停・各駅停車・普通・快速はローマ字表示に切り替え
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
@@ -293,6 +310,7 @@ function switchLanguage() {
         typeText.style.fontWeight = ""; // その他は通常サイズに戻す
         typeText.style.letterSpacing = "normal";
         typeText.style.marginTop = "";
+        typeText.style.marginLeft = "";
 
         // 車両番号の表示を切り替え
         carLabel.textContent = "No.";  // ← 上段を No.
@@ -314,15 +332,33 @@ function switchLanguage() {
             
             // 特別フォントの場合は上記よりフォントサイズを大きく
             if(rapidType){
-                typeText.style.fontSize = "1.1em";
+                // 快速・新快速はより大きく
+                if(typeTextData === "快速" || typeTextData === "新快速"){
+                    typeText.style.fontSize = "1.5em";
+                }else{
+                    typeText.style.fontSize = "1.2em";
+                }
+                
                 typeText.style.fontWeight = "normal";
-                typeText.style.letterSpacing = "-0.2em";
+                // 快速は文字間隔を広く
+                if(typeTextData === "快速"){
+                    typeText.style.letterSpacing = "0.5em";
+                    typeText.style.marginLeft = "0.5em";
+                }else if(typeTextData === "新快速"){
+                    typeText.style.letterSpacing = "-0.2em";
+                    typeText.style.marginLeft = "-0.2em";
+                }else{
+                    typeText.style.letterSpacing = "-0.2em";
+                    typeText.style.marginLeft = "-0.25em";
+                }
+                
                 typeText.style.marginTop = "0.4em";
             }else{
                 typeText.style.fontSize = "";
                 typeText.style.fontWeight = ""; // その他は通常サイズに戻す
                 typeText.style.letterSpacing = "";
                 typeText.style.marginTop = "";
+                typeText.style.marginLeft = "";
             }
         }
         // 行先日本語通常サイズ
