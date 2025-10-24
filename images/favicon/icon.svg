@@ -1,0 +1,15 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .gousha{
+      fill:rgb(255,165,0)
+    }
+    .shubetsu{
+      fill:rgb(255,255,255)
+    }
+  </style>
+  <circle cx="128" cy="128" r="128" />
+  <text x="25" y="115" class="gousha" font-size="50">1</text>
+  <text x="15" y="150" class="gousha" font-size="25">号車</text>
+  <rect x="90" y="80" rx="5" ry="5" width="140" height="70" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+  <text x="120" y="128" class="shubetsu" font-size="40">普通</text>
+</svg>
