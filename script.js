@@ -1,6 +1,6 @@
     // ▼ ローマ字表示用マッピング
     const typeRomajiMap = {
-        "普通": "Local",
+        "普　通": "Local",
         "区間快速": "Semi Rapid",
         "快速": "Rapid",
         "新快速": "New Rapid",
@@ -55,8 +55,7 @@ function updateDisplay() {
 
     // 普通の場合は四角で囲む
     const roundedbox = document.getElementById("rounded-box");
-    if(type === "普通"){
-        const formatted = type.split("").join("　"); //全角スペース
+    if(type === "普　通"){
         roundedbox.style.borderColor = "#fff";
     }else{
         roundedbox.style.borderColor = "transparent";
@@ -164,7 +163,7 @@ function updateDisplay() {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
 
-            if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普通" || typeTextData === "快速" || typeTextData === "急行"){
+            if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "快速" || typeTextData === "急行"){
                 // 各停・各駅停車・普通・快速ローマ字表示
                 destinationText.style.letterSpacing = "normal";
                 destinationText.style.fontSize = "0.8em"; // 英語小さく
@@ -189,7 +188,7 @@ function updateDisplay() {
         
         // 種別ごとの色設定
         switch (type) {
-            case "普通":
+            case "普　通":
                 typeArea.style.backgroundColor = "#000000";
                 typeText.style.color = "white";
                 break;
@@ -284,7 +283,7 @@ function switchLanguage() {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
             destinationText.style.fontSize = "0.8em"; // 英語縮小
-        }else if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普通" || typeTextData === "快速" || typeTextData === "急行"){
+        }else if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "快速" || typeTextData === "急行"){
             // 各停・各駅停車・普通・快速はローマ字表示に切り替え
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
