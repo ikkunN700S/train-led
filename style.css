@@ -1,4 +1,11 @@
 @font-face {
+  font-family: 'Alphabet';
+  src: local("Tahoma");
+  font-weight: normal;
+  /*unicode-range: U+0030-0039, U+0041-005A, U+0061-007A;*/ /* A-Z, a-z */
+}
+
+@font-face {
     font-family: 'jr-cen_rollsignregular';
     src: url('fonts/JR-Central_Rollsign.woff2') format('woff2');
     font-weight: normal;
@@ -51,22 +58,22 @@ body {
     text-orientation: upright;
     line-height: 1;
     white-space: nowrap;
-    font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     }
 
 .car-digit {
-  font-size: 1.5em;   /* 数字を大きく */
+  font-size: 1.3em;   /* 数字を大きく */
   line-height: 1;
 }
 
 .car-label {
-  font-size: 0.8em;   /* 「号車」を小さく */
+  font-size: 0.7em;   /* 「号車」を小さく */
   margin-top: 0.2em;
 }
 
 
 .type-area {
-    background-color: #3050ff;
+    background-color: #000000;
     padding: 0.3em 0.3em;
     font-size: 1.5em; /* 枠のベースサイズ */
     color: white;
@@ -78,8 +85,8 @@ body {
     width: 3.4em;
     flex-shrink: 0;
     text-align: center;
-    font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
-    font-weight: bold;
+    font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
+    font-weight: normal;
     position: relative;
     z-index: 2; /* 他の要素より前面に表示 */
 }
@@ -98,6 +105,10 @@ body {
     font-size: 0.9em; /* ← このサイズだけを JavaScript で変更する */
     display: inline-block;
     line-height: 1;
+    text-shadow: 1px 1px 0 black, /* 右下 */
+               -1px 1px 0 black, /* 左下 */
+               1px -1px 0 black, /* 右上 */
+               -1px -1px 0 black; /* 左上 */
 }
 
 .destination-area {
@@ -113,7 +124,7 @@ body {
     height: 1.5em;
     letter-spacing: 0.1em; /* ← ここが文字間隔 */
     white-space: nowrap;
-    font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+    font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
     position: relative;
     z-index: 1; /* type-area より後ろに表示 */
 }
@@ -131,7 +142,7 @@ body {
 
 .italic-text {
     /*font-style: italic;*/
-    font-family: 'jr-cen_rollsignregular', 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+    font-family: 'jr-cen_rollsignregular', 'Alphabet', 'Noto Sans JP', sans-serif;
 }
 
     /* 制御部 */

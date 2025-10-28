@@ -1,3 +1,10 @@
+@font-face {
+  font-family: "Alphabet";
+  src: local("Arial");
+  font-weight: bold;
+  /*unicode-range: U+0030-0039, U+0041-005A, U+0061-007A; */ /* A-Z, a-z */
+}
+
 body {
       background-color: #222;
       font-family: 'DotGothic16', monospace;
@@ -41,7 +48,7 @@ body {
     text-orientation: upright;
     line-height: 1;
     white-space: nowrap;
-    font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     }
 
 .car-digit {
@@ -56,7 +63,7 @@ body {
 
 
 .type-area {
-    background-color: #3050ff;
+    background-color: #000000;
     padding: 0.3em 1em;
     font-size: 1.5em; /* 枠のベースサイズ */
     color: white;
@@ -69,8 +76,8 @@ body {
     width: 2.5em;
     flex-shrink: 0;
     text-align: center;
-    font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
-    font-weight: bold;
+    font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
+    font-weight: normal;
     position: relative;
     z-index: 2; /* 他の要素より前に表示 */
 }
@@ -105,7 +112,7 @@ body {
     height: 1.5em;
     letter-spacing: 0.2em; /* ← ここが文字間隔 */
     white-space: nowrap;
-    font-family: 'Noto Sans JP', 'Yu Gothic', 'Meiryo', sans-serif;
+    font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
     position: relative;
     z-index: 1; /* type-area より後ろに表示 */
 }

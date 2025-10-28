@@ -186,6 +186,14 @@ function updateDisplay() {
         destinationText.style.width = "";
         destinationText.style.height = "";
         
+        // 縁取りをonに戻す
+        typeText.style.textShadow = `
+            1px 1px 0 black,
+            -1px 1px 0 black,
+            1px -1px 0 black,
+            -1px -1px 0 black
+            `;
+
         // 種別ごとの色設定
         switch (type) {
             case "普　通":
@@ -206,12 +214,13 @@ function updateDisplay() {
                 typeText.style.color = "white";
                 break;
             case "新快速":
-                typeArea.style.backgroundColor = "#ff6600";
+                typeArea.style.backgroundColor = "#ff4400";
                 typeText.style.color = "white";
                 break;
             case "特別快速":
                 typeArea.style.backgroundColor = "#ffff00ff";
                 typeText.style.color = "black";
+                typeText.style.textShadow = "none"; // 黒文字の時は縁取りoff
                 break;
             case "準急":
                 typeArea.style.backgroundColor = "#32cd32";
@@ -315,6 +324,9 @@ function switchLanguage() {
         // 車両番号の表示を切り替え
         carLabel.textContent = "No.";  // ← 上段を No.
         carDigit.textContent = document.getElementById("car-input").value || "1";
+        // 英語の時は通常に戻す
+        carLabel.style.fontSize = "";
+        carLabel.style.marginTop = "";
         // 要素を入れ替え（No.が上）
         carNumberArea.appendChild(carLabel);
         carNumberArea.appendChild(carDigit);
@@ -366,6 +378,9 @@ function switchLanguage() {
         // 車両番号の表示を切り替え
         carDigit.textContent = document.getElementById("car-input").value || "1"; 
         carLabel.textContent = "号車"; 
+        // 日本語の時は少しラベル小さめ
+        carLabel.style.fontSize = "0.6em";
+        carLabel.style.marginTop = "0em";
         // 要素を入れ替え（数字が上）
         carNumberArea.appendChild(carDigit);
         carNumberArea.appendChild(carLabel);
