@@ -48,7 +48,7 @@ body {
     text-orientation: upright;
     line-height: 1;
     white-space: nowrap;
-    font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
+    font-family: 'DM Sans', sans-serif;
     }
 
 .car-digit {
@@ -77,7 +77,7 @@ body {
     flex-shrink: 0;
     text-align: center;
     font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
-    font-weight: bold;
+    font-weight: normal;
     position: relative;
     z-index: 2; /* 他の要素より前に表示 */
 }
