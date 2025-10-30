@@ -22,13 +22,17 @@ body {
       padding: 2em;
     }
 
-    .display-frame {
-      background-color: #333;
-      padding: 1em;
-      border-radius: 1em;
-      width: fit-content;
-      box-shadow: 0 0 15px #000;
-    }
+.title {
+  font-size: 2em;
+}
+
+.display-frame {
+  background-color: #333;
+  padding: 1em;
+  border-radius: 1em;
+  width: fit-content;
+  box-shadow: 0 0 15px #000;
+}
 
 .led-display {
     display: flex;
@@ -275,4 +279,17 @@ footer #site-version {
 
 #save-image-button:active {
   transform: scale(0.97);
+}
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 1.5em;
+    /*transform: scale(0.8); */  /* 全体を縮小 */
+  }
+  .display-frame {
+    transform: scale(0.55);   /* 全体を縮小 */
+  }
+  .controls {
+    transform: scale(1);   /* 全体を縮小 */
+  }
 }
