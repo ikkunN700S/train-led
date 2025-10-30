@@ -108,7 +108,7 @@ body {
 #type-text {
     font-size: 0.9em; /* ← このサイズだけを JavaScript で変更する */
     display: inline-block;
-    line-height: 1;
+    line-height: 1.5em;
     text-shadow: 1px 1px 0 black, /* 右下 */
                -1px 1px 0 black, /* 左下 */
                1px -1px 0 black, /* 右上 */
