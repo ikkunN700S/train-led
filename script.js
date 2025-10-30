@@ -150,7 +150,7 @@ function updateDisplay() {
                     typeText.style.marginLeft = "-0.25em";
                 }
                 
-                typeText.style.marginTop = "0.4em";
+                typeText.style.marginTop = "30px";
             }else{
                 typeText.style.fontSize = "";
                 typeText.style.fontWeight = ""; // その他は通常サイズに戻す
@@ -364,7 +364,7 @@ function switchLanguage() {
                     typeText.style.marginLeft = "-0.25em";
                 }
                 
-                typeText.style.marginTop = "0.4em";
+                typeText.style.marginTop = "30px";
             }else{
                 typeText.style.fontSize = "";
                 typeText.style.fontWeight = ""; // その他は通常サイズに戻す
