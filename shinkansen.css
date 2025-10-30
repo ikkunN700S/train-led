@@ -18,13 +18,13 @@ body {
   font-size: 2em;
 }
 
-    .display-frame {
-      background-color: #333;
-      padding: 1em;
-      border-radius: 1em;
-      width: fit-content;
-      box-shadow: 0 0 15px #000;
-    }
+.display-frame {
+  background-color: #333;
+  padding: 1em;
+  border-radius: 1em;
+  width: fit-content;
+  box-shadow: 0 0 15px #000;
+}
 
 .led-display {
     display: flex;
