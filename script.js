@@ -150,7 +150,11 @@ function updateDisplay() {
                     typeText.style.marginLeft = "-0.25em";
                 }
                 
-                typeText.style.marginTop = "30px";
+                if (window.innerWidth <= 600) {
+                    typeText.style.marginTop = "10px";
+                } else {
+                    typeText.style.marginTop = "30px";
+                }
                 
             }else{
                 typeText.style.fontSize = "";
@@ -365,7 +369,11 @@ function switchLanguage() {
                     typeText.style.marginLeft = "-0.25em";
                 }
 
-                typeText.style.marginTop = "30px";
+                if (window.innerWidth <= 600) {
+                    typeText.style.marginTop = "10px";
+                } else {
+                    typeText.style.marginTop = "30px";
+                }
                 
             }else{
                 typeText.style.fontSize = "";
