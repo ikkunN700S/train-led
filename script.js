@@ -150,7 +150,15 @@ function updateDisplay() {
                     typeText.style.marginLeft = "-0.25em";
                 }
                 
-                typeText.style.marginTop = "30px";
+                // 特殊フォントのmarginTop
+                if (window.innerWidth <= 600) {
+                    // モバイル端末など画面が狭い場合
+                    typeText.style.marginTop = "15px";
+                } else {
+                    // PCなど画面が広い場合
+                    typeText.style.marginTop = "30px";
+                }
+                
             }else{
                 typeText.style.fontSize = "";
                 typeText.style.fontWeight = ""; // その他は通常サイズに戻す
@@ -363,8 +371,16 @@ function switchLanguage() {
                     typeText.style.letterSpacing = "-0.2em";
                     typeText.style.marginLeft = "-0.25em";
                 }
+
+                // 特殊フォントのmarginTop
+                if (window.innerWidth <= 600) {
+                    // モバイル端末など画面が狭い場合
+                    typeText.style.marginTop = "15px";
+                } else {
+                    // PCなど画面が広い場合
+                    typeText.style.marginTop = "30px";
+                }
                 
-                typeText.style.marginTop = "30px";
             }else{
                 typeText.style.fontSize = "";
                 typeText.style.fontWeight = ""; // その他は通常サイズに戻す
