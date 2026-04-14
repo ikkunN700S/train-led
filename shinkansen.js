@@ -326,3 +326,20 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+
+// ドット枠の制御
+// 追加したチェックボックスと、表示器の要素を取得
+const toggleDotsCheckbox = document.getElementById('toggle-dots');
+// ※ '.display' の部分は、実際の表示器の枠のクラス名やID名に変えてください
+const displayElement = document.querySelector('.led-display'); 
+
+// チェックボックスの値が変わったときのイベントリスナーを追加
+toggleDotsCheckbox.addEventListener('change', function() {
+  if (this.checked) {
+    // チェックされたらクラスを追加して網目を表示
+    displayElement.classList.add('show-dots');
+  } else {
+    // チェックが外れたらクラスを削除して網目を消す
+    displayElement.classList.remove('show-dots');
+  }
+});
