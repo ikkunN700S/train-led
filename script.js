@@ -443,3 +443,46 @@ toggleDotsCheckbox.addEventListener('change', function() {
     displayElement.classList.remove('show-dots');
   }
 });
+
+// テキスト表示最適化関数
+/**
+ * テキストの横幅をコンテナに合わせて縮小（長体）する関数
+ * @param {HTMLElement} container - 幅が固定された親要素（外枠）
+ * @param {HTMLElement} textNode - 実際にテキストが含まれる子要素
+ * @param {number} padding - 左右の余白（デフォルト0）
+ */
+function shrinkTextToFit(container, textNode, padding = 0) {
+    // 測定のために一旦スケールをリセット
+    textNode.style.transform = 'scaleX(1)';
+    
+    const maxWidth = container.clientWidth - padding;
+    const actualWidth = textNode.scrollWidth;
+
+    if (actualWidth > maxWidth) {
+        // はみ出す場合は比率を計算して縮小
+        const ratio = maxWidth / actualWidth;
+        textNode.style.transform = `scaleX(${ratio})`;
+    }
+}
+
+const inputElement = document.getElementById('destination-input');
+
+// 2. 'input' イベントを監視
+inputElement.addEventListener('change', (event) => {
+    
+    // 入力された最新の文字を取得
+    const currentValue = event.target.value;
+    
+    // --------------------------------------------------
+    // ここに実行したい処理を書きます
+    // --------------------------------------------------
+    
+    // 例：取得した文字を別の要素（表示用ディスプレイ）に反映させる
+    const displayElement = document.getElementById('destination-text');
+    displayElement.textContent = currentValue;
+
+    // 例：前回作成した長体（幅詰め）の関数を実行する
+    const containerElement = document.getElementById('destination-input');
+    shrinkTextToFit(containerElement, displayElement, 10);
+    
+});

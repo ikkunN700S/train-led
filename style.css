@@ -148,10 +148,11 @@ body {
     width: 4em;              /* 幅を固定 */
     height: 1.5em;
     letter-spacing: 0.1em; /* ← ここが文字間隔 */
-    white-space: nowrap;
     font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
     position: relative;
     z-index: 1; /* type-area より後ろに表示 */
+    overflow: hidden; /* はみ出しを隠す */
+    white-space: nowrap; /* 改行禁止 */
 }
 
 #destination-text {
@@ -163,6 +164,8 @@ body {
     display: flex;          /* 中央寄せ */
     align-items: center;
     justify-content: center;
+    transform-origin: left center; /* 左端を基準に縮小 */
+    transition: transform 0.1s ease-out; /* 変化を少し滑らかに */
 }
 
 .italic-text {
