@@ -120,8 +120,10 @@ body {
     line-height: 1;
     position: absolute;
     bottom: 0.2em; /* 下に寄せる */
-    transform: translateX(-50%); /* 中央寄せ */
-    left: 50%; /* 中央寄せ */
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    white-space: nowrap;
 }
 
 .destination-area {

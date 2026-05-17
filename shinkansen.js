@@ -28,15 +28,15 @@ const typeRomajiMap = {
 
 let isJapanese = true;  // ▼ 切り替え制御フラグ
 
-// ▼ 行き先テキストを枠に合わせて縮小する関数（新幹線仕様）
-function shrinkTextToFit(container, textNode, padding = 0) {
+// ▼ 行き先や号数テキストを枠に合わせて縮小する関数（汎用化版）
+function shrinkTextToFit(container, textNode, padding = 0, defaultLetterSpacing = 'normal', baseTransform = '') {
     if (!container || !textNode || typeof textNode.scrollWidth === 'undefined') {
         return;
     }
     
-    // 1. 変形リセット（日本語の時は新幹線仕様の0.2em、英語はnormal）
-    textNode.style.transform = 'scaleX(1)';
-    textNode.style.letterSpacing = isJapanese ? '0.2em' : 'normal'; 
+    // 1. 変形リセット（ベースの移動設定 + scaleX(1) をセット）
+    textNode.style.transform = `${baseTransform} scaleX(1)`.trim();
+    textNode.style.letterSpacing = defaultLetterSpacing; 
     textNode.style.transformOrigin = 'center center'; 
     
     const maxWidth = container.clientWidth - padding;
@@ -47,8 +47,8 @@ function shrinkTextToFit(container, textNode, padding = 0) {
         return;
     }
 
-    // 3. 日本語表示時はみ出す場合は、まず文字間隔を詰める
-    if (isJapanese) {
+    // 3. 文字間隔が空いている場合は、まず詰める
+    if (defaultLetterSpacing !== 'normal') {
         textNode.style.letterSpacing = 'normal';
         actualWidth = textNode.scrollWidth; // 再計測
     }
@@ -56,7 +56,8 @@ function shrinkTextToFit(container, textNode, padding = 0) {
     // 4. それでもはみ出す場合のみ、横幅を縮小（長体）する
     if (actualWidth > maxWidth && actualWidth > 0) {
         const ratio = maxWidth / actualWidth;
-        textNode.style.transform = `scaleX(${ratio})`;
+        // ベースの移動設定と、計算した縮小率を合体させる
+        textNode.style.transform = `${baseTransform} scaleX(${ratio})`.trim();
     }
 }
 
@@ -64,17 +65,26 @@ function shrinkTextToFit(container, textNode, padding = 0) {
 function adjustDestinationSize() {
     const destinationArea = document.getElementById("destination-area");
     const destinationText = document.getElementById("destination-text");
-    const type = document.getElementById("type-select").value;
     
-    // 特殊表示（全画面表示）の種別かどうか判定
+    const typeArea = document.getElementById("type-area"); // 号数の親枠
+    const numberText = document.getElementById("number-text"); // 号数テキスト
+    
+    const type = document.getElementById("type-select").value;
     const isSpecialType = ["試運転", "臨時", "回送", "団体", "修学旅行"].includes(type);
 
     if (!isSpecialType) {
-        // 通常の行き先表示の場合は縮小処理を実行
-        shrinkTextToFit(destinationArea, destinationText, 10);
+        // ① 行先表示の縮小（行先は absolute による移動がないためベース変形は空文字 ''）
+        const destSpacing = isJapanese ? '0.2em' : 'normal';
+        shrinkTextToFit(destinationArea, destinationText, 10, destSpacing, '');
+        
+        // ② 号数表示の縮小（★ ここで 'translateX(-50%)' を渡すことで中央寄せを維持）
+        if (numberText && numberText.style.display !== "none") {
+            shrinkTextToFit(typeArea, numberText, 4, 'normal', 'translateX(-50%)');
+        }
     } else {
         // 特殊種別の場合は縮小をリセット
         if (destinationText) destinationText.style.transform = 'scaleX(1)';
+        if (numberText) numberText.style.transform = 'translateX(-50%) scaleX(1)';
     }
 }
 
