@@ -1,76 +1,27 @@
-// ▼ ローマ字表示用マッピング
-const typeRomajiMap = {
-    "普　通": "Local",
-    "区間快速": "Semi Rapid",
-    "快速": "Rapid",
-    "新快速": "New Rapid",
-    "特別快速": "Special Rapid",
-    "試運転": "Test Run",
-    "臨時": "Extra",
-    "回送": "Out of Service",
-    "各停": "Local",
-    "各駅停車": "Local",
-    "準急": "Semi Exp.",
-    "急行": "Express",
-    "快速急行": "Rapid Exp.",
-    "特急": "Limited Exp.",
-    "快速特急": "Rapid Ltd. Exp."
-};
+    // ▼ ローマ字表示用マッピング
+    const typeRomajiMap = {
+        "普　通": "Local",
+        "区間快速": "Semi Rapid",
+        "快速": "Rapid",
+        "新快速": "New Rapid",
+        "特別快速": "Special Rapid",
+        "試運転": "Test Run",
+        "臨時": "Extra",
+        "回送": "Out of Service",
+        "各停": "Local",
+        "各駅停車": "Local",
+        "準急": "Semi Exp.",
+        "急行": "Express",
+        "快速急行": "Rapid Exp.",
+        "特急": "Limited Exp.",
+        "快速特急": "Rapid Ltd. Exp."
+    };
 
-let isJapanese = true;  // ▼ 切り替え制御フラグ
-let rapidType = false; // 快速系統のフラグ
+    let isJapanese = true;  // ▼ 切り替え制御フラグ
+    let rapidType = false; // 快速系統のフラグ
 
-// 上位種別リスト（斜体にしたい種別）
-const italicTypes = ["区間快速", "快速", "新快速", "特別快速"];
-
-// 行き先テキストを枠に合わせて縮小する関数
-function shrinkTextToFit(container, textNode, padding = 0) {
-    if (!container || !textNode || typeof textNode.scrollWidth === 'undefined') {
-        console.warn("shrinkTextToFit: 要素が正しく取得されていません");
-        return;
-    }
-
-    // スケールリセット
-    textNode.style.transform = 'scaleX(1)';
-    textNode.style.letterSpacing = '0.1em';
-    // 左端基準で縮小するよう設定（中央揃えの場合は center に変更してください）
-    textNode.style.transformOrigin = 'center center'; 
-    
-    const maxWidth = container.clientWidth - padding;
-    let actualWidth = textNode.scrollWidth;
-
-    // 枠に収まっている場合はここで終了
-    if (actualWidth <= maxWidth) {
-        return;
-    }
-
-    // はみ出す場合は、文字間隔（letter-spacing）を詰める
-    textNode.style.letterSpacing = 'normal';
-    actualWidth = textNode.scrollWidth; // 文字間隔を詰めた状態で再計測
-
-    if (actualWidth > maxWidth && actualWidth > 0) {
-        const ratio = maxWidth / actualWidth;
-        textNode.style.transform = `scaleX(${ratio})`;
-    }
-}
-
-// 行き先テキストのサイズを調整する統合処理
-function adjustDestinationSize() {
-    const destinationArea = document.getElementById("destination-area");
-    const destinationText = document.getElementById("destination-text");
-    
-    // 試運転などの全画面表示時は幅計算を除外（既存の幅指定を尊重）
-    const typeTextData = destinationText.getAttribute("data-ja");
-    const isSpecialType = ["試　運　転", "臨　 　時", "回　 　送"].includes(typeTextData);
-
-    if (!isSpecialType) {
-        // 余白を適宜調整（現状は 10px としています）
-        shrinkTextToFit(destinationArea, destinationText, 10);
-    } else {
-        // 特殊種別の場合は変形をリセット
-        destinationText.style.transform = 'scaleX(1)';
-    }
-}
+    // 上位種別リスト（斜体にしたい種別）
+    const italicTypes = ["区間快速", "快速", "新快速", "特別快速"];
 
 function updateDisplay() {
     const carNumber = document.getElementById("car-input").value;
@@ -86,11 +37,12 @@ function updateDisplay() {
 
     const romaji = document.getElementById("romaji-input")?.value || "Romaji";
 
+    
+
     // ▼ 表示内容の切り替えに備えて保持（属性として保持しておく）
     typeText.setAttribute("data-ja", type);
     typeText.setAttribute("data-en", typeRomajiMap[type] || type);
 
-    // 行先入力欄の値を即座にセット
     destinationText.setAttribute("data-ja", destination);
     destinationText.setAttribute("data-en", romaji);
 
@@ -122,6 +74,7 @@ function updateDisplay() {
         // 試運転モード
         const formatted = "試　運　転";
         typeArea.style.display = "none";
+        //destinationText.textContent = formatted;
         destinationText.setAttribute("data-ja", formatted);
         destinationText.setAttribute("data-en", typeRomajiMap[type]);
 
@@ -129,7 +82,6 @@ function updateDisplay() {
         if(isJapanese) {
             destinationText.textContent = destinationText.getAttribute("data-ja");
             destinationText.style.letterSpacing = "0.3em";
-            destinationText.style.fontSize = ""; // 特殊用リセット
         } else {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
@@ -140,11 +92,11 @@ function updateDisplay() {
         destinationText.style.color = "white";
         destinationText.style.width = "8.5em";    // 幅を広げる
         destinationText.style.height = "1.5em"; // フレックスを無効化
-        
     }else if(type === "臨時" || type === "回送") {
         // 臨時・回送モード
         const formatted = type.split("").join("　 　"); // ← 全角スペース2個
         typeArea.style.display = "none"; // 非表示にする
+        //destinationText.textContent = formatted;
         destinationText.setAttribute("data-ja", formatted);
         destinationText.setAttribute("data-en", typeRomajiMap[type]);
 
@@ -152,7 +104,6 @@ function updateDisplay() {
         if(isJapanese) {
             destinationText.textContent = destinationText.getAttribute("data-ja");
             destinationText.style.letterSpacing = "";
-            destinationText.style.fontSize = "";
         } else {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
@@ -167,6 +118,9 @@ function updateDisplay() {
     } else {
         // 通常の種別表示に戻す
         typeArea.style.display = ""; // 表示に戻す
+        //typeText.textContent = type;
+        //destinationText.textContent = destination;
+
         const typeTextData = typeText.getAttribute("data-ja");
 
         // 日本語なら日本語をセット
@@ -175,7 +129,6 @@ function updateDisplay() {
             destinationText.textContent = destinationText.getAttribute("data-ja");
             destinationText.style.letterSpacing = ""; // 日本語は少し文字間隔を広げる
             destinationText.style.fontSize = ""; // 通常サイズに戻す
-            
             // 特別フォントの場合は上記よりフォントサイズを大きく
             if(rapidType){
                 // 快速・新快速はより大きく
@@ -299,15 +252,9 @@ function updateDisplay() {
                 typeText.style.color = "white";
         }
     }
-    
-    // 表示更新の最後に、必ずはみ出しチェック（縮小処理）を実行する
-    adjustDestinationSize();
 }
 
 function switchLanguage() {
-    // 状態を反転
-    isJapanese = !isJapanese;
-    
     const typeArea = document.getElementById("type-area");
     const typeText = document.getElementById("type-text");
     const destinationArea = document.getElementById("destination-area");
@@ -318,12 +265,15 @@ function switchLanguage() {
 
     if (!typeArea || !typeText || !destinationArea || !destinationText || !carLabel || !carDigit) return;
 
-    // 現在の表示モード取得
+    // 現在の表示モード取得（例: "試運転", "臨時", "回送" など）
     const typeTextData = typeText.getAttribute("data-ja");
+
+    // 特殊種別かどうか
     const isSpecialType = ["試運転", "臨時", "回送"].includes(typeTextData);
 
-    // 斜体クラス切替
-    if (italicTypes.includes(typeTextData) && isJapanese) {
+
+    // ← ここで斜体クラスを切り替え
+    if (italicTypes.includes(typeText.getAttribute("data-ja")) && isJapanese == false) {
         typeText.classList.add("italic-text");
         rapidType = true;
     } else {
@@ -331,24 +281,83 @@ function switchLanguage() {
         rapidType = false;
     }
 
+    // 快速系統の文字列ならフォントを適用
+    /*
+    const FontTypes = ["区間快速", "快　速", "新快速", "特別快速"];
+    if (FontTypes.includes(typeText.getAttribute("data-ja")) && isJapanese == false) {
+        typeText.classList.add("special-train");
+    } else{
+        typeText.classList.remove("special-train");
+    }
+    */
+
     if (isJapanese) {
         if(isSpecialType){
+            // 行き先欄に種別を表示
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal";
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
+        }else if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "快速" || typeTextData === "急行"){
+            // 各停・各駅停車・普通・快速はローマ字表示に切り替え
+            typeText.textContent = typeText.getAttribute("data-en");
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal";
+            destinationText.style.fontSize = "0.8em"; // 英語小さく
+            typeText.style.fontSize = "0.8em"; // 通常サイズ
+        }else if(typeTextData === "新快速"){
+            // 新快速ローマ字表示に切り替え
+            typeText.textContent = typeText.getAttribute("data-en");
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal";
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
+            typeText.style.fontSize = "0.7em"; // 通常サイズ
+        }else{
+            // ▼ ローマ字表示に切り替え
+            typeText.textContent = typeText.getAttribute("data-en");
+            destinationText.textContent = destinationText.getAttribute("data-en");
+            destinationText.style.letterSpacing = "normal";
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
+            typeText.style.fontSize = "0.5em"; // 英語縮小
+        }
+
+        // 英語の時はリセット
+        typeText.style.fontWeight = ""; // その他は通常サイズに戻す
+        typeText.style.letterSpacing = "normal";
+        typeText.style.marginTop = "";
+        typeText.style.marginLeft = "";
+
+        // 車両番号の表示を切り替え
+        carLabel.textContent = "No.";  // ← 上段を No.
+        carDigit.textContent = document.getElementById("car-input").value || "1";
+        // 英語の時は通常に戻す
+        carLabel.style.fontSize = "";
+        carLabel.style.marginTop = "";
+        // 要素を入れ替え（No.が上）
+        carNumberArea.appendChild(carLabel);
+        carNumberArea.appendChild(carDigit);
+    } else {
+        if(isSpecialType){
+            // 行き先欄に種別を表示
             destinationText.textContent = destinationText.getAttribute("data-ja");
             destinationText.style.letterSpacing = (typeTextData === "試運転") ? "0.3em" : "";
             destinationText.style.fontSize = ""; // 通常サイズに戻す
-        } else {
-            // 日本語表示に戻す
+        }else{
+            // ▼ 日本語表示に戻す
             typeText.textContent = typeText.getAttribute("data-ja");
             destinationText.textContent = destinationText.getAttribute("data-ja");
             destinationText.style.letterSpacing = "0.1em";
             
+            // 特別フォントの場合は上記よりフォントサイズを大きく
             if(rapidType){
+                // 快速・新快速はより大きく
                 if(typeTextData === "快速" || typeTextData === "新快速"){
                     typeText.style.fontSize = "1.5em";
                 }else{
                     typeText.style.fontSize = "1.2em";
                 }
+                
                 typeText.style.fontWeight = "normal";
+                // 快速は文字間隔を広く
                 if(typeTextData === "快速"){
                     typeText.style.letterSpacing = "0.5em";
                     typeText.style.marginLeft = "0.5em";
@@ -359,100 +368,55 @@ function switchLanguage() {
                     typeText.style.letterSpacing = "-0.2em";
                     typeText.style.marginLeft = "-0.25em";
                 }
+
                 if (window.innerWidth <= 600) {
                     typeText.style.marginTop = "10px";
                 } else {
                     typeText.style.marginTop = "30px";
                 }
+                
             }else{
                 typeText.style.fontSize = "";
-                typeText.style.fontWeight = ""; 
+                typeText.style.fontWeight = ""; // その他は通常サイズに戻す
                 typeText.style.letterSpacing = "";
                 typeText.style.marginTop = "";
                 typeText.style.marginLeft = "";
             }
         }
         // 行先日本語通常サイズ
-        destinationText.style.fontSize = ""; 
-
-        // 車両番号 (No.上) -> (数字上) に戻す
+        destinationText.style.fontSize = ""; // 通常サイズに戻す
+        // 車両番号の表示を切り替え
         carDigit.textContent = document.getElementById("car-input").value || "1"; 
         carLabel.textContent = "号車"; 
+        // 日本語の時は少しラベル小さめ
         carLabel.style.fontSize = "0.6em";
         carLabel.style.marginTop = "0em";
+        // 要素を入れ替え（数字が上）
         carNumberArea.appendChild(carDigit);
         carNumberArea.appendChild(carLabel);
-
-    } else {
-        // 英語モード
-        if(isSpecialType){
-            destinationText.textContent = destinationText.getAttribute("data-en");
-            destinationText.style.letterSpacing = "normal";
-            destinationText.style.fontSize = "0.8em"; 
-        } else if (typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "快速" || typeTextData === "急行"){
-            typeText.textContent = typeText.getAttribute("data-en");
-            destinationText.textContent = destinationText.getAttribute("data-en");
-            destinationText.style.letterSpacing = "normal";
-            destinationText.style.fontSize = "0.8em"; 
-            typeText.style.fontSize = "0.8em"; 
-        } else if (typeTextData === "新快速"){
-            typeText.textContent = typeText.getAttribute("data-en");
-            destinationText.textContent = destinationText.getAttribute("data-en");
-            destinationText.style.letterSpacing = "normal";
-            destinationText.style.fontSize = "0.8em"; 
-            typeText.style.fontSize = "0.7em"; 
-        } else {
-            typeText.textContent = typeText.getAttribute("data-en");
-            destinationText.textContent = destinationText.getAttribute("data-en");
-            destinationText.style.letterSpacing = "normal";
-            destinationText.style.fontSize = "0.8em"; 
-            typeText.style.fontSize = "0.5em"; 
-        }
-
-        typeText.style.fontWeight = ""; 
-        typeText.style.letterSpacing = "normal";
-        typeText.style.marginTop = "";
-        typeText.style.marginLeft = "";
-
-        // 車両番号 (No.上)
-        carLabel.textContent = "No."; 
-        carDigit.textContent = document.getElementById("car-input").value || "1";
-        carLabel.style.fontSize = "";
-        carLabel.style.marginTop = "";
-        carNumberArea.appendChild(carLabel);
-        carNumberArea.appendChild(carDigit);
     }
 
-    // 表示内容が切り替わった後、必ず縮小判定を行う
-    adjustDestinationSize();
+    isJapanese = !isJapanese;
 }
 
-// ▼ 3秒ごとに切り替える
+// ▼ 3秒ごとに日本語とローマ字を切り替える
 setInterval(switchLanguage, 3500);
 
-// ▼ 初期化時のイベントリスナー登録
-window.addEventListener("DOMContentLoaded", () => {
-    updateDisplay();
+// ▼ 初期表示更新
+window.addEventListener("DOMContentLoaded", updateDisplay);
 
-    // 入力イベントのバインド（change ではなく input でリアルタイム反映）
-    document.getElementById('destination-input').addEventListener('input', updateDisplay);
-    const romajiInput = document.getElementById('romaji-input');
-    if (romajiInput) romajiInput.addEventListener('input', updateDisplay);
-    
-    document.getElementById('type-select').addEventListener('change', updateDisplay);
-    document.getElementById('car-input').addEventListener('input', updateDisplay);
-});
-
-// ▼ 画像ダウンロード機能
+// 画像ダウンロード
 document.addEventListener("DOMContentLoaded", () => {
     const saveButton = document.getElementById("save-image-button");
+
     if (saveButton) {
         saveButton.addEventListener("click", () => {
             const display = document.querySelector(".display-frame");
             if (!display) return;
+
             html2canvas(display, {
-                backgroundColor: null,
-                scale: 2 
+                backgroundColor: null, // 背景透過を維持
+                scale: 2              // 高解像度で保存
             }).then(canvas => {
                 const link = document.createElement("a");
                 link.download = "display.png";
@@ -463,15 +427,62 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ▼ ドット枠の制御
+// ドット枠の制御
+// 追加したチェックボックスと、表示器の要素を取得
 const toggleDotsCheckbox = document.getElementById('toggle-dots');
+// ※ '.display' の部分は、実際の表示器の枠のクラス名やID名に変えてください
 const displayElement = document.querySelector('.led-display'); 
-if (toggleDotsCheckbox && displayElement) {
-    toggleDotsCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            displayElement.classList.add('show-dots');
-        } else {
-            displayElement.classList.remove('show-dots');
-        }
-    });
+
+// チェックボックスの値が変わったときのイベントリスナーを追加
+toggleDotsCheckbox.addEventListener('change', function() {
+  if (this.checked) {
+    // チェックされたらクラスを追加して網目を表示
+    displayElement.classList.add('show-dots');
+  } else {
+    // チェックが外れたらクラスを削除して網目を消す
+    displayElement.classList.remove('show-dots');
+  }
+});
+
+// テキスト表示最適化関数
+/**
+ * テキストの横幅をコンテナに合わせて縮小（長体）する関数
+ * @param {HTMLElement} container - 幅が固定された親要素（外枠）
+ * @param {HTMLElement} textNode - 実際にテキストが含まれる子要素
+ * @param {number} padding - 左右の余白（デフォルト0）
+ */
+function shrinkTextToFit(container, textNode, padding = 0) {
+    // 測定のために一旦スケールをリセット
+    textNode.style.transform = 'scaleX(1)';
+    
+    const maxWidth = container.clientWidth - padding;
+    const actualWidth = textNode.scrollWidth;
+
+    if (actualWidth > maxWidth) {
+        // はみ出す場合は比率を計算して縮小
+        const ratio = maxWidth / actualWidth;
+        textNode.style.transform = `scaleX(${ratio})`;
+    }
 }
+
+const inputElement = document.getElementById('destination-input');
+
+// 2. 'input' イベントを監視
+inputElement.addEventListener('input', (event) => {
+    
+    // 入力された最新の文字を取得
+    const currentValue = event.target.value;
+    
+    // --------------------------------------------------
+    // ここに実行したい処理を書きます
+    // --------------------------------------------------
+    
+    // 例：取得した文字を別の要素（表示用ディスプレイ）に反映させる
+    const displayElement = document.getElementById('destination-text');
+    displayElement.textContent = currentValue;
+
+    // 例：前回作成した長体（幅詰め）の関数を実行する
+    const containerElement = document.getElementById('destination-input');
+    shrinkTextToFit(containerElement, displayElement, 10);
+    
+});
