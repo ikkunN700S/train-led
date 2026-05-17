@@ -89,6 +89,11 @@ body {
 .car-digit {
   font-size: 1.3em;   /* 数字を大きく */
   line-height: 1;
+  width: max-content;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transform-origin: center center; /* 中央を基準に縮小 */
+  /* transition: transform 0.1s ease-out;*/
 }
 
 .car-label {

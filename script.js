@@ -23,30 +23,28 @@ let rapidType = false; // 快速系統のフラグ
 // 上位種別リスト（斜体にしたい種別）
 const italicTypes = ["区間快速", "快速", "新快速", "特別快速"];
 
-// 行き先テキストを枠に合わせて縮小する関数
-function shrinkTextToFit(container, textNode, padding = 0) {
+// ▼ 行き先や号数テキストを枠に合わせて縮小する関数（汎用化版）
+function shrinkTextToFit(container, textNode, padding = 0, defaultLetterSpacing = '0.1em') {
     if (!container || !textNode || typeof textNode.scrollWidth === 'undefined') {
-        console.warn("shrinkTextToFit: 要素が正しく取得されていません");
         return;
     }
-
-    // スケールリセット
+    
+    // 変形リセット
     textNode.style.transform = 'scaleX(1)';
-    textNode.style.letterSpacing = '0.1em';
-    // 左端基準で縮小するよう設定（中央揃えの場合は center に変更してください）
+    textNode.style.letterSpacing = defaultLetterSpacing; 
     textNode.style.transformOrigin = 'center center'; 
     
     const maxWidth = container.clientWidth - padding;
     let actualWidth = textNode.scrollWidth;
 
-    // 枠に収まっている場合はここで終了
     if (actualWidth <= maxWidth) {
         return;
     }
 
-    // はみ出す場合は、文字間隔（letter-spacing）を詰める
-    textNode.style.letterSpacing = 'normal';
-    actualWidth = textNode.scrollWidth; // 文字間隔を詰めた状態で再計測
+    if (defaultLetterSpacing !== 'normal') {
+        textNode.style.letterSpacing = 'normal';
+        actualWidth = textNode.scrollWidth; // 再計測
+    }
 
     if (actualWidth > maxWidth && actualWidth > 0) {
         const ratio = maxWidth / actualWidth;
@@ -54,24 +52,31 @@ function shrinkTextToFit(container, textNode, padding = 0) {
     }
 }
 
-// 行き先テキストのサイズを調整する統合処理
+// ▼ サイズ調整の統合関数
 function adjustDestinationSize() {
     const destinationArea = document.getElementById("destination-area");
     const destinationText = document.getElementById("destination-text");
     
-    // 試運転などの全画面表示時は幅計算を除外（既存の幅指定を尊重）
+    const carNumberArea = document.getElementById("car-number"); // 号数の親枠
+    const carDigit = document.getElementById("car-digit"); // 号数の数字テキスト
+    
+    // 試運転などの全画面表示時は幅計算を除外
     const typeTextData = destinationText.getAttribute("data-ja");
     const isSpecialType = ["試　運　転", "臨　 　時", "回　 　送"].includes(typeTextData);
 
     if (!isSpecialType) {
-        // 余白を適宜調整（現状は 10px としています）
-        shrinkTextToFit(destinationArea, destinationText, 10);
+        // ① 行先表示の縮小（基本の文字間隔は 0.1em）
+        shrinkTextToFit(destinationArea, destinationText, 10, '0.1em');
     } else {
-        // 特殊種別の場合は変形をリセット
         destinationText.style.transform = 'scaleX(1)';
     }
-}
 
+    // ② 号数表示の縮小（基本の文字間隔は normal）
+    if (carNumberArea && carDigit && carNumberArea.style.display !== "none") {
+        // paddingは左右の余白（0.5em）を考慮して 10 程度確保します
+        shrinkTextToFit(carNumberArea, carDigit, 10, 'normal');
+    }
+}
 function updateDisplay() {
     const carNumber = document.getElementById("car-input").value;
     const carNumberArea = document.getElementById("car-number");
