@@ -362,7 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const saveButton = document.getElementById("save-image-button");
     if (saveButton) {
         saveButton.addEventListener("click", () => {
-            const display = document.querySelector(".led-display");
+            const display = document.querySelector(".display-frame");
             if (!display) return;
             html2canvas(display, {
                 backgroundColor: null, 
