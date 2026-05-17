@@ -120,8 +120,10 @@ body {
     line-height: 1;
     position: absolute;
     bottom: 0.2em; /* 下に寄せる */
-    transform: translateX(-50%); /* 中央寄せ */
-    left: 50%; /* 中央寄せ */
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    white-space: nowrap;
 }
 
 .destination-area {
@@ -144,12 +146,16 @@ body {
 
 #destination-text {
     font-size: 1em;         /* ← JSで変更されるサイズ */
-    display: inline-block;
-    line-height: 1;
-    height: 100%;           /* 親の高さに合わせる */
-    display: flex;          /* 中央寄せ */
+    display: flex;
     align-items: center;
     justify-content: center;
+    line-height: 1;
+    height: 100%;           /* 親の高さに合わせる */
+    width: max-content;
+    white-space: nowrap;    /* 改行禁止 */
+    flex-shrink: 0;
+    transform-origin: left center; /* 左端を基準に縮小 */
+    /*transition: transform 0.1s ease-out; */ /* 変化を少し滑らかに */
 }
 
 

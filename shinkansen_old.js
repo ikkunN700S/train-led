@@ -1,92 +1,32 @@
-// ▼ ローマ字表示用マッピング
-const typeRomajiMap = {
-    "こだま": "KODAMA",
-    "ひかり": "HIKARI",
-    "のぞみ": "NOZOMI",
-    "みずほ": "MIZUHO",
-    "さくら": "SAKURA",
-    "つばめ": "TSUBAME",
-    "かもめ": "KAMOME",
-    "はやぶさ": "HAYABUSA",
-    "はやて": "HAYATE",
-    "やまびこ": "YAMABIKO",
-    "なすの": "NASUNO",
-    "こまち": "KOMACHI",
-    "つばさ": "TSUBASA",
-    "つるぎ": "TSURUGI",
-    "あさま": "ASAMA",
-    "はくたか": "HAKUTAKA",
-    "かがやき": "KAGAYAKI",
-    "とき": "TOKI",
-    "たにがわ": "TANIGAWA",
-    "試運転": "Test Run",
-    "臨時": "Temporary",
-    "回送": "Out of Service",
-    "団体": "Reserved Train",
-    "修学旅行": "Reserved Train"
-};
+    // ▼ ローマ字表示用マッピング
+    const typeRomajiMap = {
+        "こだま": "KODAMA",
+        "ひかり": "HIKARI",
+        "のぞみ": "NOZOMI",
+        "みずほ": "MIZUHO",
+        "さくら": "SAKURA",
+        "つばめ": "TSUBAME",
+        "かもめ": "KAMOME",
+        "はやぶさ": "HAYABUSA",
+        "はやて": "HAYATE",
+        "やまびこ": "YAMABIKO",
+        "なすの": "NASUNO",
+        "こまち": "KOMACHI",
+        "つばさ": "TSUBASA",
+        "つるぎ": "TSURUGI",
+        "あさま": "ASAMA",
+        "はくたか": "HAKUTAKA",
+        "かがやき": "KAGAYAKI",
+        "とき": "TOKI",
+        "たにがわ": "TANIGAWA",
+        "試運転": "Test Run",
+        "臨時": "Temporary",
+        "回送": "Out of Service",
+        "団体": "Reserved Train",
+        "修学旅行": "Reserved Train"
+    };
 
-let isJapanese = true;  // ▼ 切り替え制御フラグ
-
-// ▼ 行き先や号数テキストを枠に合わせて縮小する関数（汎用化版）
-function shrinkTextToFit(container, textNode, padding = 0, defaultLetterSpacing = 'normal', baseTransform = '') {
-    if (!container || !textNode || typeof textNode.scrollWidth === 'undefined') {
-        return;
-    }
-    
-    // 1. 変形リセット（ベースの移動設定 + scaleX(1) をセット）
-    textNode.style.transform = `${baseTransform} scaleX(1)`.trim();
-    textNode.style.letterSpacing = defaultLetterSpacing; 
-    textNode.style.transformOrigin = 'center center'; 
-    
-    const maxWidth = container.clientWidth - padding;
-    let actualWidth = textNode.scrollWidth;
-
-    // 2. 枠に収まっている場合は終了
-    if (actualWidth <= maxWidth) {
-        return;
-    }
-
-    // 3. 文字間隔が空いている場合は、まず詰める
-    if (defaultLetterSpacing !== 'normal') {
-        textNode.style.letterSpacing = 'normal';
-        actualWidth = textNode.scrollWidth; // 再計測
-    }
-
-    // 4. それでもはみ出す場合のみ、横幅を縮小（長体）する
-    if (actualWidth > maxWidth && actualWidth > 0) {
-        const ratio = maxWidth / actualWidth;
-        // ベースの移動設定と、計算した縮小率を合体させる
-        textNode.style.transform = `${baseTransform} scaleX(${ratio})`.trim();
-    }
-}
-
-// ▼ サイズ調整の統合関数
-function adjustDestinationSize() {
-    const destinationArea = document.getElementById("destination-area");
-    const destinationText = document.getElementById("destination-text");
-    
-    const typeArea = document.getElementById("type-area"); // 号数の親枠
-    const numberText = document.getElementById("number-text"); // 号数テキスト
-    
-    const type = document.getElementById("type-select").value;
-    const isSpecialType = ["試運転", "臨時", "回送", "団体", "修学旅行"].includes(type);
-
-    if (!isSpecialType) {
-        // ① 行先表示の縮小（行先は absolute による移動がないためベース変形は空文字 ''）
-        const destSpacing = isJapanese ? '0.2em' : 'normal';
-        shrinkTextToFit(destinationArea, destinationText, 10, destSpacing, '');
-        
-        // ② 号数表示の縮小（★ ここで 'translateX(-50%)' を渡すことで中央寄せを維持）
-        if (numberText && numberText.style.display !== "none") {
-            shrinkTextToFit(typeArea, numberText, 4, 'normal', 'translateX(-50%)');
-        }
-    } else {
-        // 特殊種別の場合は縮小をリセット
-        if (destinationText) destinationText.style.transform = 'scaleX(1)';
-        if (numberText) numberText.style.transform = 'translateX(-50%) scaleX(1)';
-    }
-}
+    let isJapanese = true;  // ▼ 切り替え制御フラグ
 
 function updateDisplay() {
     const type = document.getElementById("type-select").value;
@@ -99,124 +39,144 @@ function updateDisplay() {
 
     const number = document.getElementById("number-input")?.value; // 号数の取得
     const numberText = document.getElementById("number-text");
-    
-    // 号数の表示制御
+    // 号数の表示
     if (!number || number.trim() === "") {
         numberText.style.display = "none";
-        typeText.style.marginBottom = "0em"; 
+        typeText.style.marginBottom = "0em"; // 号数がない場合は種別の下の余白を調整
     } else {
         numberText.textContent = number;
         numberText.style.display = "inline-block";
-        typeText.style.marginBottom = "0.9em"; 
+        typeText.style.marginBottom = "0.9em"; // 号数がある場合は種別の下の余白を調整
     }
 
     const romaji = document.getElementById("romaji-input")?.value || "Romaji";
 
-    // 表示内容の保持
-    typeText.setAttribute("data-ja", type.replace(/[BRH]$/, "")); 
+    // ▼ 表示内容の切り替えに備えて保持（属性として保持しておく）
+    typeText.setAttribute("data-ja", type.replace(/[BRH]$/, "")); // 「かもめB」などを整形して保持
     typeText.setAttribute("data-en", typeRomajiMap[type.replace(/[BRH]$/, "")] || type);
+
+
     destinationText.setAttribute("data-ja", destination);
     destinationText.setAttribute("data-en", romaji);
+
     numberText.setAttribute("data-ja", number);
     numberText.setAttribute("data-en", number);
 
     if (type === "試運転") {
         const formatted = "試　運　転";
         typeArea.style.display = "none";
+        //destinationText.textContent = formatted;
         destinationText.setAttribute("data-ja", formatted);
         destinationText.setAttribute("data-en", typeRomajiMap[type]);
 
+        // 日本語なら日本語を表示
         if(isJapanese){
             destinationText.textContent = destinationText.getAttribute("data-ja");
-            destinationText.style.letterSpacing = "0.3em"; 
-            destinationText.style.fontSize = ""; 
+            destinationText.style.letterSpacing = "0.3em"; // 全角スペース2個分の文字間隔
+            destinationText.style.fontSize = ""; // 元の大きさ
         }else{
             destinationText.textContent = destinationText.getAttribute("data-en");
-            destinationText.style.letterSpacing = "normal"; 
-            destinationText.style.fontSize = "0.8em"; 
+            destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
         }
         destinationText.style.backgroundColor = "black";
         destinationText.style.color = "white";
         destinationText.style.width = "8.5em";
         destinationText.style.height = "1.5em";
-        
     } else if (["臨時", "回送", "団体"].includes(type)) {
-        const formatted = type.split("").join("　 　");
+        const formatted = type.split("").join("　 　"); // ← 全角スペース2個
         typeArea.style.display = "none";
+        //destinationText.textContent = formatted;
         destinationText.setAttribute("data-ja", formatted);
         destinationText.setAttribute("data-en", typeRomajiMap[type]);
 
+        // 日本語なら日本語を表示
         if(isJapanese){
             destinationText.textContent = destinationText.getAttribute("data-ja");
-            destinationText.style.letterSpacing = ""; 
-            destinationText.style.fontSize = ""; 
+            destinationText.style.letterSpacing = ""; // 全角スペース1個分の文字間隔
+            destinationText.style.fontSize = ""; // 元の大きさ
         }else{
             destinationText.textContent = destinationText.getAttribute("data-en");
-            destinationText.style.letterSpacing = "normal"; 
-            destinationText.style.fontSize = "0.8em"; 
+            destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
         }
         destinationText.style.backgroundColor = "black";
         destinationText.style.color = "white";
         destinationText.style.width = "8.5em";
         destinationText.style.height = "1.5em";
-        
     } else if (type === "修学旅行") {
-        const formatted = type.split("").join("　"); 
+        const formatted = type.split("").join("　"); // ← 全角スペース1個
         typeArea.style.display = "none";
+        //destinationText.textContent = formatted;
         destinationText.setAttribute("data-ja", formatted);
         destinationText.setAttribute("data-en", typeRomajiMap[type]);
 
+        // 日本語なら日本語を表示
         if(isJapanese){
             destinationText.textContent = destinationText.getAttribute("data-ja");
-            destinationText.style.letterSpacing = ""; 
-            destinationText.style.fontSize = ""; 
+            destinationText.style.letterSpacing = ""; // 全角スペース1個分の文字間隔
+            destinationText.style.fontSize = ""; // 元の大きさ
         } else {
             destinationText.textContent = destinationText.getAttribute("data-en");
-            destinationText.style.letterSpacing = "normal"; 
-            destinationText.style.fontSize = "0.8em"; 
+            destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
         }
         destinationText.style.backgroundColor = "black";
         destinationText.style.color = "white";
         destinationText.style.width = "8.5em";
         destinationText.style.height = "1.5em";
-        
     } else {
-        // 通常の種別表示
-        typeArea.style.display = ""; 
+        // 通常の種別表示に戻す
+        typeArea.style.display = ""; // 表示に戻す
+        //typeText.textContent = type;
+        //destinationText.textContent = destination;
 
+        // 日本語なら日本語を表示
         if(isJapanese){
             typeText.textContent = typeText.getAttribute("data-ja");
             destinationText.textContent = destinationText.getAttribute("data-ja");
-            destinationText.style.letterSpacing = "0.2em"; // 新幹線日本語の基本間隔
-            typeText.style.fontSize = ""; 
-            numberText.style.fontSize = ""; 
-            destinationText.style.fontSize = ""; 
+            destinationText.style.letterSpacing = ""; // 全角スペース1個分の文字間隔
+            typeText.style.fontSize = ""; // 通常サイズに戻す
+            numberText.style.fontSize = ""; // 通常サイズに戻す
+            destinationText.style.fontSize = ""; // 通常サイズに戻す
         }else{
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
-            destinationText.style.letterSpacing = "normal"; 
-            typeText.style.fontSize = "0.8em"; 
-            numberText.style.fontSize = "0.8em"; 
-            destinationText.style.fontSize = "0.8em"; 
+            destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
+            typeText.style.fontSize = "0.8em"; // 英語縮小
+            numberText.style.fontSize = "0.8em"; // 英語縮小
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
         }
-        
+        // 号数をセット
         numberText.textContent = numberText.getAttribute("data-ja");
+
         destinationText.style.flex = ""; 
         destinationText.style.backgroundColor = "";
         destinationText.style.color = "";
         destinationText.style.width = "";
         destinationText.style.height = "";
 
+        
         // 種別ごとの色設定
         switch (type) {
             case "こだま":
+                typeArea.style.backgroundColor = "#3050ff";
+                typeText.style.color = "white";
+                numberText.style.color = "white";
+                break;
             case "かもめB":
+                //typeText.textContent = "かもめ";
                 typeArea.style.backgroundColor = "#3050ff";
                 typeText.style.color = "white";
                 numberText.style.color = "white";
                 break;
             case "ひかり":
+                typeArea.style.backgroundColor = "#ff0000";
+                typeText.style.color = "white";
+                numberText.style.color = "white";
+                break;
             case "かもめR":
+                //typeText.textContent = "かもめ";
                 typeArea.style.backgroundColor = "#ff0000";
                 typeText.style.color = "white";
                 numberText.style.color = "white";
@@ -260,7 +220,13 @@ function updateDisplay() {
                 numberText.style.color = "white";
                 break;
             case "はやぶさH":
+                //typeText.textContent = "はやぶさ";
+                typeArea.style.backgroundColor = "#9ACD32";
+                typeText.style.color = "white";
+                numberText.style.color = "white";
+                break;
             case "はやてH":
+                //typeText.textContent = "はやて";
                 typeArea.style.backgroundColor = "#9ACD32";
                 typeText.style.color = "white";
                 numberText.style.color = "white";
@@ -285,91 +251,75 @@ function updateDisplay() {
                 numberText.style.color = "white";
         }
     }
-
-    // ▼ 表示更新の最後に、必ずサイズ調整（縮小判定）を実行する
-    adjustDestinationSize();
 }
 
 function switchLanguage() {
-    // まず状態を反転させる
-    isJapanese = !isJapanese;
-    
     const typeArea = document.getElementById("type-area");
     const typeText = document.getElementById("type-text");
     const destinationArea = document.getElementById("destination-area");
     const destinationText = document.getElementById("destination-text");
+
     const numberText = document.getElementById("number-text");
 
     if (!typeArea || !typeText || !destinationArea || !destinationText) return;
 
+    // 現在の表示モード取得（例: "試運転", "臨時", "回送" など）
     const typeTextData = typeText.getAttribute("data-ja");
-    const type = document.getElementById("type-select").value;
-    const isSpecialType = ["試運転", "臨時", "回送", "団体", "修学旅行"].includes(type);
+
+    // 特殊種別かどうか
+    const isSpecialType = ["試運転", "臨時", "回送", "団体", "修学旅行"].includes(typeTextData);
 
     if (isJapanese) {
         if (isSpecialType) {
-            destinationText.textContent = destinationText.getAttribute("data-ja");
-            destinationText.style.letterSpacing = (type === "試運転") ? "0.3em" : "";
-            destinationText.style.fontSize = ""; 
-        } else {
-            typeText.textContent = typeText.getAttribute("data-ja");
-            destinationText.textContent = destinationText.getAttribute("data-ja");
-            destinationText.style.letterSpacing = "0.2em"; // 新幹線用の文字間隔
-            destinationText.style.fontSize = ""; 
-            typeText.style.fontSize = ""; 
-        }
-    } else {
-        if (isSpecialType) {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
-            destinationText.style.fontSize = "0.8em"; 
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
         } else {
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
-            destinationText.style.fontSize = "0.8em"; 
-            typeText.style.fontSize = "0.8em"; 
+            destinationText.style.fontSize = "0.8em"; // 英語縮小
+            typeText.style.fontSize = "0.8em"; // 英語縮小
+        }
+    } else {
+        if (isSpecialType) {
+            destinationText.textContent = destinationText.getAttribute("data-ja");
+            destinationText.style.letterSpacing = (typeTextData === "試運転") ? "0.3em" : "";
+            destinationText.style.fontSize = ""; // 通常サイズに戻す
+        } else {
+            typeText.textContent = typeText.getAttribute("data-ja");
+            destinationText.textContent = destinationText.getAttribute("data-ja");
+            destinationText.style.letterSpacing = "0.2em";
+            destinationText.style.fontSize = ""; // 通常サイズに戻す
+            typeText.style.fontSize = ""; // 通常サイズに戻す
         }
     }
 
-    // ▼ 切り替え完了時にも必ずサイズ調整を実行する
-    adjustDestinationSize();
+
+    isJapanese = !isJapanese;
 }
 
-// ▼ 3秒ごとに切り替える
+// ▼ 3秒ごとに日本語とローマ字を切り替える
 setInterval(switchLanguage, 3500);
 
-// ▼ 初期化時のイベントリスナー登録（リアルタイム反映 input に変更・追加）
-window.addEventListener("DOMContentLoaded", () => {
-    updateDisplay();
+// ▼ 初期表示更新
+window.addEventListener("DOMContentLoaded", updateDisplay);
 
-    // 入力欄に input イベントをバインド（リアルタイム反映）
-    const destInput = document.getElementById('destination-input');
-    if (destInput) destInput.addEventListener('input', updateDisplay);
-
-    const romajiInput = document.getElementById('romaji-input');
-    if (romajiInput) romajiInput.addEventListener('input', updateDisplay);
-
-    const numberInput = document.getElementById('number-input');
-    if (numberInput) numberInput.addEventListener('input', updateDisplay);
-
-    const typeSelect = document.getElementById('type-select');
-    if (typeSelect) typeSelect.addEventListener('change', updateDisplay);
-});
-
-// ▼ 画像保存
+// 画像保存
 document.addEventListener("DOMContentLoaded", () => {
     const saveButton = document.getElementById("save-image-button");
+
     if (saveButton) {
         saveButton.addEventListener("click", () => {
             const display = document.querySelector(".led-display");
             if (!display) return;
+
             html2canvas(display, {
-                backgroundColor: null, 
-                scale: 2              
+                backgroundColor: null, // 背景透過を維持
+                scale: 2              // 高解像度で保存
             }).then(canvas => {
                 const link = document.createElement("a");
-                link.download = "shinkansen_display.png";
+                link.download = "display.png";
                 link.href = canvas.toDataURL("image/png");
                 link.click();
             });
@@ -377,15 +327,19 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ▼ ドット枠の制御
+// ドット枠の制御
+// 追加したチェックボックスと、表示器の要素を取得
 const toggleDotsCheckbox = document.getElementById('toggle-dots');
+// ※ '.display' の部分は、実際の表示器の枠のクラス名やID名に変えてください
 const displayElement = document.querySelector('.led-display'); 
-if (toggleDotsCheckbox && displayElement) {
-    toggleDotsCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            displayElement.classList.add('show-dots');
-        } else {
-            displayElement.classList.remove('show-dots');
-        }
-    });
-}
+
+// チェックボックスの値が変わったときのイベントリスナーを追加
+toggleDotsCheckbox.addEventListener('change', function() {
+  if (this.checked) {
+    // チェックされたらクラスを追加して網目を表示
+    displayElement.classList.add('show-dots');
+  } else {
+    // チェックが外れたらクラスを削除して網目を消す
+    displayElement.classList.remove('show-dots');
+  }
+});
