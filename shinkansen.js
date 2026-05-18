@@ -465,6 +465,23 @@ async function renderLEDMatrix() {
     dotCanvas.width = tempCanvas.width;
     dotCanvas.height = tempCanvas.height;
 
+    // 縮小・ズレを完全に防ぐピクセル・アライメント
+    // 1. 元の枠のスタイルと、ボーダー（枠線）の太さを取得
+    const displayStyle = window.getComputedStyle(display);
+    const borderLeft = parseFloat(displayStyle.borderLeftWidth) || 0;
+    const borderTop = parseFloat(displayStyle.borderTopWidth) || 0;
+
+    // 2. CSS上のキャンバスサイズを、元の枠の「ボーダーを含んだ物理サイズ」に完全固定
+    dotCanvas.style.width = display.offsetWidth + "px";
+    dotCanvas.style.height = display.offsetHeight + "px";
+
+    // 3. ボーダーの太さ分だけ左・上にマイナス方向にズラし、座標を寸分狂わず重ねる
+    dotCanvas.style.left = `-${borderLeft}px`;
+    dotCanvas.style.top = `-${borderTop}px`;
+
+    // 4. 元の枠に角丸（border-radius）がある場合、キャンバスがはみ出さないように形を合わせる
+    dotCanvas.style.borderRadius = displayStyle.borderRadius;
+
     const ctx = dotCanvas.getContext("2d", { willReadFrequently: true });
     const tempCtx = tempCanvas.getContext("2d");
     const imgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
