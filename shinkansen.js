@@ -86,6 +86,8 @@ function adjustDestinationSize() {
         if (destinationText) destinationText.style.transform = 'scaleX(1)';
         if (numberText) numberText.style.transform = 'translateX(-50%) scaleX(1)';
     }
+
+    requestLEDRender();
 }
 
 function updateDisplay() {
@@ -336,8 +338,50 @@ function switchLanguage() {
     adjustDestinationSize();
 }
 
-// ▼ 3秒ごとに切り替える
-setInterval(switchLanguage, 3500);
+// ==========================================
+// ▼ 自動切替タイマーの制御
+// ==========================================
+let languageTimer = null;
+
+// タイマーを開始する関数
+function startAutoSwitch() {
+    // 既にタイマーが動いていなければ開始
+    if (!languageTimer) {
+        languageTimer = setInterval(switchLanguage, 3500);
+    }
+}
+
+// タイマーを停止する関数
+function stopAutoSwitch() {
+    if (languageTimer) {
+        clearInterval(languageTimer); // タイマーを解除
+        languageTimer = null;         // 変数をリセット
+    }
+}
+
+// 自動切替スイッチのイベントリスナー設定
+document.addEventListener("DOMContentLoaded", () => {
+    const autoSwitchToggle = document.getElementById("auto-switch-toggle");
+    
+    if (autoSwitchToggle) {
+        // 初期状態の反映（checkedなら開始）
+        if (autoSwitchToggle.checked) {
+            startAutoSwitch();
+        }
+
+        // スイッチが切り替えられた時の処理
+        autoSwitchToggle.addEventListener("change", (e) => {
+            if (e.target.checked) {
+                startAutoSwitch();
+            } else {
+                stopAutoSwitch();
+            }
+        });
+    } else {
+        // もしHTMLにスイッチがない場合は、後方互換性のため常に動作させる
+        startAutoSwitch();
+    }
+});
 
 // ▼ 初期化時のイベントリスナー登録（リアルタイム反映 input に変更・追加）
 window.addEventListener("DOMContentLoaded", () => {
@@ -377,15 +421,120 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ▼ ドット枠の制御
-const toggleDotsCheckbox = document.getElementById('toggle-dots');
-const displayElement = document.querySelector('.led-display'); 
-if (toggleDotsCheckbox && displayElement) {
-    toggleDotsCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            displayElement.classList.add('show-dots');
-        } else {
-            displayElement.classList.remove('show-dots');
+// ▼ リアルLEDドットマトリクス描画エンジン
+let dotRenderTimer;
+
+async function renderLEDMatrix() {
+    const display = document.querySelector(".led-display");
+    const dotCanvas = document.getElementById("dot-canvas");
+    const toggleCheckbox = document.getElementById("toggle-dots");
+
+    if (!display || !dotCanvas || !toggleCheckbox) return;
+
+    if (!toggleCheckbox.checked) {
+        dotCanvas.style.opacity = "0";
+        return;
+    }
+
+    // ★ 新幹線専用のシンプル処理：
+    // 複雑な縁取り判定は不要ですが、号数やローマ字などの細い文字がドット落ちしないよう、
+    // 撮影の一瞬だけすべての文字を同色で少し太らせます。
+    const tempStyle = document.createElement('style');
+    tempStyle.innerHTML = `
+        #type-text, #destination-text, #number-text {
+            font-weight: 900 !important;
+            -webkit-text-stroke: 0.6px currentColor !important; 
         }
+    `;
+    document.head.appendChild(tempStyle);
+
+    // スタイル反映とレイアウト変更（縮小処理など）が完了するのを待つ
+    await new Promise(resolve => setTimeout(resolve, 120));
+
+    const scaleFactor = 2; // 高解像度スケール（必要に応じて3などに変更）
+
+    const tempCanvas = await html2canvas(display, {
+        scale: scaleFactor, 
+        backgroundColor: "#000",
+        logging: false
     });
+
+    // 撮影が終わったらスタイルを削除して元に戻す
+    document.head.removeChild(tempStyle);
+
+    dotCanvas.width = tempCanvas.width;
+    dotCanvas.height = tempCanvas.height;
+
+    // 縮小・ズレを完全に防ぐピクセル・アライメント
+    // 1. 元の枠のスタイルと、ボーダー（枠線）の太さを取得
+    const displayStyle = window.getComputedStyle(display);
+    const borderLeft = parseFloat(displayStyle.borderLeftWidth) || 0;
+    const borderTop = parseFloat(displayStyle.borderTopWidth) || 0;
+
+    // 2. CSS上のキャンバスサイズを、元の枠の「ボーダーを含んだ物理サイズ」に完全固定
+    dotCanvas.style.width = display.offsetWidth + "px";
+    dotCanvas.style.height = display.offsetHeight + "px";
+
+    // 3. ボーダーの太さ分だけ左・上にマイナス方向にズラし、座標を寸分狂わず重ねる
+    dotCanvas.style.left = `-${borderLeft}px`;
+    dotCanvas.style.top = `-${borderTop}px`;
+
+    // 4. 元の枠に角丸（border-radius）がある場合、キャンバスがはみ出さないように形を合わせる
+    dotCanvas.style.borderRadius = displayStyle.borderRadius;
+
+    const ctx = dotCanvas.getContext("2d", { willReadFrequently: true });
+    const tempCtx = tempCanvas.getContext("2d");
+    const imgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+    const data = imgData.data;
+
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0, 0, dotCanvas.width, dotCanvas.height);
+
+    const baseDotSize = 2;   
+    const baseRadius = 0.9;  // 開口率（明るさ維持）
+
+    const dotSize = baseDotSize * scaleFactor;
+    const radius = baseRadius * scaleFactor;
+    const brightnessBoost = 1.0; // 輝度ブースト
+
+    for (let y = 0; y < tempCanvas.height; y += dotSize) {
+        for (let x = 0; x < tempCanvas.width; x += dotSize) {
+            
+            // 色計算が不要になったため、最も綺麗な「中心点の色」を拾うだけ
+            const pX = Math.min(x + Math.floor(dotSize / 2), tempCanvas.width - 1);
+            const pY = Math.min(y + Math.floor(dotSize / 2), tempCanvas.height - 1);
+            const i = (pY * tempCanvas.width + pX) * 4;
+
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+
+            ctx.beginPath();
+            ctx.arc(x + dotSize / 2, y + dotSize / 2, radius, 0, Math.PI * 2);
+
+            if (r > 10 || g > 10 || b > 10) {
+                const brightR = Math.min(255, Math.floor(r * brightnessBoost));
+                const brightG = Math.min(255, Math.floor(g * brightnessBoost));
+                const brightB = Math.min(255, Math.floor(b * brightnessBoost));
+                ctx.fillStyle = `rgb(${brightR}, ${brightG}, ${brightB})`;
+            } else {
+                ctx.fillStyle = "#151515"; // 消灯
+            }
+            ctx.fill();
+        }
+    }
+
+    dotCanvas.style.opacity = "1";
+}
+
+// 連続実行を防ぐための呼び出し関数
+function requestLEDRender() {
+    clearTimeout(dotRenderTimer);
+    dotRenderTimer = setTimeout(renderLEDMatrix, 10); 
+}
+
+// トグルスイッチのイベントリスナー
+const toggleDotsCheckbox = document.getElementById('toggle-dots');
+if (toggleDotsCheckbox) {
+    toggleDotsCheckbox.addEventListener('change', requestLEDRender);
 }

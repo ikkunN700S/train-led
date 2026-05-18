@@ -25,6 +25,7 @@
       </div>
       <div class="type-area" id="type-area"><span id="rounded-box"><span id="type-text">普通</span></span></div>
       <div class="destination-area" id="destination-area"><span id="destination-text">名古屋</span></div>
+      <canvas id="dot-canvas" data-html2canvas-ignore="true"></canvas>
     </div>
   </div>
 
@@ -62,9 +63,15 @@
       <input type="text" id="romaji-input" value="Nagoya" />
     </label>
 
-    <label>ドット枠
+    <label>ドット表示
       <label class="toggle-switch">
         <input type="checkbox" id="toggle-dots">
+      </label>
+    </label>
+
+    <label class="toggle-label">自動切替（日本語/英語）
+      <label class="toggle-switch">
+        <input type="checkbox" id="auto-switch-toggle" checked>
       </label>
     </label>
   </div>
