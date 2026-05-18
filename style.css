@@ -49,6 +49,19 @@ body {
     position: relative;
 }
 
+#dot-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10; /* テキストより手前に表示 */
+    opacity: 0;
+    /*transition: opacity 0.2s ease;*/ /* ふわっと点灯させる */
+    box-sizing: border-box; /* 枠のズレ防止 */
+    pointer-events: none; /* クリック操作を邪魔しない */
+}
+
 /* ドット枠 */
 .led-display.show-dots::after {
   content: '';

@@ -76,6 +76,8 @@ function adjustDestinationSize() {
         // paddingは左右の余白（0.5em）を考慮して 10 程度確保します
         shrinkTextToFit(carNumberArea, carDigit, 10, 'normal');
     }
+
+    requestLEDRender();
 }
 function updateDisplay() {
     const carNumber = document.getElementById("car-input").value;
@@ -256,6 +258,7 @@ function updateDisplay() {
             case "普　通":
                 typeArea.style.backgroundColor = "#000000";
                 typeText.style.color = "white";
+                typeText.style.textShadow = "none";
                 break;
             case "各停":
             case "各駅停車":
@@ -381,7 +384,7 @@ function switchLanguage() {
         destinationText.style.fontSize = ""; 
 
         // 車両番号 (No.上) -> (数字上) に戻す
-        carDigit.textContent = document.getElementById("car-input").value || "1"; 
+        carDigit.textContent = document.getElementById("car-input").value || ""; 
         carLabel.textContent = "号車"; 
         carLabel.style.fontSize = "0.6em";
         carLabel.style.marginTop = "0em";
@@ -421,7 +424,7 @@ function switchLanguage() {
 
         // 車両番号 (No.上)
         carLabel.textContent = "No."; 
-        carDigit.textContent = document.getElementById("car-input").value || "1";
+        carDigit.textContent = document.getElementById("car-input").value || "";
         carLabel.style.fontSize = "";
         carLabel.style.marginTop = "";
         carNumberArea.appendChild(carLabel);
@@ -432,8 +435,50 @@ function switchLanguage() {
     adjustDestinationSize();
 }
 
-// ▼ 3秒ごとに切り替える
-setInterval(switchLanguage, 3500);
+// ==========================================
+// ▼ 自動切替タイマーの制御
+// ==========================================
+let languageTimer = null;
+
+// タイマーを開始する関数
+function startAutoSwitch() {
+    // 既にタイマーが動いていなければ開始
+    if (!languageTimer) {
+        languageTimer = setInterval(switchLanguage, 3500);
+    }
+}
+
+// タイマーを停止する関数
+function stopAutoSwitch() {
+    if (languageTimer) {
+        clearInterval(languageTimer); // タイマーを解除
+        languageTimer = null;         // 変数をリセット
+    }
+}
+
+// 自動切替スイッチのイベントリスナー設定
+document.addEventListener("DOMContentLoaded", () => {
+    const autoSwitchToggle = document.getElementById("auto-switch-toggle");
+    
+    if (autoSwitchToggle) {
+        // 初期状態の反映（checkedなら開始）
+        if (autoSwitchToggle.checked) {
+            startAutoSwitch();
+        }
+
+        // スイッチが切り替えられた時の処理
+        autoSwitchToggle.addEventListener("change", (e) => {
+            if (e.target.checked) {
+                startAutoSwitch();
+            } else {
+                stopAutoSwitch();
+            }
+        });
+    } else {
+        // もしHTMLにスイッチがない場合は、後方互換性のため常に動作させる
+        startAutoSwitch();
+    }
+});
 
 // ▼ 初期化時のイベントリスナー登録
 window.addEventListener("DOMContentLoaded", () => {
@@ -448,35 +493,210 @@ window.addEventListener("DOMContentLoaded", () => {
     document.getElementById('car-input').addEventListener('input', updateDisplay);
 });
 
-// ▼ 画像ダウンロード機能
+// ▼ 画像保存（通常モードとドットモードの出し分け対応）
 document.addEventListener("DOMContentLoaded", () => {
     const saveButton = document.getElementById("save-image-button");
+
     if (saveButton) {
         saveButton.addEventListener("click", () => {
-            const display = document.querySelector(".display-frame");
-            if (!display) return;
-            html2canvas(display, {
-                backgroundColor: null,
-                scale: 2 
-            }).then(canvas => {
+            const toggleCheckbox = document.getElementById("toggle-dots");
+            const dotCanvas = document.getElementById("dot-canvas");
+            
+            // 1. ドット表示モードがONの場合
+            if (toggleCheckbox && toggleCheckbox.checked && dotCanvas) {
+                // すでにあるCanvasを直接画像に変換する（非常に高速）
                 const link = document.createElement("a");
-                link.download = "display.png";
-                link.href = canvas.toDataURL("image/png");
+                link.download = "led_display_dot.png"; // 保存名をわかりやすく変更
+                link.href = dotCanvas.toDataURL("image/png");
                 link.click();
-            });
+            } 
+            // 2. 通常表示モードがONの場合
+            else {
+                // 従来通り html2canvas を使ってHTML要素を画像化する
+                const display = document.querySelector(".led-display");
+                if (!display) return;
+
+                html2canvas(display, {
+                    backgroundColor: null, 
+                    scale: 2              
+                }).then(canvas => {
+                    const link = document.createElement("a");
+                    link.download = "led_display_normal.png"; // 保存名をわかりやすく変更
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                });
+            }
         });
     }
 });
 
-// ▼ ドット枠の制御
-const toggleDotsCheckbox = document.getElementById('toggle-dots');
-const displayElement = document.querySelector('.led-display'); 
-if (toggleDotsCheckbox && displayElement) {
-    toggleDotsCheckbox.addEventListener('change', function() {
-        if (this.checked) {
-            displayElement.classList.add('show-dots');
+// ▼ リアルLEDドットマトリクス描画エンジン
+let dotRenderTimer;
+
+async function renderLEDMatrix() {
+    const display = document.querySelector(".led-display");
+    const dotCanvas = document.getElementById("dot-canvas");
+    const toggleCheckbox = document.getElementById("toggle-dots");
+
+    if (!display || !dotCanvas || !toggleCheckbox) return;
+
+    if (!toggleCheckbox.checked) {
+        dotCanvas.style.opacity = "0";
+        return;
+    }
+
+    const typeText = document.getElementById("type-text");
+
+    const typeTextData = typeText ? typeText.getAttribute("data-ja") : "";
+
+    let outlineCss = "";
+    
+    if (typeText) {
+        // 現在の要素に適用されている最終的なスタイル（計算値）を取得
+        const computedShadow = window.getComputedStyle(typeText).textShadow;
+        
+        // text-shadow が "none" ではない（＝縁取りが存在する）場合のみCSSを追加
+        if (computedShadow !== "none") {
+            if (!isJapanese){
+                // 縁取りあり&&英語
+                outlineCss = `
+                #type-text {
+                    font-weight: 900 !important;
+                    -webkit-text-stroke: 0.2px currentColor !important; 
+                    text-shadow: 
+                        2px 2px 0 black, -2px 2px 0 black,
+                        2px -2px 0 black, -2px -2px 0 black,
+                        0 2px 0 black, 0 -2px 0 black,
+                        2px 0 0 black, -2px 0 0 black !important;
+                }
+            `;
+            }else if(!rapidType){
+                // 縁取りあり&&日本語
+                outlineCss = `
+                #type-text {
+                    font-weight: 900 !important;
+                    -webkit-text-stroke: 0.4px currentColor !important; 
+                    text-shadow: 
+                        2px 2px 0 black, -2px 2px 0 black,
+                        2px -2px 0 black, -2px -2px 0 black,
+                        0 2px 0 black, 0 -2px 0 black,
+                        2px 0 0 black, -2px 0 0 black !important;
+                }
+            `;
+            }
         } else {
-            displayElement.classList.remove('show-dots');
+            if(!isJapanese && typeTextData === "特別快速"){
+                // 縁取りなしかつ英語のとき（特別快速英語のとき）
+                outlineCss = `
+                #type-text {
+                    font-weight: 900 !important;
+                    -webkit-text-stroke: 0.8px currentColor !important; 
+                }
+            `;
+            }
         }
+    }
+
+    let englishCss = "";
+    if (!isJapanese) {
+        englishCss = `
+            #destination-text {
+                -webkit-text-stroke: 0.8px white !important;
+            }
+        `;
+    }
+
+    const tempStyle = document.createElement('style');
+    tempStyle.innerHTML = `
+        ${outlineCss} /* 条件判定した縁取り用CSSを展開 */
+        ${englishCss}
+        
+        /* 号車などの細い文字を太らせてドット落ちを防ぐ */
+        .car-label, .car-digit {
+            font-weight: 800 !important;
+            -webkit-text-stroke: 0.2px currentColor !important;
+        }
+    `;
+
+    document.head.appendChild(tempStyle);
+
+    await new Promise(resolve => setTimeout(resolve, 5));
+
+    // 2なら縦横2倍（通常表示のダウンロードと同じ）、3なら3倍の超高解像度
+    const scaleFactor = 2; 
+
+    // 指定した高解像度で裏側のテキストをサンプリング
+    const tempCanvas = await html2canvas(display, {
+        scale: scaleFactor, 
+        backgroundColor: "#000",
+        logging: false
     });
+
+    document.head.removeChild(tempStyle);
+
+    // キャンバスの内部ピクセルサイズを高解像度な状態に設定
+    dotCanvas.width = tempCanvas.width;
+    dotCanvas.height = tempCanvas.height;
+
+    const ctx = dotCanvas.getContext("2d", { willReadFrequently: true });
+    const tempCtx = tempCanvas.getContext("2d");
+    
+    const imgData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+    const data = imgData.data;
+
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0, 0, dotCanvas.width, dotCanvas.height);
+
+    // ドットの基本サイズ（スケール1の時のサイズ）
+    const baseDotSize = 2;   
+    const baseRadius = 0.9;  
+
+    // 解像度に合わせてドットを描画するサイズも拡大する
+    const dotSize = baseDotSize * scaleFactor;
+    const radius = baseRadius * scaleFactor;
+
+    // 明るさのブースト倍率（1.5〜2.0あたりがお勧めです）
+    const brightnessBoost = 1.0; 
+
+    for (let y = 0; y < tempCanvas.height; y += dotSize) {
+        for (let x = 0; x < tempCanvas.width; x += dotSize) {
+            
+            const pX = Math.min(x + Math.floor(dotSize / 2), tempCanvas.width - 1);
+            const pY = Math.min(y + Math.floor(dotSize / 2), tempCanvas.height - 1);
+            const i = (pY * tempCanvas.width + pX) * 4;
+
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+
+            ctx.beginPath();
+            ctx.arc(x + dotSize / 2, y + dotSize / 2, radius, 0, Math.PI * 2);
+
+            // 中心が少しでも明るければ点灯（黒い縁取りは r,g,b がほぼ 0 になるため消灯扱いになる）
+            if (r > 10 || g > 10 || b > 10) {
+                const brightR = Math.min(255, Math.floor(r * brightnessBoost));
+                const brightG = Math.min(255, Math.floor(g * brightnessBoost));
+                const brightB = Math.min(255, Math.floor(b * brightnessBoost));
+                ctx.fillStyle = `rgb(${brightR}, ${brightG}, ${brightB})`;
+            } else {
+                ctx.fillStyle = "#151515"; // 消灯
+            }
+            ctx.fill();
+        }
+    }
+
+    dotCanvas.style.opacity = "1";
+}
+
+// 連続実行を防ぐための呼び出し関数
+function requestLEDRender() {
+    clearTimeout(dotRenderTimer);
+    // すぐに処理を開始する（実際の待機は関数内の await で行う）
+    dotRenderTimer = setTimeout(renderLEDMatrix, 5); 
+}
+
+// トグルスイッチのイベント
+const toggleDotsCheckbox = document.getElementById('toggle-dots');
+if (toggleDotsCheckbox) {
+    toggleDotsCheckbox.addEventListener('change', requestLEDRender);
 }
