@@ -625,13 +625,26 @@ async function renderLEDMatrix() {
     // 2なら縦横2倍（通常表示のダウンロードと同じ）、3なら3倍の超高解像度
     const scaleFactor = 2; 
 
-    // 指定した高解像度で裏側のテキストをサンプリング
+    const baseWidth = display.offsetWidth;
+    const baseHeight = display.offsetHeight;
+
     const tempCanvas = await html2canvas(display, {
         scale: scaleFactor, 
         backgroundColor: "#000",
-        logging: false
+        logging: false,
+        // ★ 追加：撮影領域を本来のサイズに強制指定
+        width: baseWidth,
+        height: baseHeight,
+        // ★ 追加：撮影する裏側の世界（クローン）だけで、スマホ用の縮小を解除する
+        onclone: (clonedDoc) => {
+            const clonedDisplay = clonedDoc.querySelector(".display-frame") || clonedDoc.querySelector(".led-display");
+            if (clonedDisplay) {
+                // transform（縮小）を解除して、1.0倍のフル解像度で撮影させる
+                clonedDisplay.style.transform = "none";
+            }
+        }
     });
-
+    
     document.head.removeChild(tempStyle);
 
     // キャンバスの内部ピクセルサイズを高解像度な状態に設定

@@ -453,10 +453,24 @@ async function renderLEDMatrix() {
 
     const scaleFactor = 2; // 高解像度スケール（必要に応じて3などに変更）
 
+    const baseWidth = display.offsetWidth;
+    const baseHeight = display.offsetHeight;
+
     const tempCanvas = await html2canvas(display, {
         scale: scaleFactor, 
         backgroundColor: "#000",
-        logging: false
+        logging: false,
+        // ★ 追加：撮影領域を本来のサイズに強制指定
+        width: baseWidth,
+        height: baseHeight,
+        // ★ 追加：撮影する裏側の世界（クローン）だけで、スマホ用の縮小を解除する
+        onclone: (clonedDoc) => {
+            const clonedDisplay = clonedDoc.querySelector(".display-frame") || clonedDoc.querySelector(".led-display");
+            if (clonedDisplay) {
+                // transform（縮小）を解除して、1.0倍のフル解像度で撮影させる
+                clonedDisplay.style.transform = "none";
+            }
+        }
     });
 
     // 撮影が終わったらスタイルを削除して元に戻す
