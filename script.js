@@ -19,6 +19,8 @@ const typeRomajiMap = {
 
 let isJapanese = true;  // ▼ 切り替え制御フラグ
 let rapidType = false; // 快速系統のフラグ
+let allPresets = {}; 
+let currentTypes = [];
 
 // 上位種別リスト（斜体にしたい種別）
 const italicTypes = ["区間快速", "快速", "新快速", "特別快速"];
@@ -59,6 +61,9 @@ function adjustDestinationSize() {
     
     const carNumberArea = document.getElementById("car-number"); // 号数の親枠
     const carDigit = document.getElementById("car-digit"); // 号数の数字テキスト
+
+    const typeArea = document.getElementById("type-area");
+    const typeText = document.getElementById("type-text");
     
     // 試運転などの全画面表示時は幅計算を除外
     const typeTextData = destinationText.getAttribute("data-ja");
@@ -67,8 +72,20 @@ function adjustDestinationSize() {
     if (!isSpecialType) {
         // ① 行先表示の縮小（基本の文字間隔は 0.1em）
         shrinkTextToFit(destinationArea, destinationText, 10, '0.1em');
+
+        // 種別表示の縮小
+        if (typeArea && typeText && typeArea.style.display !== "none") {
+            // スクリプト（updateDisplay等）で設定された現在の独自の文字間隔を読み取る
+            // インラインで設定されていなければ 'normal' をデフォルトとする
+            const currentLetterSpacing = typeText.style.letterSpacing || 'normal';
+            
+            // 読み取った currentLetterSpacing を維持したまま縮小判定にかける
+            // paddingは枠の余白に合わせて4〜10程度を指定（ここでは4pxで設定）
+            shrinkTextToFit(typeArea, typeText, 4, currentLetterSpacing);
+        }
     } else {
         destinationText.style.transform = 'scaleX(1)';
+        if (typeText) typeText.style.transform = 'scaleX(1)';
     }
 
     // ② 号数表示の縮小（基本の文字間隔は normal）
@@ -79,6 +96,7 @@ function adjustDestinationSize() {
 
     requestLEDRender();
 }
+
 function updateDisplay() {
     const carNumber = document.getElementById("car-input").value;
     const carNumberArea = document.getElementById("car-number");
@@ -91,11 +109,18 @@ function updateDisplay() {
     const destinationArea = document.getElementById("destination-area");
     const destinationText = document.getElementById("destination-text");
 
-    const romaji = document.getElementById("romaji-input")?.value || "Romaji";
+    const romaji = document.getElementById("romaji-input")?.value;
+
+    const typeData = currentTypes.find(t => t.ja === type);
+    
+    // JSONに英語名の定義があればそれを使い、なければそのまま日本語を入れる（エラー防止）
+    const typeEnglish = typeData ? typeData.en : type;
 
     // ▼ 表示内容の切り替えに備えて保持（属性として保持しておく）
     typeText.setAttribute("data-ja", type);
-    typeText.setAttribute("data-en", typeRomajiMap[type] || type);
+    
+    // ★ 修正：typeRomajiMap の代わりに、今JSONから取得した英語名(typeEnglish)をセット
+    typeText.setAttribute("data-en", typeEnglish);
 
     // 行先入力欄の値を即座にセット
     destinationText.setAttribute("data-ja", destination);
@@ -130,7 +155,7 @@ function updateDisplay() {
         const formatted = "試　運　転";
         typeArea.style.display = "none";
         destinationText.setAttribute("data-ja", formatted);
-        destinationText.setAttribute("data-en", typeRomajiMap[type]);
+        destinationText.setAttribute("data-en", typeEnglish);
 
         // 日本語なら日本語をセット
         if(isJapanese) {
@@ -153,7 +178,7 @@ function updateDisplay() {
         const formatted = type.split("").join("　 　"); // ← 全角スペース2個
         typeArea.style.display = "none"; // 非表示にする
         destinationText.setAttribute("data-ja", formatted);
-        destinationText.setAttribute("data-en", typeRomajiMap[type]);
+        destinationText.setAttribute("data-en", typeEnglish);
 
         // 日本語なら日本語をセット
         if(isJapanese) {
@@ -195,7 +220,7 @@ function updateDisplay() {
                 // 快速は文字間隔を広く
                 if(typeTextData === "快速"){
                     typeText.style.letterSpacing = "0.5em";
-                    typeText.style.marginLeft = "0.5em";
+                    typeText.style.marginLeft = "";
                 }else if(typeTextData === "新快速"){
                     typeText.style.letterSpacing = "-0.2em";
                     typeText.style.marginLeft = "-0.2em";
@@ -222,7 +247,7 @@ function updateDisplay() {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal"; // 英語は通常の文字間隔
 
-            if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "快速" || typeTextData === "急行"){
+            if(typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "普通" || typeTextData === "快速" || typeTextData === "急行"){
                 // 各停・各駅停車・普通・快速ローマ字表示
                 destinationText.style.letterSpacing = "normal";
                 destinationText.style.fontSize = "0.8em"; // 英語小さく
@@ -231,7 +256,7 @@ function updateDisplay() {
                 // 新快速ローマ字表示
                 destinationText.style.letterSpacing = "normal";
                 destinationText.style.fontSize = "0.8em"; // 英語縮小
-                typeText.style.fontSize = "0.7em"; // 通常サイズ
+                typeText.style.fontSize = "0.5em"; // 通常サイズ
             }else{
                 // ▼ ローマ字表示
                 destinationText.style.letterSpacing = "normal";
@@ -244,67 +269,36 @@ function updateDisplay() {
         destinationText.style.color = "";
         destinationText.style.width = "";
         destinationText.style.height = "";
-        
-        // 縁取りをonに戻す
-        typeText.style.textShadow = `
-            1px 1px 0 black,
-            -1px 1px 0 black,
-            1px -1px 0 black,
-            -1px -1px 0 black
-            `;
 
-        // 種別ごとの色設定
-        switch (type) {
-            case "普　通":
-                typeArea.style.backgroundColor = "#000000";
-                typeText.style.color = "white";
+
+        if (typeData) {
+            // JSONにデータがあれば、その色を適用する
+            typeArea.style.backgroundColor = typeData.bg;
+            typeText.style.color = typeData.text;
+            
+            // JSONで outline: false になっている場合（特別快速など）は縁取りを消す
+            if (typeData.outline === false) {
                 typeText.style.textShadow = "none";
-                break;
-            case "各停":
-            case "各駅停車":
-                typeArea.style.backgroundColor = "#787878ff";
-                typeText.style.color = "white";
-                break;
-            case "区間快速":
-                typeArea.style.backgroundColor = "#00cc44";
-                typeText.style.color = "white";
-                break;
-            case "快速":
-                typeArea.style.backgroundColor = "#0052cc";
-                typeText.style.color = "white";
-                break;
-            case "新快速":
-                typeArea.style.backgroundColor = "#ff4400";
-                typeText.style.color = "white";
-                break;
-            case "特別快速":
-                typeArea.style.backgroundColor = "#ffff00ff";
-                typeText.style.color = "black";
-                typeText.style.textShadow = "none"; // 黒文字の時は縁取りoff
-                break;
-            case "準急":
-                typeArea.style.backgroundColor = "#32cd32";
-                typeText.style.color = "white";
-                break;
-            case "急行":
-                typeArea.style.backgroundColor = "#00bfff";
-                typeText.style.color = "white";
-                break;
-            case "快速急行":
-                typeArea.style.backgroundColor = "white";
-                typeText.style.color = "#00bfff";
-                break;
-            case "特急":
-                typeArea.style.backgroundColor = "#ff0000";
-                typeText.style.color = "white";
-                break;
-            case "快速特急":
-                typeArea.style.backgroundColor = "white";
-                typeText.style.color = "#ff0000";
-                break;
-            default:
-                typeArea.style.backgroundColor = "#444";
-                typeText.style.color = "white";
+            } else {
+                typeText.style.textShadow = `
+                    1px 1px 0 black, -1px 1px 0 black,
+                    1px -1px 0 black, -1px -1px 0 black
+                `;
+            }
+            
+            // 英字表示もJSONのデータで上書き更新（既存の typeRomajiMap よりも優先）
+            typeText.setAttribute("data-en", typeData.en);
+            if (isJapanese === false) {
+                typeText.textContent = typeData.en;
+            }
+        } else {
+            // 万が一データが見つからなかった場合のフォールバック（デフォルト）
+            typeArea.style.backgroundColor = "#444";
+            typeText.style.color = "white";
+            typeText.style.textShadow = `
+                1px 1px 0 black, -1px 1px 0 black,
+                1px -1px 0 black, -1px -1px 0 black
+            `;
         }
     }
     
@@ -359,7 +353,7 @@ function switchLanguage() {
                 typeText.style.fontWeight = "normal";
                 if(typeTextData === "快速"){
                     typeText.style.letterSpacing = "0.5em";
-                    typeText.style.marginLeft = "0.5em";
+                    typeText.style.marginLeft = "";
                 }else if(typeTextData === "新快速"){
                     typeText.style.letterSpacing = "-0.2em";
                     typeText.style.marginLeft = "-0.2em";
@@ -397,7 +391,7 @@ function switchLanguage() {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
             destinationText.style.fontSize = "0.8em"; 
-        } else if (typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "快速" || typeTextData === "急行"){
+        } else if (typeTextData === "各停" || typeTextData === "各駅停車" || typeTextData === "普　通" || typeTextData === "普通" || typeTextData === "快速" || typeTextData === "急行"){
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
@@ -408,7 +402,7 @@ function switchLanguage() {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
             destinationText.style.fontSize = "0.8em"; 
-            typeText.style.fontSize = "0.7em"; 
+            typeText.style.fontSize = "0.5em"; 
         } else {
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
@@ -480,18 +474,65 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
-// ▼ 初期化時のイベントリスナー登録
-window.addEventListener("DOMContentLoaded", () => {
-    updateDisplay();
+// ▼ 初期化時のイベントリスナー登録（JSON読み込みに対応）
+window.addEventListener("DOMContentLoaded", async () => {
+    // 1. JSONファイルを読み込む
+    try {
+        const response = await fetch('presets.json');
+        allPresets = await response.json();
+        
+        const presetSelect = document.getElementById("preset-select");
+        for (const [key, data] of Object.entries(allPresets)) {
+            const option = document.createElement("option");
+            option.value = key;
+            option.textContent = data.name;
+            presetSelect.appendChild(option);
+        }
 
-    // 入力イベントのバインド（change ではなく input でリアルタイム反映）
-    document.getElementById('destination-input').addEventListener('input', updateDisplay);
-    const romajiInput = document.getElementById('romaji-input');
-    if (romajiInput) romajiInput.addEventListener('input', updateDisplay);
+        // 初期設定として最初のプリセットを読み込む
+        const firstPresetKey = Object.keys(allPresets)[0];
+        currentTypes = JSON.parse(JSON.stringify(allPresets[firstPresetKey].types));
+        
+        rebuildTypeSelectUI(); // プルダウンを再構築
+
+    } catch (error) {
+        console.warn("presets.json の読み込みに失敗しました（初期の固定リストで起動します）", error);
+    }
+
+    // イベントリスナーの登録
+    document.getElementById('destination-input')?.addEventListener('input', updateDisplay);
+    document.getElementById('romaji-input')?.addEventListener('input', updateDisplay);
+    document.getElementById('type-select')?.addEventListener('change', updateDisplay);
+    document.getElementById('car-input')?.addEventListener('input', updateDisplay);
     
-    document.getElementById('type-select').addEventListener('change', updateDisplay);
-    document.getElementById('car-input').addEventListener('input', updateDisplay);
+    // 設定モーダル関連のイベントリスナー
+    setupModalEvents();
+
+    // 初回表示の更新
+    updateDisplay();
 });
+
+// ▼ メイン画面の種別プルダウンを再構築する関数
+function rebuildTypeSelectUI() {
+    const mainTypeSelect = document.getElementById("type-select");
+    if (!mainTypeSelect) return;
+    
+    // 現在の選択値を記憶
+    const currentValue = mainTypeSelect.value;
+    
+    mainTypeSelect.innerHTML = "";
+    currentTypes.forEach(type => {
+        const option = document.createElement("option");
+        option.value = type.ja; // valueは日本語名（既存ロジックとの互換性のため）
+        option.textContent = type.ja;
+        mainTypeSelect.appendChild(option);
+    });
+
+    // 以前の選択値が存在すれば復元、なければ先頭を選択
+    if (currentTypes.some(t => t.ja === currentValue)) {
+        mainTypeSelect.value = currentValue;
+    }
+}
 
 // ▼ 画像保存（通常モードとドットモードの出し分け対応）
 document.addEventListener("DOMContentLoaded", () => {
@@ -729,4 +770,69 @@ function requestLEDRender() {
 const toggleDotsCheckbox = document.getElementById('toggle-dots');
 if (toggleDotsCheckbox) {
     toggleDotsCheckbox.addEventListener('change', requestLEDRender);
+}
+
+// ==========================================
+// ▼ 設定モーダル（UI）の制御ロジック
+// ==========================================
+function setupModalEvents() {
+    const modal = document.getElementById("settings-modal");
+    
+    document.getElementById("open-settings-btn")?.addEventListener("click", () => {
+        renderSettingsEditor(); // 編集UIを生成
+        modal.style.display = "flex";
+    });
+
+    document.getElementById("close-settings-btn")?.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    document.getElementById("load-preset-btn")?.addEventListener("click", () => {
+        const presetKey = document.getElementById("preset-select").value;
+        if (presetKey && allPresets[presetKey]) {
+            currentTypes = JSON.parse(JSON.stringify(allPresets[presetKey].types));
+            renderSettingsEditor();
+        }
+    });
+
+    document.getElementById("save-settings-btn")?.addEventListener("click", () => {
+        const container = document.getElementById("type-editor-container");
+        const rows = container.querySelectorAll(".type-edit-row");
+        
+        let newTypes = [];
+        rows.forEach(row => {
+            newTypes.push({
+                ja: row.querySelector(".edit-ja").value,
+                en: row.querySelector(".edit-en").value,
+                bg: row.querySelector(".edit-bg").value,
+                text: row.querySelector(".edit-text").value,
+                outline: row.querySelector(".edit-outline").checked
+            });
+        });
+
+        currentTypes = newTypes; // データを更新
+        rebuildTypeSelectUI();   // メイン画面のプルダウンを更新
+        updateDisplay();         // 表示を最新状態に反映
+        modal.style.display = "none";
+    });
+}
+
+function renderSettingsEditor() {
+    const container = document.getElementById("type-editor-container");
+    container.innerHTML = "";
+
+    currentTypes.forEach((type, index) => {
+        const row = document.createElement("div");
+        row.className = "type-edit-row";
+        row.style.cssText = "display: flex; gap: 10px; margin-bottom: 10px; align-items: center;";
+        
+        row.innerHTML = `
+            <input type="text" class="edit-ja" value="${type.ja}" placeholder="日本語" style="width: 80px;">
+            <input type="text" class="edit-en" value="${type.en}" placeholder="英語" style="width: 100px;">
+            <input type="color" class="edit-bg" value="${type.bg}" title="背景色">
+            <input type="color" class="edit-text" value="${type.text}" title="文字色">
+            <label style="font-size: 0.9em;"><input type="checkbox" class="edit-outline" ${type.outline !== false ? 'checked' : ''}> 縁取り</label>
+        `;
+        container.appendChild(row);
+    });
 }
