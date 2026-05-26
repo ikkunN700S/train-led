@@ -61,6 +61,9 @@ function adjustDestinationSize() {
     
     const carNumberArea = document.getElementById("car-number"); // 号数の親枠
     const carDigit = document.getElementById("car-digit"); // 号数の数字テキスト
+
+    const typeArea = document.getElementById("type-area");
+    const typeText = document.getElementById("type-text");
     
     // 試運転などの全画面表示時は幅計算を除外
     const typeTextData = destinationText.getAttribute("data-ja");
@@ -69,8 +72,20 @@ function adjustDestinationSize() {
     if (!isSpecialType) {
         // ① 行先表示の縮小（基本の文字間隔は 0.1em）
         shrinkTextToFit(destinationArea, destinationText, 10, '0.1em');
+
+        // 種別表示の縮小
+        if (typeArea && typeText && typeArea.style.display !== "none") {
+            // スクリプト（updateDisplay等）で設定された現在の独自の文字間隔を読み取る
+            // インラインで設定されていなければ 'normal' をデフォルトとする
+            const currentLetterSpacing = typeText.style.letterSpacing || 'normal';
+            
+            // 読み取った currentLetterSpacing を維持したまま縮小判定にかける
+            // paddingは枠の余白に合わせて4〜10程度を指定（ここでは4pxで設定）
+            shrinkTextToFit(typeArea, typeText, 4, currentLetterSpacing);
+        }
     } else {
         destinationText.style.transform = 'scaleX(1)';
+        if (typeText) typeText.style.transform = 'scaleX(1)';
     }
 
     // ② 号数表示の縮小（基本の文字間隔は normal）
@@ -205,7 +220,7 @@ function updateDisplay() {
                 // 快速は文字間隔を広く
                 if(typeTextData === "快速"){
                     typeText.style.letterSpacing = "0.5em";
-                    typeText.style.marginLeft = "0.5em";
+                    typeText.style.marginLeft = "";
                 }else if(typeTextData === "新快速"){
                     typeText.style.letterSpacing = "-0.2em";
                     typeText.style.marginLeft = "-0.2em";
@@ -338,7 +353,7 @@ function switchLanguage() {
                 typeText.style.fontWeight = "normal";
                 if(typeTextData === "快速"){
                     typeText.style.letterSpacing = "0.5em";
-                    typeText.style.marginLeft = "0.5em";
+                    typeText.style.marginLeft = "";
                 }else if(typeTextData === "新快速"){
                     typeText.style.letterSpacing = "-0.2em";
                     typeText.style.marginLeft = "-0.2em";
