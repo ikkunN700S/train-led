@@ -81,6 +81,7 @@ function adjustDestinationSize() {
 
     requestLEDRender();
 }
+
 function updateDisplay() {
     const carNumber = document.getElementById("car-input").value;
     const carNumberArea = document.getElementById("car-number");

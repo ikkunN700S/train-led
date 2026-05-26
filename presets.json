@@ -42,7 +42,7 @@
     "name": "館浜電鉄風種別表示",
     "types": [
       { "ja": "普通", "en": "Local", "bg": "#000000", "text": "#ffffff", "outline": true },
-      { "ja": "準急", "en": "Semi-Exp", "bg": "#0080ff", "text": "#ffffff", "outline": true },
+      { "ja": "準急", "en": "Semi-Exp.", "bg": "#0080ff", "text": "#ffffff", "outline": true },
       { "ja": "区間急行", "en": "Sub-Exp.", "bg": "#32cd32", "text": "#ffffff", "outline": true },
       { "ja": "急行", "en": "Express", "bg": "#ff8000", "text": "#ffffff", "outline": true },
       { "ja": "快速急行", "en": "Rapid-Exp.", "bg": "#cf31ff", "text": "#ffffff", "outline": true },
