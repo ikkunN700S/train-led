@@ -817,21 +817,25 @@ function setupModalEvents() {
     });
 }
 
+// 設定画面の中にエディタ（入力欄）を生成する関数
 function renderSettingsEditor() {
     const container = document.getElementById("type-editor-container");
     container.innerHTML = "";
 
     currentTypes.forEach((type, index) => {
         const row = document.createElement("div");
-        row.className = "type-edit-row";
-        row.style.cssText = "display: flex; gap: 10px; margin-bottom: 10px; align-items: center;";
+        row.className = "type-edit-row"; // CSSクラスに任せるためインラインスタイルを削除
         
         row.innerHTML = `
-            <input type="text" class="edit-ja" value="${type.ja}" placeholder="日本語" style="width: 80px;">
-            <input type="text" class="edit-en" value="${type.en}" placeholder="英語" style="width: 100px;">
-            <input type="color" class="edit-bg" value="${type.bg}" title="背景色">
-            <input type="color" class="edit-text" value="${type.text}" title="文字色">
-            <label style="font-size: 0.9em;"><input type="checkbox" class="edit-outline" ${type.outline !== false ? 'checked' : ''}> 縁取り</label>
+            <input type="text" class="edit-ja" value="${type.ja}" placeholder="日本語">
+            <input type="text" class="edit-en" value="${type.en}" placeholder="英語">
+            <div class="color-group">
+                <label title="背景色">背景 <input type="color" class="edit-bg" value="${type.bg}"></label>
+                <label title="文字色">文字 <input type="color" class="edit-text" value="${type.text}"></label>
+                <label class="edit-outline-label">
+                    <input type="checkbox" class="edit-outline" ${type.outline !== false ? 'checked' : ''}> 縁取り
+                </label>
+            </div>
         `;
         container.appendChild(row);
     });
