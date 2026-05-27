@@ -2,25 +2,26 @@
   font-family: 'Alphabet';
   src: local("Tahoma");
   font-weight: normal;
-  /*unicode-range: U+0030-0039, U+0041-005A, U+0061-007A;*/ /* A-Z, a-z */
+  /*unicode-range: U+0030-0039, U+0041-005A, U+0061-007A;*/
+  /* A-Z, a-z */
 }
 
 @font-face {
-    font-family: 'jr-cen_rollsignregular';
-    src: url('fonts/JR-Central_Rollsign.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
+  font-family: 'jr-cen_rollsignregular';
+  src: url('fonts/JR-Central_Rollsign.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
 }
 
 body {
-      background-color: #222;
-      font-family: 'DotGothic16', monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2em;
-    }
+  background-color: #222;
+  font-family: 'DotGothic16', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2em;
+}
 
 .title {
   font-size: 2em;
@@ -35,31 +36,35 @@ body {
 }
 
 .led-display {
-    display: flex;
-    align-items: stretch;
-    background-color: black;
-    border: 4px solid #111;
-    border-radius: 0.5em;
-    overflow: hidden;
-    flex-wrap: nowrap;
-    font-size: 2.2em;
-    color: white;
-    min-width: 600px;
-    min-height: 100px;
-    position: relative;
+  display: flex;
+  align-items: stretch;
+  background-color: black;
+  border: 4px solid #111;
+  border-radius: 0.5em;
+  overflow: hidden;
+  flex-wrap: nowrap;
+  font-size: 2.2em;
+  color: white;
+  min-width: 600px;
+  min-height: 100px;
+  position: relative;
 }
 
 #dot-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10; /* テキストより手前に表示 */
-    opacity: 0;
-    /*transition: opacity 0.2s ease;*/ /* ふわっと点灯させる */
-    box-sizing: border-box; /* 枠のズレ防止 */
-    pointer-events: none; /* クリック操作を邪魔しない */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  /* テキストより手前に表示 */
+  opacity: 0;
+  /*transition: opacity 0.2s ease;*/
+  /* ふわっと点灯させる */
+  box-sizing: border-box;
+  /* 枠のズレ防止 */
+  pointer-events: none;
+  /* クリック操作を邪魔しない */
 }
 
 /* ドット枠 */
@@ -70,68 +75,75 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* 網目を通して下の文字等を選択・操作できるようにする */
-  
+  pointer-events: none;
+  /* 網目を通して下の文字等を選択・操作できるようにする */
+
   /* 縦と横の黒い細線を引いて網目を作る */
-  background-image: 
+  background-image:
     linear-gradient(rgba(0, 0, 0, 0.5) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.5) 1px, transparent 1px);
-    
+
   /* 1マスのサイズ。LEDの文字サイズに合わせて数値を調整してください */
-  background-size: 4px 4px; 
-  
-  z-index: 10; /* 文字よりも上に表示させる */
+  background-size: 4px 4px;
+
+  z-index: 10;
+  /* 文字よりも上に表示させる */
 }
 
 .car-number {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0.2em 0.5em;
-    background-color: black;
-    color: orange;
-    font-size: 1em;
-    width: 1em;
-    text-orientation: upright;
-    line-height: 1;
-    white-space: nowrap;
-    font-family: 'DM Sans', sans-serif;
-    }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2em 0.5em;
+  background-color: black;
+  color: orange;
+  font-size: 1em;
+  width: 1em;
+  text-orientation: upright;
+  line-height: 1;
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+}
 
 .car-digit {
-  font-size: 1.3em;   /* 数字を大きく */
+  font-size: 1.3em;
+  /* 数字を大きく */
   line-height: 1;
   width: max-content;
   white-space: nowrap;
   flex-shrink: 0;
-  transform-origin: center center; /* 中央を基準に縮小 */
+  transform-origin: center center;
+  /* 中央を基準に縮小 */
   /* transition: transform 0.1s ease-out;*/
 }
 
 .car-label {
-  font-size: 0.7em;   /* 「号車」を小さく */
+  font-size: 0.7em;
+  /* 「号車」を小さく */
   margin-top: 0.2em;
 }
 
 
 .type-area {
-    background-color: #000000;
-    padding: 0.3em 0.3em;
-    font-size: 1.5em; /* 枠のベースサイズ */
-    color: white;
-    height: 1.5em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-    width: 3.4em;
-    flex-shrink: 0;
-    text-align: center;
-    font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
-    font-weight: normal;
-    position: relative;
-    z-index: 2; /* 他の要素より前面に表示 */
+  background-color: #000000;
+  padding: 0.3em 0.3em;
+  font-size: 1.5em;
+  /* 枠のベースサイズ */
+  color: white;
+  height: 1.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  width: 3.4em;
+  flex-shrink: 0;
+  text-align: center;
+  font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
+  font-weight: normal;
+  position: relative;
+  z-index: 2;
+  /* 他の要素より前面に表示 */
 }
 
 #rounded-box {
@@ -145,70 +157,87 @@ body {
 }
 
 #type-text {
-    font-size: 0.9em; /* ← このサイズだけを JavaScript で変更する */
-    display: inline-block;
-    line-height: 1.5em;
-    text-shadow: 1px 1px 0 black, /* 右下 */
-               -1px 1px 0 black, /* 左下 */
-               1px -1px 0 black, /* 右上 */
-               -1px -1px 0 black; /* 左上 */
+  font-size: 0.9em;
+  /* ← このサイズだけを JavaScript で変更する */
+  display: inline-block;
+  line-height: 1.5em;
+  text-shadow: 1px 1px 0 black,
+    /* 右下 */
+    -1px 1px 0 black,
+    /* 左下 */
+    1px -1px 0 black,
+    /* 右上 */
+    -1px -1px 0 black;
+  /* 左上 */
 }
 
 .destination-area {
-    background-color: black;
-    padding: 0.3em 1em;
-    font-size: 1.5em;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-    width: 4em;              /* 幅を固定 */
-    height: 1.5em;
-    letter-spacing: 0.1em; /* ← ここが文字間隔 */
-    font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
-    position: relative;
-    z-index: 1; /* type-area より後ろに表示 */
-    overflow: hidden; /* はみ出しを隠す */
-    white-space: nowrap; /* 改行禁止 */
+  background-color: black;
+  padding: 0.3em 1em;
+  font-size: 1.5em;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  width: 4em;
+  /* 幅を固定 */
+  height: 1.5em;
+  letter-spacing: 0.1em;
+  /* ← ここが文字間隔 */
+  font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
+  position: relative;
+  z-index: 1;
+  /* type-area より後ろに表示 */
+  overflow: hidden;
+  /* はみ出しを隠す */
+  white-space: nowrap;
+  /* 改行禁止 */
 }
 
 #destination-text {
-    font-size: 1em;         /* ← JSで変更されるサイズ */
-    display: flex;          
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    height: 100%;           /* 親の高さに合わせる */
-    width: max-content;
-    white-space: nowrap;    /* 改行禁止 */
-    flex-shrink: 0;
-    transform-origin: left center; /* 左端を基準に縮小 */
-    /*transition: transform 0.1s ease-out; */ /* 変化を少し滑らかに */
+  font-size: 1em;
+  /* ← JSで変更されるサイズ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  height: 100%;
+  /* 親の高さに合わせる */
+  width: max-content;
+  white-space: nowrap;
+  /* 改行禁止 */
+  flex-shrink: 0;
+  transform-origin: left center;
+  /* 左端を基準に縮小 */
+  /*transition: transform 0.1s ease-out; */
+  /* 変化を少し滑らかに */
 }
 
 .italic-text {
-    /*font-style: italic;*/
-    font-family: 'jr-cen_rollsignregular', 'Alphabet', 'Noto Sans JP', sans-serif;
+  /*font-style: italic;*/
+  font-family: 'jr-cen_rollsignregular', 'Alphabet', 'Noto Sans JP', sans-serif;
 }
 
-    /* 制御部 */
-    .controls {
-      margin-top: 2em;
-      display: flex;
-      gap: 1em;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+/* 制御部 */
+.controls {
+  margin-top: 2em;
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-    .controls label {
-      color: white;
-    }
+.controls label {
+  color: white;
+}
 
-    select, input, button {
-      font-size: 1em;
-      padding: 0.4em 0.7em;
-    }
+select,
+input,
+button {
+  font-size: 1em;
+  padding: 0.4em 0.7em;
+}
 
 .a {
   display: inline-block;
@@ -222,6 +251,7 @@ body {
   transition: background-color 0.3s ease;
   margin-top: 3em;
 }
+
 .a:hover {
   background-color: #666;
 }
@@ -312,7 +342,8 @@ footer #site-version {
   margin-top: 5px;
   width: 50px;
   height: 25px;
-  border-radius: 25px; /* heightの半分にするときれいなカプセル型になります */
+  border-radius: 25px;
+  /* heightの半分にするときれいなカプセル型になります */
   background-color: #dddddd;
   cursor: pointer;
   transition: background-color 0.4s;
@@ -327,8 +358,10 @@ footer #site-version {
 .toggle-switch::after {
   content: "";
   position: absolute;
-  top: 2.5px;   /* (枠25px - 丸20px) ÷ 2 で上下中央に */
-  left: 2.5px;  /* 左側に少し余白を持たせる */
+  top: 2.5px;
+  /* (枠25px - 丸20px) ÷ 2 で上下中央に */
+  left: 2.5px;
+  /* 左側に少し余白を持たせる */
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -340,7 +373,7 @@ footer #site-version {
 /* チェックされた時の丸の位置 */
 .toggle-switch:has(:checked)::after {
   /* 枠幅50px - 丸幅20px - 右余白2.5px = 27.5px */
-  left: 27.5px; 
+  left: 27.5px;
 }
 
 /* デフォルトのチェックボックス（四角い枠）を隠す */
@@ -350,27 +383,105 @@ footer #site-version {
 
 /* ▼ 設定モーダルのスタイル */
 .modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex; justify-content: center; align-items: center;
-    z-index: 1000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
-.modal-content {
-    background: #fff; color: #333;
-    padding: 20px; border-radius: 8px;
-    width: 90%; max-width: 600px;
-    max-height: 80vh; overflow-y: auto;
-}
-.type-edit-row {
-    display: flex; gap: 10px; align-items: center;
-    margin-bottom: 10px; padding: 10px;
-    background: #f5f5f5; border-radius: 4px;
-}
-.type-edit-row input[type="text"] { width: 80px; }
-.type-edit-row input[type="color"] { cursor: pointer; }
 
-#save-image-button{
+.modal-content {
+  background: #fff;
+  color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+#settings-modal label,
+.color-group label {
+    color: #111111; /* ほぼ真っ黒な色 */
+    font-weight: 500; /* ほんの少しだけ文字を太くして視認性を高める */
+}
+
+.type-edit-row {
+  display: flex;
+  flex-wrap: wrap;
+  /* 画面が狭いときは自動で折り返す */
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+  padding: 10px;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+}
+
+.type-edit-row input[type="text"] {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* PC等でのベースサイズ */
+.edit-ja {
+  flex: 1;
+  min-width: 80px;
+}
+
+.edit-en {
+  flex: 1;
+  min-width: 100px;
+}
+
+/* カラーピッカー等をまとめるグループ */
+.color-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.9em;
+}
+
+.color-group input[type="color"] {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+#close-settings-btn {
+  background: #b8b8b8;
+  color: black;
+  margin-right: 10px;
+}
+
+#close-settings-btn:hover {
+  background-color: #908f8f;
+}
+
+#save-settings-btn {
+  font-weight: bold;
+  background: #0055ff;
+  color: white;
+  padding: 10px 25px;
+}
+
+#save-settings-btn:hover {
+  background-color: #003fbd;
+}
+
+#save-image-button {
   padding: 0.6em 1.2em;
   font-size: 1em;
   background-color: #28a745;
@@ -392,12 +503,42 @@ footer #site-version {
 @media (max-width: 600px) {
   .title {
     font-size: 1.5em;
-    /*transform: scale(0.8); */  /* 全体を縮小 */
+    /*transform: scale(0.8); */
+    /* 全体を縮小 */
   }
+
   .display-frame {
-    transform: scale(0.55);   /* 全体を縮小 */
+    transform: scale(0.55);
+    /* 全体を縮小 */
   }
+
   .controls {
-    transform: scale(1);   /* 全体を縮小 */
+    transform: scale(1);
+    /* 全体を縮小 */
+  }
+
+  .type-edit-row {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .edit-ja,
+  .edit-en {
+    /* 上段：日本語と英語の入力欄を半分ずつ横幅いっぱいに広げる */
+    flex: 1 1 45%;
+    width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .color-group {
+    /* 下段：カラーピッカーとチェックボックスを横並びで均等配置 */
+    flex: 1 1 100%;
+    justify-content: space-between;
+    margin-top: 4px;
+  }
+
+  .color-group label {
+    display: flex;
+    align-items: center;
   }
 }
