@@ -258,15 +258,23 @@ button {
 
 footer {
   text-align: center;
-  padding: 10px;
-  font-size: 14px;
+  padding: 6px 10px;
+  font-size: 11px;
   color: #777;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+footer p {
+    margin: 0;
 }
 
 footer #site-version {
-  font-size: 12px;
   color: #aaa;
-  margin-top: 4px;
 }
 
 
@@ -290,7 +298,7 @@ footer #site-version {
 
 .controls input,
 .controls select {
-  margin-top: 0.3em;
+  margin-top: 0.1em;
   padding: 0.4em 0.6em;
   border: 1px solid #555;
   border-radius: 8px;
@@ -514,7 +522,12 @@ footer #site-version {
 
   .controls {
     transform: scale(1);
+    margin-top: 0;
     /* 全体を縮小 */
+  }
+
+  .a {
+    margin-top: 1.5em;
   }
 
   .type-edit-row {

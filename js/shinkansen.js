@@ -401,22 +401,39 @@ window.addEventListener("DOMContentLoaded", () => {
     if (typeSelect) typeSelect.addEventListener('change', updateDisplay);
 });
 
-// ▼ 画像保存
+// ▼ 画像保存（通常モードとドットモードの出し分け対応）
 document.addEventListener("DOMContentLoaded", () => {
     const saveButton = document.getElementById("save-image-button");
+
     if (saveButton) {
         saveButton.addEventListener("click", () => {
-            const display = document.querySelector(".display-frame");
-            if (!display) return;
-            html2canvas(display, {
-                backgroundColor: null, 
-                scale: 2              
-            }).then(canvas => {
+            const toggleCheckbox = document.getElementById("toggle-dots");
+            const dotCanvas = document.getElementById("dot-canvas");
+            
+            // 1. ドット表示モードがONの場合
+            if (toggleCheckbox && toggleCheckbox.checked && dotCanvas) {
+                // すでにあるCanvasを直接画像に変換する（非常に高速）
                 const link = document.createElement("a");
-                link.download = "shinkansen_display.png";
-                link.href = canvas.toDataURL("image/png");
+                link.download = "shinkansen_display_dot.png"; // 保存名をわかりやすく変更
+                link.href = dotCanvas.toDataURL("image/png");
                 link.click();
-            });
+            } 
+            // 2. 通常表示モードがONの場合
+            else {
+                // 従来通り html2canvas を使ってHTML要素を画像化する
+                const display = document.querySelector(".led-display");
+                if (!display) return;
+
+                html2canvas(display, {
+                    backgroundColor: null, 
+                    scale: 2              
+                }).then(canvas => {
+                    const link = document.createElement("a");
+                    link.download = "shinkansen_display_normal.png"; // 保存名をわかりやすく変更
+                    link.href = canvas.toDataURL("image/png");
+                    link.click();
+                });
+            }
         });
     }
 });
@@ -436,9 +453,6 @@ async function renderLEDMatrix() {
         return;
     }
 
-    // ★ 新幹線専用のシンプル処理：
-    // 複雑な縁取り判定は不要ですが、号数やローマ字などの細い文字がドット落ちしないよう、
-    // 撮影の一瞬だけすべての文字を同色で少し太らせます。
     const tempStyle = document.createElement('style');
     tempStyle.innerHTML = `
         #type-text, #destination-text, #number-text {
