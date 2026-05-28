@@ -252,16 +252,16 @@ function updateDisplay() {
                 destinationText.style.letterSpacing = "normal";
                 destinationText.style.fontSize = "0.8em"; // 英語小さく
                 typeText.style.fontSize = "0.8em"; // 通常サイズ
-            }else if(typeTextData === "新快速"){
+            }else if(typeTextData === "区間快速" || typeTextData === "新快速" || typeTextData === "特別快速"){
                 // 新快速ローマ字表示
                 destinationText.style.letterSpacing = "normal";
                 destinationText.style.fontSize = "0.8em"; // 英語縮小
                 typeText.style.fontSize = "0.5em"; // 通常サイズ
             }else{
-                // ▼ ローマ字表示
+                // その他のローマ字表示
                 destinationText.style.letterSpacing = "normal";
                 destinationText.style.fontSize = "0.8em"; // 英語縮小
-                typeText.style.fontSize = "0.5em"; // 英語縮小
+                typeText.style.fontSize = "0.8em"; // 英語縮小
             }
         }
         destinationText.style.flex = ""; 
@@ -397,7 +397,7 @@ function switchLanguage() {
             destinationText.style.letterSpacing = "normal";
             destinationText.style.fontSize = "0.8em"; 
             typeText.style.fontSize = "0.8em"; 
-        } else if (typeTextData === "新快速"){
+        } else if (typeTextData === "区間快速" || typeTextData === "新快速" || typeTextData === "特別快速"){
             typeText.textContent = typeText.getAttribute("data-en");
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
@@ -408,7 +408,7 @@ function switchLanguage() {
             destinationText.textContent = destinationText.getAttribute("data-en");
             destinationText.style.letterSpacing = "normal";
             destinationText.style.fontSize = "0.8em"; 
-            typeText.style.fontSize = "0.5em"; 
+            typeText.style.fontSize = "0.8em"; 
         }
 
         typeText.style.fontWeight = ""; 
