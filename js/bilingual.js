@@ -127,7 +127,7 @@ function updateDisplay() {
     if (specialFontTypes.includes(cleanType)) {
         // 日本語のみに適用
         typeJa.classList.add("italic-text");
-        typeJa.style.marginTop = "30px";
+        typeJa.style.top = "30px";
 
         // 従来通りの文字間隔微調整
         if (cleanType === "快速") {
@@ -153,7 +153,7 @@ function updateDisplay() {
         typeJa.style.letterSpacing = "normal";
         typeJa.style.textIndent = "0";
         typeJa.style.fontSize = "";
-        typeJa.style.marginTop = "0px";
+        typeJa.style.top = "20px";
     }
     // 英語は【常に】通常フォント
     typeEn.classList.remove("italic-text");

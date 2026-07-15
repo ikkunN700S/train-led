@@ -69,6 +69,17 @@ body {
 .type-area {
     width: 30%;
     border-right: 2px solid #000;
+    position: relative;
+}
+
+#type-text-ja {
+    position: absolute;
+    top: 20px;
+}
+
+#type-text-en {
+    position: absolute;
+    bottom: 12px;
 }
 
 .destination-area {
