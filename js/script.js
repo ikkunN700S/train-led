@@ -673,10 +673,10 @@ async function renderLEDMatrix() {
         scale: scaleFactor, 
         backgroundColor: "#000",
         logging: false,
-        // ★ 追加：撮影領域を本来のサイズに強制指定
+        // 撮影領域を本来のサイズに強制指定
         width: baseWidth,
         height: baseHeight,
-        // ★ 追加：撮影する裏側の世界（クローン）だけで、スマホ用の縮小を解除する
+        // 撮影する裏側の世界（クローン）だけで、スマホ用の縮小を解除する
         onclone: (clonedDoc) => {
             const clonedDisplay = clonedDoc.querySelector(".display-frame") || clonedDoc.querySelector(".led-display");
             if (clonedDisplay) {

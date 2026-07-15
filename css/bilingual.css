@@ -1,0 +1,350 @@
+@font-face {
+  font-family: 'jr-cen_rollsignregular';
+  src: url('../fonts/JR-Central_Rollsign.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+    background-color: #222;
+    color: #fff;
+    font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0;
+    padding: 2em;
+}
+
+.title {
+    font-size: 2em;
+    font-family: 'DotGothic16';
+}
+
+.simulator-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.display-frame {
+    position: relative;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    width: fit-content;
+}
+
+.led-display {
+    display: flex;
+    width: 600px;
+    height: 120px;
+    background-color: #111;
+    border: 2px solid #000;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: relative;
+}
+
+#dot-canvas {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 10;
+}
+
+.type-area,
+.destination-area {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 5px;
+    white-space: nowrap;
+}
+
+.type-area {
+    width: 30%;
+    border-right: 2px solid #000;
+    position: relative;
+}
+
+#type-text-ja {
+    position: absolute;
+    top: 20px;
+}
+
+#type-text-en {
+    position: absolute;
+    bottom: 12px;
+}
+
+.destination-area {
+    width: 70%;
+    color: #fff;
+}
+
+#destination-text-ja {
+    position: absolute;
+    top: 20px;
+}
+
+#destination-text-en {
+    position: absolute;
+    bottom: 12px;
+}
+
+.main-text {
+    font-size: 3em;
+    font-weight: bold;
+    line-height: 1.1;
+}
+
+.sub-text {
+    font-size: 1em;
+    font-weight: normal;
+    line-height: 1.1;
+    margin-top: 2px;
+}
+
+/* ▼ 従来通りの特殊フォント（斜体など）用クラス ▼ */
+.italic-text {
+    font-style: italic;
+    font-family: 'jr-cen_rollsignregular', sans-serif; 
+    font-weight: normal;
+}
+
+.controls {
+    background: #333;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    font-size: 1.2em;
+}
+
+.control-group {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.control-group label {
+    width: 120px;
+    font-weight: bold;
+}
+
+.control-group label.toggle-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;          /* スイッチとテキストの間の隙間 */
+    width: auto;        /* 既存の 120px 固定を解除 */
+    cursor: pointer;
+}
+
+.control-group input[type="text"],
+.control-group select {
+    flex: 1;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background: #444;
+    color: #fff;
+}
+
+/* トグルスイッチの枠 */
+.toggle-switch {
+  display: inline-block;
+  position: relative;
+  flex-shrink: 0;
+  width: 50px;
+  height: 25px;
+  border-radius: 25px;
+  /* heightの半分にするときれいなカプセル型になります */
+  background-color: #dddddd;
+  transition: background-color 0.4s;
+}
+
+/* チェックされた時の背景色 */
+.toggle-switch:has(:checked) {
+  background-color: #4bd865;
+}
+
+/* スイッチの丸い部分 */
+.toggle-switch::after {
+  content: "";
+  position: absolute;
+  top: 2.5px;
+  /* (枠25px - 丸20px) ÷ 2 で上下中央に */
+  left: 2.5px;
+  /* 左側に少し余白を持たせる */
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+  background-color: #fff;
+  transition: left 0.4s;
+}
+
+/* チェックされた時の丸の位置 */
+.toggle-switch:has(:checked)::after {
+  /* 枠幅50px - 丸幅20px - 右余白2.5px = 27.5px */
+  left: 27.5px;
+}
+
+/* デフォルトのチェックボックス（四角い枠）を隠す */
+.toggle-switch input {
+  display: none;
+}
+
+button {
+    cursor: pointer;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background: #555;
+    color: #fff;
+}
+
+button.save-btn {
+    width: 100%;
+    background: #00aadd;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+/* モーダル用 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    color: #111;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+#settings-modal label {
+    color: #111;
+    font-weight: 500;
+}
+
+.type-edit-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 10px;
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+}
+
+.type-edit-row input[type="text"] {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.edit-ja {
+    flex: 1;
+    min-width: 80px;
+}
+
+.edit-en {
+    flex: 1;
+    min-width: 100px;
+}
+
+.color-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-size: 0.9em;
+}
+
+.color-group input[type="color"] {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+    vertical-align: middle;
+    margin-left: 4px;
+}
+
+footer {
+  text-align: center;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #777;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer #site-version {
+  color: #aaa;
+}
+
+@media (max-width: 600px) {
+    .control-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .control-group.switch-group {
+        flex-direction: row;
+    }
+
+    .type-edit-row {
+        padding: 12px;
+        gap: 8px;
+    }
+
+    .edit-ja,
+    .edit-en {
+        flex: 1 1 45%;
+        width: 100% !important;
+        box-sizing: border-box;
+    }
+
+    .color-group {
+        flex: 1 1 100%;
+        justify-content: space-between;
+        margin-top: 4px;
+    }
+}
