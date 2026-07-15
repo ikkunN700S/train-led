@@ -87,6 +87,16 @@ body {
     color: #fff;
 }
 
+#destination-text-ja {
+    position: absolute;
+    top: 20px;
+}
+
+#destination-text-en {
+    position: absolute;
+    bottom: 12px;
+}
+
 .main-text {
     font-size: 3em;
     font-weight: bold;
