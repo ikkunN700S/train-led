@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=650px">
     <title>行き先表示機シミュレータ（日英表示）</title>
     <link rel="stylesheet" href="./css/bilingual.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -50,12 +50,20 @@
             </div>
 
             <div class="control-group switch-group" style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <label class="toggle-label" style="cursor: pointer;">
-                    <input type="checkbox" id="toggle-dest-btn"> 行先枠を表示 (特殊種別時)
+                <label class="toggle-wrapper">
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="toggle-dest-btn">
+                    </div>
+                    <span class="toggle-text">行先枠を表示 (特殊種別時)</span>
                 </label>
-                <label class="toggle-label" style="cursor: pointer;">
-                    <input type="checkbox" id="toggle-dots"> リアルLEDドット表示
+                <!--
+                <label class="toggle-wrapper">
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="toggle-dots">
+                    </div>
+                    <span class="toggle-text">リアルLEDドット表示</span>
                 </label>
+                -->
             </div>
 
             <button id="save-image-button" class="save-btn">画像を保存</button>
