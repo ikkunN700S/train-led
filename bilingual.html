@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行き先表示機シミュレータ（2段表示モード）</title>
+    <link rel="stylesheet" href="./css/bilingual.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="simulator-container">
+        <!-- LED表示器本体 -->
+        <div class="display-frame">
+            <div class="led-display" id="led-display">
+                <!-- 種別エリア -->
+                <div id="type-area" class="type-area">
+                    <div id="type-text-ja" class="main-text"></div>
+                    <div id="type-text-en" class="sub-text"></div>
+                </div>
+
+                <!-- 行先エリア -->
+                <div id="destination-area" class="destination-area">
+                    <div id="destination-text-ja" class="main-text"></div>
+                    <div id="destination-text-en" class="sub-text"></div>
+                </div>
+            </div>
+            <!-- ドット描画用キャンバス -->
+            <canvas id="dot-canvas"></canvas>
+        </div>
+
+        <!-- 操作パネル -->
+        <div class="controls">
+            <div class="control-group">
+                <label>種別:</label>
+                <select id="type-select"></select>
+                <button id="open-settings-btn" class="settings-btn">⚙️ 設定</button>
+            </div>
+            
+            <div class="control-group">
+                <label>行先 (日本語):</label>
+                <input type="text" id="destination-input" value="名 古 屋">
+            </div>
+
+            <div class="control-group">
+                <label>行先 (英語):</label>
+                <input type="text" id="romaji-input" value="Nagoya">
+            </div>
+
+            <div class="control-group switch-group" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                <label class="toggle-label" style="cursor: pointer;">
+                    <input type="checkbox" id="toggle-dest-btn"> 行先枠を表示 (特殊種別時)
+                </label>
+                <label class="toggle-label" style="cursor: pointer;">
+                    <input type="checkbox" id="toggle-dots"> リアルLEDドット表示
+                </label>
+            </div>
+
+            <button id="save-image-button" class="save-btn">画像を保存</button>
+            <div style="margin-top: 15px; text-align: center;">
+                <a href="index.html" style="color: #00aadd;">← 通常モード（切替式）に戻る</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 種別・カラー設定モーダル -->
+    <div id="settings-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2 style="margin-top: 0;">種別・カラー設定</h2>
+            <div style="margin-bottom: 15px;">
+                <label>プリセット: </label>
+                <select id="preset-select"></select>
+                <button id="load-preset-btn">読み込み</button>
+            </div>
+            <hr>
+            <div id="type-editor-container"></div>
+            <div style="margin-top: 20px; text-align: right;">
+                <button id="close-settings-btn" style="margin-right: 10px;">キャンセル</button>
+                <button id="save-settings-btn" class="save-btn">適用</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/bilingual.js"></script>
+</body>
+</html>
