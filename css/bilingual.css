@@ -11,10 +11,16 @@ body {
     color: #fff;
     font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
-    min-height: 100vh;
     margin: 0;
+    padding: 2em;
+}
+
+.title {
+    font-size: 2em;
+    font-family: 'DotGothic16';
 }
 
 .simulator-container {
@@ -291,6 +297,27 @@ button.save-btn {
     cursor: pointer;
     vertical-align: middle;
     margin-left: 4px;
+}
+
+footer {
+  text-align: center;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #777;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+footer p {
+    margin: 0;
+}
+
+footer #site-version {
+  color: #aaa;
 }
 
 @media (max-width: 600px) {
