@@ -8,13 +8,11 @@
 
 body {
     background-color: #222;
-    color: #fff;
+    color: white;
     font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    margin: 0;
     padding: 2em;
 }
 
@@ -27,29 +25,29 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
     width: 100%;
-    padding: 20px;
+    padding: 0;
     box-sizing: border-box;
 }
 
 .display-frame {
-    position: relative;
-    padding: 10px;
+    padding: 1em;
     background-color: #333;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 1em;
+    box-shadow: 0 0 15px #000;
     width: fit-content;
 }
 
 .led-display {
     display: flex;
-    width: 600px;
-    height: 120px;
-    background-color: #111;
-    border: 2px solid #000;
-    box-sizing: border-box;
+    align-items: stretch;
+    background-color: black;
+    border: 4px solid #000;
+    border-radius: 0.5em;
     overflow: hidden;
+    flex-wrap: nowrap;
+    min-width: 600px;
+    min-height: 100px;
     position: relative;
 }
 
@@ -117,20 +115,22 @@ body {
 }
 
 /* ▼ 従来通りの特殊フォント（斜体など）用クラス ▼ */
-.italic-text {
+#type-text-ja.italic-text {
     font-style: italic;
     font-family: 'jr-cen_rollsignregular', sans-serif; 
     font-weight: normal;
+    top: 30px;
+    line-height: 1; 
 }
 
 .controls {
-    background: #333;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
-    font-size: 1.2em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin: 1.5em auto;
+    max-width: 900px;
+    justify-content: center;
+    color: white;
 }
 
 .control-group {
@@ -139,9 +139,15 @@ body {
     align-items: center;
 }
 
+.section {
+    width: 80%;
+}
+
 .control-group label {
-    width: 120px;
-    font-weight: bold;
+    display: block;
+    width: 100%;
+    flex-direction: column;
+    font-size: 0.9em;
 }
 
 .control-group label.toggle-wrapper {
@@ -154,12 +160,34 @@ body {
 
 .control-group input[type="text"],
 .control-group select {
-    flex: 1;
-    padding: 8px;
-    border-radius: 4px;
+    margin-top: 0.1em;
+    padding: 0.4em 0.6em;
+    border-radius: 8px;
     border: 1px solid #555;
-    background: #444;
+    background-color: #1e1e1e;
     color: #fff;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#open-settings-btn {
+    width: 100%;
+}
+
+.control-group input:focus,
+.control-group select:focus {
+  border-color: #00aaff;
+  box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.4);
+}
+
+.control-group select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23aaa" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.6em center;
+    background-size: 1em;
+    padding-right: 2em;
 }
 
 /* トグルスイッチの枠 */
@@ -209,19 +237,63 @@ body {
 
 button {
     cursor: pointer;
-    padding: 8px 12px;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
     border: none;
-    border-radius: 4px;
-    background: #555;
-    color: #fff;
+    border-radius: 8px;
+    background: #00aaff;
+    color: white;
+    transition: background-color 0.2s, transform 0.1s;
 }
 
-button.save-btn {
-    width: 100%;
-    background: #00aadd;
-    font-size: 1.1em;
-    font-weight: bold;
-    margin-top: 10px;
+button:hover {
+    background-color: #0088cc;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+#close-settings-btn {
+  background: #b8b8b8;
+  color: black;
+  margin-right: 10px;
+}
+
+#close-settings-btn:hover {
+  background-color: #908f8f;
+}
+
+#save-settings-btn {
+  width: 100%;
+  font-weight: bold;
+  background: #00aadd;
+  color: white;
+  padding: 10px 25px;
+  margin-top: 10px;
+}
+
+#save-settings-btn:hover {
+  background-color: #003fbd;
+}
+
+#save-image-button {
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+#save-image-button:hover {
+  background-color: #218838;
+}
+
+#save-image-button:active {
+  transform: scale(0.97);
 }
 
 /* モーダル用 */
@@ -303,6 +375,7 @@ footer {
   text-align: center;
   padding: 6px 10px;
   font-size: 11px;
+  font-family: 'DotGothic16';
   color: #777;
 
   display: flex;
@@ -321,6 +394,19 @@ footer #site-version {
 }
 
 @media (max-width: 600px) {
+    .title {
+        font-size: 1.5em;
+    }
+
+    .display-frame {
+        transform: scale(0.55);
+    }
+
+    .controls {
+        transform: scale(1);
+        margin-top: 0;
+    }
+
     .control-group {
         flex-direction: column;
         align-items: flex-start;
@@ -346,5 +432,10 @@ footer #site-version {
         flex: 1 1 100%;
         justify-content: space-between;
         margin-top: 4px;
+    }
+    
+    .color-group label {
+        display: flex;
+        align-items: center;
     }
 }

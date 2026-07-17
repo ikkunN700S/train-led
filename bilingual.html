@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=650px">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>行き先表示機シミュレータ（日英表示）</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,43 +38,53 @@
 
         <!-- 操作パネル -->
         <div class="controls">
-            <div class="control-group">
-                <label>種別:</label>
-                <select id="type-select"></select>
-                <button id="open-settings-btn" class="settings-btn">⚙️ 設定</button>
+            <div class="section">
+                <div class="control-group" >
+                    <label>種別:
+                        <select id="type-select"></select>
+                        <button id="open-settings-btn" class="settings-btn" style="margin-top: 10px; cursor: pointer;">⚙️ 種別設定</button>
+                    </label>
+                </div>
             </div>
             
-            <div class="control-group">
-                <label>行先 (日本語):</label>
-                <input type="text" id="destination-input" value="名 古 屋">
+            <div class="section">
+                <div class="control-group">
+                    <label>行先 (日本語):
+                        <input type="text" id="destination-input" value="名古屋">
+                    </label>
+                </div>
+                <div class="control-group">
+                    <label>行先 (英語):
+                        <input type="text" id="romaji-input" value="Nagoya">
+                    </label>
+                </div>
             </div>
 
-            <div class="control-group">
-                <label>行先 (英語):</label>
-                <input type="text" id="romaji-input" value="Nagoya">
+            <div class="section">
+                <div class="control-group switch-group" style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <label class="toggle-wrapper">
+                        <span class="toggle-text">行先枠を表示 (特殊種別時)</span>
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="toggle-dest-btn">
+                        </div>
+                    </label>
+                    <!--
+                    <label class="toggle-wrapper">
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="toggle-dots">
+                        </div>
+                        <span class="toggle-text">リアルLEDドット表示</span>
+                    </label>
+                    -->
+                </div>
             </div>
 
-            <div class="control-group switch-group" style="display: flex; gap: 15px; flex-wrap: wrap;">
-                <label class="toggle-wrapper">
-                    <div class="toggle-switch">
-                        <input type="checkbox" id="toggle-dest-btn">
-                    </div>
-                    <span class="toggle-text">行先枠を表示 (特殊種別時)</span>
-                </label>
-                <!--
-                <label class="toggle-wrapper">
-                    <div class="toggle-switch">
-                        <input type="checkbox" id="toggle-dots">
-                    </div>
-                    <span class="toggle-text">リアルLEDドット表示</span>
-                </label>
-                -->
-            </div>
+            
+        </div>
 
-            <button id="save-image-button" class="save-btn">画像を保存</button>
-            <div style="margin-top: 15px; text-align: center;">
-                <a href="index.html" style="color: #00aadd;">← 通常モード（切替式）に戻る</a>
-            </div>
+        <button id="save-image-button" class="save-btn">画像を保存</button>
+        <div style="margin-top: 15px; text-align: center; font-family: 'DotGothic16';">
+            <a href="index.html" style="color: #00aadd;">← 通常モード（切替式）に戻る</a>
         </div>
     </div>
 
@@ -90,7 +100,7 @@
             <hr>
             <div id="type-editor-container"></div>
             <div style="margin-top: 20px; text-align: right;">
-                <button id="close-settings-btn" style="margin-right: 10px;">キャンセル</button>
+                <button id="close-settings-btn" style="margin-right: 10px;">ｷｬﾝｾﾙ</button>
                 <button id="save-settings-btn" class="save-btn">適用</button>
             </div>
         </div>
