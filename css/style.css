@@ -450,6 +450,17 @@ footer #site-version {
   /* ほんの少しだけ文字を太くして視認性を高める */
 }
 
+.preset {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+#preset-select {
+  width: 100%;
+}
+
 .type-edit-row {
   display: flex;
   flex-wrap: wrap;
@@ -585,5 +596,13 @@ footer #site-version {
   .color-group label {
     display: flex;
     align-items: center;
+  }
+
+  .preset {
+    white-space: normal;
+  }
+
+  #preset-select {
+    width: auto;
   }
 }
