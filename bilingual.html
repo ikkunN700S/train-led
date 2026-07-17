@@ -79,30 +79,28 @@
                 </div>
             </div>
 
-            
+            <div id="settings-modal">
+                <div class="modal">
+                    <h2 style="margin-top: 0;">種別・カラー設定</h2>
+
+                    <div style="margin-bottom: 15px;">
+                        <label>プリセット: </label>
+                        <select id="preset-select"></select>
+                        <button id="load-preset-btn" style="margin-top: 10px;">読み込み</button>
+                    </div>
+                    <hr>
+                    <div id="type-editor-container"></div>
+                    <div style="margin-bottom: 20px; text-align: right;">
+                        <button id="close-settings-btn" style="margin-right: 10px;">ｷｬﾝｾﾙ</button>
+                        <button id="save-settings-btn" class="save-btn">適用</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <button id="save-image-button" class="save-btn">画像を保存</button>
         <div style="margin-top: 15px; text-align: center; font-family: 'DotGothic16';">
             <a href="index.html" style="color: #00aadd;">← 通常モード（切替式）に戻る</a>
-        </div>
-    </div>
-
-    <!-- 種別・カラー設定モーダル -->
-    <div id="settings-modal" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <h2 style="margin-top: 0;">種別・カラー設定</h2>
-            <div style="margin-bottom: 15px;">
-                <label>プリセット: </label>
-                <select id="preset-select"></select>
-                <button id="load-preset-btn">読み込み</button>
-            </div>
-            <hr>
-            <div id="type-editor-container"></div>
-            <div style="margin-top: 20px; text-align: right;">
-                <button id="close-settings-btn" style="margin-right: 10px;">ｷｬﾝｾﾙ</button>
-                <button id="save-settings-btn" class="save-btn">適用</button>
-            </div>
         </div>
     </div>
 

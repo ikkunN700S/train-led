@@ -266,7 +266,7 @@ footer {
 }
 
 footer p {
-    margin: 0;
+  margin: 0;
 }
 
 footer #site-version {
@@ -286,7 +286,7 @@ footer #site-version {
 }
 
 .section {
-    width: 80%;
+  width: 80%;
 }
 
 .controls label {
@@ -344,24 +344,30 @@ footer #site-version {
 }
 
 .toggle-container {
-    display: flex;
-    gap: 30px; /* 2つの設定項目の間の隙間（お好みで調整） */
-    justify-content: flex-start; /* 左寄せ（中央揃えが良い場合は center に変更） */
-    flex-wrap: wrap; /* スマホなどで画面が狭い場合は、自動で縦並びに折り返す */
-    margin: 15px 0; /* 上下への余白 */
+  display: flex;
+  gap: 30px;
+  /* 2つの設定項目の間の隙間（お好みで調整） */
+  justify-content: flex-start;
+  /* 左寄せ（中央揃えが良い場合は center に変更） */
+  flex-wrap: wrap;
+  /* スマホなどで画面が狭い場合は、自動で縦並びに折り返す */
+  margin: 15px 0;
+  /* 上下への余白 */
 }
 
 /* 1つ1つの設定項目（文字＋スイッチ） */
 .toggle-item {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* 文字とスイッチ本体の間の隙間 */
-    width: fit-content; /* ★解決！横幅を中身に合わせる（右側の空白誤タップ防止） */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* 文字とスイッチ本体の間の隙間 */
+  width: fit-content;
+  /* ★解決！横幅を中身に合わせる（右側の空白誤タップ防止） */
 }
 
 /* 文字部分をクリックできるようにする */
 .toggle-item label {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* トグルスイッチの枠 */
@@ -411,22 +417,22 @@ footer #site-version {
 }
 
 /* ▼ 設定モーダルのスタイル */
-.modal-overlay {
+#settings-modal {
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.7);
-  display: flex;
+  z-index: 1000;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
 
-.modal-content {
+.modal {
   background: #fff;
-  color: #333;
+  color: #000;
   padding: 20px;
   border-radius: 8px;
   width: 90%;
@@ -435,10 +441,13 @@ footer #site-version {
   overflow-y: auto;
 }
 
+
 #settings-modal label,
 .color-group label {
-    color: #111111; /* ほぼ真っ黒な色 */
-    font-weight: 500; /* ほんの少しだけ文字を太くして視認性を高める */
+  color: #111111;
+  /* ほぼ真っ黒な色 */
+  font-weight: 500;
+  /* ほんの少しだけ文字を太くして視認性を高める */
 }
 
 .type-edit-row {
