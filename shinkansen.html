@@ -44,68 +44,76 @@
   </div>
 
   <div class="controls">
-    <label>種別:
-      <select id="type-select">
-        <option value="こだま">こだま</option>
-        <option value="ひかり">ひかり</option>
-        <option value="のぞみ">のぞみ</option>
+    <div class="section">
+      <label>種別:
+        <select id="type-select">
+          <option value="こだま">こだま</option>
+          <option value="ひかり">ひかり</option>
+          <option value="のぞみ">のぞみ</option>
 
-        <option value="みずほ">みずほ</option>
-        <option value="さくら">さくら</option>
-        <option value="つばめ">つばめ</option>
-        <option value="かもめB">かもめ(青)</option>
-        <option value="かもめR">かもめ(赤)</option>
+          <option value="みずほ">みずほ</option>
+          <option value="さくら">さくら</option>
+          <option value="つばめ">つばめ</option>
+          <option value="かもめB">かもめ(青)</option>
+          <option value="かもめR">かもめ(赤)</option>
 
-        <option value="はやぶさ">はやぶさ</option>
-        <option value="はやて">はやて</option>
-        <option value="やまびこ">やまびこ</option>
-        <option value="なすの">なすの</option>
+          <option value="はやぶさ">はやぶさ</option>
+          <option value="はやて">はやて</option>
+          <option value="やまびこ">やまびこ</option>
+          <option value="なすの">なすの</option>
 
-        <option value="はやぶさH">はやぶさ(北)</option>
-        <option value="はやてH">はやて(北)</option>
+          <option value="はやぶさH">はやぶさ(北)</option>
+          <option value="はやてH">はやて(北)</option>
 
-        <option value="こまち">こまち</option>
-        <option value="つばさ">つばさ</option>
+          <option value="こまち">こまち</option>
+          <option value="つばさ">つばさ</option>
 
-        <option value="つるぎ">つるぎ</option>
-        <option value="あさま">あさま</option>
-        <option value="はくたか">はくたか</option>
-        <option value="かがやき">かがやき</option>
+          <option value="つるぎ">つるぎ</option>
+          <option value="あさま">あさま</option>
+          <option value="はくたか">はくたか</option>
+          <option value="かがやき">かがやき</option>
 
-        <option value="とき">とき</option>
-        <option value="たにがわ">たにがわ</option>
+          <option value="とき">とき</option>
+          <option value="たにがわ">たにがわ</option>
 
-        <option value="試運転">試運転</option>
-        <option value="回送">回送</option>
-        <option value="臨時">臨時</option>
-        <option value="団体">団体</option>
-        <option value="修学旅行">修学旅行</option>
-      </select>
-    </label>
-
-    <label>号数:
-      <input type="text" id="number-input" value="" style="width: 4em;"/>
-    </label>
-
-    <label>行き先:
-      <input type="text" id="destination-input" value="東　京" />
-    </label>
-
-    <label>ローマ字:
-      <input type="text" id="romaji-input" value="Tokyo" />
-    </label>
-
-    <label>ドット表示
-      <label class="toggle-switch">
-        <input type="checkbox" id="toggle-dots">
+          <option value="試運転">試運転</option>
+          <option value="回送">回送</option>
+          <option value="臨時">臨時</option>
+          <option value="団体">団体</option>
+          <option value="修学旅行">修学旅行</option>
+        </select>
       </label>
-    </label>
 
-    <label class="toggle-label">自動切替（日本語/英語）
-      <label class="toggle-switch">
-        <input type="checkbox" id="auto-switch-toggle" checked>
-        </label> 
-    </label>
+      <label>号数:
+        <input type="text" id="number-input" value="" style="width: 4em;"/>
+      </label>
+    </div>
+
+    <div class="section">
+      <label>行先 (日本語):
+        <input type="text" id="destination-input" value="東　京" />
+      </label>
+
+      <label>行先 (英語):
+        <input type="text" id="romaji-input" value="Tokyo" />
+      </label>
+    </div>
+
+    <div class="toggle-container">
+      <div class="toggle-item">
+        <label>ドット表示
+          <label class="toggle-switch">
+            <input type="checkbox" id="toggle-dots">
+          </label>
+        </label>
+
+        <label class="toggle-label">自動切替（日本語/英語）
+          <label class="toggle-switch">
+            <input type="checkbox" id="auto-switch-toggle" checked>
+          </label> 
+        </label>
+      </div>
+    </div>
   </div>
 
   <script src="./js/shinkansen.js"></script>

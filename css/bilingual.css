@@ -1,20 +1,18 @@
 @font-face {
-  font-family: 'jr-cen_rollsignregular';
-  src: url('../fonts/JR-Central_Rollsign.woff2') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+    font-family: 'jr-cen_rollsignregular';
+    src: url('../fonts/JR-Central_Rollsign.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
 }
 
 body {
     background-color: #222;
-    color: #fff;
+    color: white;
     font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    margin: 0;
     padding: 2em;
 }
 
@@ -27,29 +25,29 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
     width: 100%;
-    padding: 20px;
+    padding: 0;
     box-sizing: border-box;
 }
 
 .display-frame {
-    position: relative;
-    padding: 10px;
+    padding: 1em;
     background-color: #333;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 1em;
+    box-shadow: 0 0 15px #000;
     width: fit-content;
 }
 
 .led-display {
     display: flex;
-    width: 600px;
-    height: 120px;
-    background-color: #111;
-    border: 2px solid #000;
-    box-sizing: border-box;
+    align-items: stretch;
+    background-color: black;
+    border: 4px solid #000;
+    border-radius: 0.5em;
     overflow: hidden;
+    flex-wrap: nowrap;
+    min-width: 600px;
+    min-height: 100px;
     position: relative;
 }
 
@@ -117,20 +115,22 @@ body {
 }
 
 /* ▼ 従来通りの特殊フォント（斜体など）用クラス ▼ */
-.italic-text {
+#type-text-ja.italic-text {
     font-style: italic;
-    font-family: 'jr-cen_rollsignregular', sans-serif; 
+    font-family: 'jr-cen_rollsignregular', sans-serif;
     font-weight: normal;
+    top: 30px;
+    line-height: 1;
 }
 
 .controls {
-    background: #333;
-    padding: 20px;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 600px;
-    box-sizing: border-box;
-    font-size: 1.2em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    margin: 1.5em auto;
+    max-width: 900px;
+    justify-content: center;
+    color: white;
 }
 
 .control-group {
@@ -139,108 +139,181 @@ body {
     align-items: center;
 }
 
-.control-group label {
-    width: 120px;
-    font-weight: bold;
+.section {
+    width: 80%;
 }
 
-.control-group label.toggle-wrapper {
+.controls label {
+    display: block;
+    width: 100%;
+    flex-direction: column;
+    font-size: 0.9em;
+}
+
+.controls label.toggle-wrapper {
     display: flex;
     align-items: center;
-    gap: 10px;          /* スイッチとテキストの間の隙間 */
-    width: auto;        /* 既存の 120px 固定を解除 */
+    gap: 10px;
+    /* スイッチとテキストの間の隙間 */
+    width: auto;
+    /* 既存の 120px 固定を解除 */
     cursor: pointer;
 }
 
-.control-group input[type="text"],
-.control-group select {
-    flex: 1;
-    padding: 8px;
-    border-radius: 4px;
+.controls input[type="text"],
+.controls select {
+    margin-top: 0.1em;
+    padding: 0.4em 0.6em;
+    border-radius: 8px;
     border: 1px solid #555;
-    background: #444;
+    background-color: #1e1e1e;
     color: #fff;
+    outline: none;
+    width: 100%;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#open-settings-btn {
+    width: 100%;
+}
+
+.controls input:focus,
+.controls select:focus {
+    border-color: #00aaff;
+    box-shadow: 0 0 0 2px rgba(0, 170, 255, 0.4);
+}
+
+.controls select {
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23aaa" height="16" viewBox="0 0 24 24" width="16" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.6em center;
+    background-size: 1em;
+    padding-right: 2em;
 }
 
 /* トグルスイッチの枠 */
 .toggle-switch {
-  display: inline-block;
-  position: relative;
-  flex-shrink: 0;
-  width: 50px;
-  height: 25px;
-  border-radius: 25px;
-  /* heightの半分にするときれいなカプセル型になります */
-  background-color: #dddddd;
-  transition: background-color 0.4s;
+    display: inline-block;
+    position: relative;
+    flex-shrink: 0;
+    width: 50px;
+    height: 25px;
+    border-radius: 25px;
+    /* heightの半分にするときれいなカプセル型になります */
+    background-color: #dddddd;
+    transition: background-color 0.4s;
 }
 
 /* チェックされた時の背景色 */
 .toggle-switch:has(:checked) {
-  background-color: #4bd865;
+    background-color: #4bd865;
 }
 
 /* スイッチの丸い部分 */
 .toggle-switch::after {
-  content: "";
-  position: absolute;
-  top: 2.5px;
-  /* (枠25px - 丸20px) ÷ 2 で上下中央に */
-  left: 2.5px;
-  /* 左側に少し余白を持たせる */
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  box-shadow: 0 0 5px rgb(0 0 0 / 20%);
-  background-color: #fff;
-  transition: left 0.4s;
+    content: "";
+    position: absolute;
+    top: 2.5px;
+    /* (枠25px - 丸20px) ÷ 2 で上下中央に */
+    left: 2.5px;
+    /* 左側に少し余白を持たせる */
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    box-shadow: 0 0 5px rgb(0 0 0 / 20%);
+    background-color: #fff;
+    transition: left 0.4s;
 }
 
 /* チェックされた時の丸の位置 */
 .toggle-switch:has(:checked)::after {
-  /* 枠幅50px - 丸幅20px - 右余白2.5px = 27.5px */
-  left: 27.5px;
+    /* 枠幅50px - 丸幅20px - 右余白2.5px = 27.5px */
+    left: 27.5px;
 }
 
 /* デフォルトのチェックボックス（四角い枠）を隠す */
 .toggle-switch input {
-  display: none;
+    display: none;
 }
 
 button {
     cursor: pointer;
-    padding: 8px 12px;
+    padding: 0.6em 1.2em;
+    font-size: 1em;
     border: none;
-    border-radius: 4px;
-    background: #555;
-    color: #fff;
+    border-radius: 8px;
+    background: #00aaff;
+    color: white;
+    transition: background-color 0.2s, transform 0.1s;
 }
 
-button.save-btn {
+button:hover {
+    background-color: #0088cc;
+}
+
+button:active {
+    transform: scale(0.97);
+}
+
+#close-settings-btn {
+    background: #b8b8b8;
+    color: black;
+    margin-right: 10px;
+}
+
+#close-settings-btn:hover {
+    background-color: #908f8f;
+}
+
+#save-settings-btn {
     width: 100%;
-    background: #00aadd;
-    font-size: 1.1em;
     font-weight: bold;
+    background: #00aadd;
+    color: white;
+    padding: 10px 25px;
     margin-top: 10px;
 }
 
-/* モーダル用 */
-.modal-overlay {
+#save-settings-btn:hover {
+    background-color: #003fbd;
+}
+
+#save-image-button {
+    padding: 0.6em 1.2em;
+    font-size: 1em;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+#save-image-button:hover {
+    background-color: #218838;
+}
+
+#save-image-button:active {
+    transform: scale(0.97);
+}
+
+#settings-modal {
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
-    display: flex;
+    z-index: 1000;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
 }
 
-.modal-content {
+.modal {
     background: #fff;
-    color: #111;
+    color: #000;
     padding: 20px;
     border-radius: 8px;
     width: 90%;
@@ -249,9 +322,21 @@ button.save-btn {
     overflow-y: auto;
 }
 
-#settings-modal label {
+#settings-modal label,
+.color-group label {
     color: #111;
     font-weight: 500;
+}
+
+.preset {
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    white-space: nowrap;
+}
+
+#preset-select {
+    width: 100%;
 }
 
 .type-edit-row {
@@ -300,16 +385,17 @@ button.save-btn {
 }
 
 footer {
-  text-align: center;
-  padding: 6px 10px;
-  font-size: 11px;
-  color: #777;
+    text-align: center;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-family: 'DotGothic16';
+    color: #777;
 
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
 }
 
 footer p {
@@ -317,10 +403,23 @@ footer p {
 }
 
 footer #site-version {
-  color: #aaa;
+    color: #aaa;
 }
 
 @media (max-width: 600px) {
+    .title {
+        font-size: 1.5em;
+    }
+
+    .display-frame {
+        transform: scale(0.55);
+    }
+
+    .controls {
+        transform: scale(1);
+        margin-top: 0;
+    }
+
     .control-group {
         flex-direction: column;
         align-items: flex-start;
@@ -346,5 +445,18 @@ footer #site-version {
         flex: 1 1 100%;
         justify-content: space-between;
         margin-top: 4px;
+    }
+
+    .color-group label {
+        display: flex;
+        align-items: center;
+    }
+
+    .preset {
+        white-space: normal;
+    }
+
+    #preset-select {
+        width: auto;
     }
 }

@@ -2,17 +2,18 @@
   font-family: "Alphabet";
   src: local("Arial");
   font-weight: bold;
-  /*unicode-range: U+0030-0039, U+0041-005A, U+0061-007A; */ /* A-Z, a-z */
+  /*unicode-range: U+0030-0039, U+0041-005A, U+0061-007A; */
+  /* A-Z, a-z */
 }
 
 body {
-      background-color: #222;
-      font-family: 'DotGothic16', monospace;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 2em;
-    }
+  background-color: #222;
+  font-family: 'DotGothic16', monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2em;
+}
 
 .title {
   font-size: 2em;
@@ -27,30 +28,34 @@ body {
 }
 
 .led-display {
-    display: flex;
-    align-items: stretch;
-    background-color: black;
-    border: 4px solid #111;
-    border-radius: 0.5em;
-    overflow: hidden;
-    font-size: 2.2em;
-    color: white;
-    min-width: 600px;
-    min-height: 100px;
-    position: relative;
+  display: flex;
+  align-items: stretch;
+  background-color: black;
+  border: 4px solid #111;
+  border-radius: 0.5em;
+  overflow: hidden;
+  font-size: 2.2em;
+  color: white;
+  min-width: 600px;
+  min-height: 100px;
+  position: relative;
 }
 
 #dot-canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10; /* テキストより手前に表示 */
-    opacity: 0;
-    /*transition: opacity 0.2s ease;*/ /* ふわっと点灯させる */
-    box-sizing: border-box; /* 枠のズレ防止 */
-    pointer-events: none; /* クリック操作を邪魔しない */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  /* テキストより手前に表示 */
+  opacity: 0;
+  /*transition: opacity 0.2s ease;*/
+  /* ふわっと点灯させる */
+  box-sizing: border-box;
+  /* 枠のズレ防止 */
+  pointer-events: none;
+  /* クリック操作を邪魔しない */
 }
 
 /* ドット枠 */
@@ -61,138 +66,159 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* 網目を通して下の文字等を選択・操作できるようにする */
-  
+  pointer-events: none;
+  /* 網目を通して下の文字等を選択・操作できるようにする */
+
   /* 縦と横の黒い細線を引いて網目を作る */
-  background-image: 
+  background-image:
     linear-gradient(rgba(0, 0, 0, 0.5) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 0, 0, 0.5) 1px, transparent 1px);
-    
+
   /* 1マスのサイズ。LEDの文字サイズに合わせて数値を調整してください */
-  background-size: 4px 4px; 
-  
-  z-index: 10; /* 文字よりも上に表示させる */
+  background-size: 4px 4px;
+
+  z-index: 10;
+  /* 文字よりも上に表示させる */
 }
 
 .car-number {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 0.2em 0.5em;
-    background-color: black;
-    color: orange;
-    font-size: 1em;
-    text-orientation: upright;
-    line-height: 1;
-    white-space: nowrap;
-    font-family: 'DM Sans', sans-serif;
-    }
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.2em 0.5em;
+  background-color: black;
+  color: orange;
+  font-size: 1em;
+  text-orientation: upright;
+  line-height: 1;
+  white-space: nowrap;
+  font-family: 'DM Sans', sans-serif;
+}
 
 .car-digit {
-  font-size: 1.5em;   /* 数字を大きく */
+  font-size: 1.5em;
+  /* 数字を大きく */
   line-height: 1;
 }
 
 .car-label {
-  font-size: 0.8em;   /* 「号車」を小さく */
+  font-size: 0.8em;
+  /* 「号車」を小さく */
   margin-top: 0.2em;
 }
 
 
 .type-area {
-    background-color: #000000;
-    padding: 0.3em 1em;
-    font-size: 1.5em; /* 枠のベースサイズ */
-    color: white;
-    height: 1.5em;
-    display: flex;
-    flex-direction: column; /* 縦に並べる */
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-    width: 2.5em;
-    flex-shrink: 0;
-    text-align: center;
-    font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
-    font-weight: normal;
-    position: relative;
-    z-index: 2; /* 他の要素より前に表示 */
+  background-color: #000000;
+  padding: 0.3em 1em;
+  font-size: 1.5em;
+  /* 枠のベースサイズ */
+  color: white;
+  height: 1.5em;
+  display: flex;
+  flex-direction: column;
+  /* 縦に並べる */
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  width: 2.5em;
+  flex-shrink: 0;
+  text-align: center;
+  font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
+  font-weight: normal;
+  position: relative;
+  z-index: 2;
+  /* 他の要素より前に表示 */
 }
 
 #type-text {
-    font-size: 1em; /* ← このサイズだけを JavaScript で変更する */
-    display: inline-block;
-    line-height: 1;
-    margin-bottom: 0.9em; /* 下に寄せる */
+  font-size: 1em;
+  /* ← このサイズだけを JavaScript で変更する */
+  display: inline-block;
+  line-height: 1;
+  margin-bottom: 0.9em;
+  /* 下に寄せる */
 }
 
 #number-text {
-    font-size: 0.8em; /* 号数のサイズ */
-    display: inline-block;
-    line-height: 1;
-    position: absolute;
-    bottom: 0.2em; /* 下に寄せる */
-    left: 50%;
-    transform: translateX(-50%);
-    width: max-content;
-    white-space: nowrap;
+  font-size: 0.8em;
+  /* 号数のサイズ */
+  display: inline-block;
+  line-height: 1;
+  position: absolute;
+  bottom: 0.2em;
+  /* 下に寄せる */
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  white-space: nowrap;
 }
 
 .destination-area {
-    background-color: black;
-    padding: 0.3em 1em;
-    font-size: 1.5em;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-grow: 1;
-    width: 4em;              /* 幅を固定 */
-    height: 1.5em;
-    letter-spacing: 0.2em; /* ← ここが文字間隔 */
-    white-space: nowrap;
-    font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
-    position: relative;
-    z-index: 1; /* type-area より後ろに表示 */
+  background-color: black;
+  padding: 0.3em 1em;
+  font-size: 1.5em;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  width: 4em;
+  /* 幅を固定 */
+  height: 1.5em;
+  letter-spacing: 0.2em;
+  /* ← ここが文字間隔 */
+  white-space: nowrap;
+  font-family: 'Alphabet', 'Noto Sans JP', sans-serif;
+  position: relative;
+  z-index: 1;
+  /* type-area より後ろに表示 */
 }
 
 #destination-text {
-    font-size: 1em;         /* ← JSで変更されるサイズ */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-    height: 100%;           /* 親の高さに合わせる */
-    width: max-content;
-    white-space: nowrap;    /* 改行禁止 */
-    flex-shrink: 0;
-    transform-origin: left center; /* 左端を基準に縮小 */
-    /*transition: transform 0.1s ease-out; */ /* 変化を少し滑らかに */
+  font-size: 1em;
+  /* ← JSで変更されるサイズ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  height: 100%;
+  /* 親の高さに合わせる */
+  width: max-content;
+  white-space: nowrap;
+  /* 改行禁止 */
+  flex-shrink: 0;
+  transform-origin: left center;
+  /* 左端を基準に縮小 */
+  /*transition: transform 0.1s ease-out; */
+  /* 変化を少し滑らかに */
 }
 
 
 .italic-text {
-    font-style: italic;
+  font-style: italic;
 }
 
-    /* 制御部 */
-    .controls {
-      margin-top: 2em;
-      display: flex;
-      gap: 1em;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+/* 制御部 */
+.controls {
+  margin-top: 2em;
+  display: flex;
+  gap: 1em;
+  flex-wrap: wrap;
+  justify-content: center;
+}
 
-    .controls label {
-      color: white;
-    }
+.controls label {
+  color: white;
+}
 
-    select, input, button {
-      font-size: 1em;
-      padding: 0.4em 0.7em;
-    }
+select,
+input,
+button {
+  font-size: 1em;
+  padding: 0.4em 0.7em;
+}
 
 .a {
   display: inline-block;
@@ -206,6 +232,7 @@ body {
   transition: background-color 0.3s ease;
   margin-top: 2em;
 }
+
 .a:hover {
   background-color: #666;
 }
@@ -224,7 +251,7 @@ footer {
 }
 
 footer p {
-    margin: 0;
+  margin: 0;
 }
 
 footer #site-version {
@@ -240,6 +267,10 @@ footer #site-version {
   justify-content: center;
   color: #ffffff;
   font-family: 'Noto Sans JP', sans-serif;
+}
+
+.section {
+    width: 80%;
 }
 
 .controls label {
@@ -296,6 +327,28 @@ footer #site-version {
   transform: scale(0.97);
 }
 
+.toggle-container {
+    display: flex;
+    gap: 30px; /* 2つの設定項目の間の隙間（お好みで調整） */
+    justify-content: flex-start; /* 左寄せ（中央揃えが良い場合は center に変更） */
+    flex-wrap: wrap; /* スマホなどで画面が狭い場合は、自動で縦並びに折り返す */
+    margin: 15px 0; /* 上下への余白 */
+}
+
+/* 1つ1つの設定項目（文字＋スイッチ） */
+.toggle-item {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* 文字とスイッチ本体の間の隙間 */
+    width: fit-content; /* ★解決！横幅を中身に合わせる（右側の空白誤タップ防止） */
+}
+
+/* 文字部分をクリックできるようにする */
+.toggle-item label {
+    cursor: pointer;
+}
+
+
 /* トグルスイッチの枠 */
 .toggle-switch {
   display: inline-block;
@@ -303,7 +356,8 @@ footer #site-version {
   margin-top: 5px;
   width: 50px;
   height: 25px;
-  border-radius: 25px; /* heightの半分にするときれいなカプセル型になります */
+  border-radius: 25px;
+  /* heightの半分にするときれいなカプセル型になります */
   background-color: #dddddd;
   cursor: pointer;
   transition: background-color 0.4s;
@@ -318,8 +372,10 @@ footer #site-version {
 .toggle-switch::after {
   content: "";
   position: absolute;
-  top: 2.5px;   /* (枠25px - 丸20px) ÷ 2 で上下中央に */
-  left: 2.5px;  /* 左側に少し余白を持たせる */
+  top: 2.5px;
+  /* (枠25px - 丸20px) ÷ 2 で上下中央に */
+  left: 2.5px;
+  /* 左側に少し余白を持たせる */
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -331,7 +387,7 @@ footer #site-version {
 /* チェックされた時の丸の位置 */
 .toggle-switch:has(:checked)::after {
   /* 枠幅50px - 丸幅20px - 右余白2.5px = 27.5px */
-  left: 27.5px; 
+  left: 27.5px;
 }
 
 /* デフォルトのチェックボックス（四角い枠）を隠す */
@@ -339,7 +395,7 @@ footer #site-version {
   display: none;
 }
 
-#save-image-button{
+#save-image-button {
   padding: 0.6em 1.2em;
   font-size: 1em;
   background-color: #28a745;
@@ -362,13 +418,18 @@ footer #site-version {
 @media (max-width: 600px) {
   .title {
     font-size: 1.5em;
-    /*transform: scale(0.8); */  /* 全体を縮小 */
+    /*transform: scale(0.8); */
+    /* 全体を縮小 */
   }
+
   .display-frame {
-    transform: scale(0.55);   /* 全体を縮小 */
+    transform: scale(0.55);
+    /* 全体を縮小 */
   }
+
   .controls {
-    transform: scale(1);   /* 全体を縮小 */
+    transform: scale(1);
+    /* 全体を縮小 */
     margin-top: 0;
   }
 }
