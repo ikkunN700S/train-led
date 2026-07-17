@@ -459,4 +459,8 @@ footer #site-version {
     #preset-select {
         width: auto;
     }
+
+    #type-text-ja.italic-text {
+        top: 20px;
+    }
 }
